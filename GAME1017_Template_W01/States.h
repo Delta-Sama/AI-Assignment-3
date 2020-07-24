@@ -13,8 +13,7 @@
 #include <vector>
 #include <array>
 
-#define ROWS 24
-#define COLS 32
+#include "Level.h"
 
 class State // This is the abstract base class for all specific states.
 {
@@ -59,8 +58,7 @@ private:
 	DebugMode* m_debugger;
 	Player* m_player;
 
-	std::map<char, Tile*> m_tiles;
-	std::array<std::array<Tile*, COLS>, ROWS> m_level;
+	Level* m_level;
 };
 
 class EndState : public State

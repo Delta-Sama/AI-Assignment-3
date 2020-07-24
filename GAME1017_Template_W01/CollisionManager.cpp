@@ -151,9 +151,9 @@ bool CollisionManager::LOSCheck(GameObject* from, GameObject* to)
 	const SDL_FPoint lineStart = from->GetCenter();
 	const SDL_FPoint lineEnd = to->GetCenter();
 
-	for (GameObject* object : *GameObjectManager::GetObjects())
+	for (Tile* tile : *GameObjectManager::GetCollidableTiles())
 	{
-		const SDL_FRect* box = object->GetDstP();
+		const SDL_FRect* box = tile->GetDstP();
 
 		if (LineRectCheck(lineStart, lineEnd, box))
 		{
