@@ -15,6 +15,9 @@
 #include <string>
 
 
+
+#include "EnemyManager.h"
+#include "EventManager.h"
 #include "GameObjectManager.h"
 #include "Tile.h"
 
@@ -86,6 +89,8 @@ void GameState::Enter()
 
 	m_player = new Player();
 
+	ENMA::AddEnemy(REDSNIPER, { 10,3 });
+	
 	SDL_Texture* m_pTileText = TEMA::GetTexture("tiles");
 	std::ifstream inFile("Data/Tiledata.txt");
 	
@@ -169,7 +174,14 @@ void GameState::Enter()
 
 void GameState::Update()
 {
+	if (EVMA::KeyPressed(SDL_SCANCODE_H))
+	{
+		m_debugger->SetMode(!m_debugger->GetMode());
+	}
+	
 	m_player->update();
+
+	ENMA::Update();
 
 	CheckCollision();
 }
@@ -177,6 +189,8 @@ void GameState::Update()
 void GameState::CheckCollision()
 {
 	COMA::CheckMapCollision(m_player);
+	
+	ENMA::CheckCollision();
 }
 
 void GameState::Render()
@@ -192,6 +206,10 @@ void GameState::Render()
 		}
 	}
 
+	ENMA::Render();
+
+	m_debugger->Draw();
+	
 	m_player->Render();
 }
 
@@ -199,6 +217,8 @@ void GameState::Exit()
 {
 	delete m_player;
 	delete m_debugger;
+
+	ENMA::Clean();
 }
 
 void GameState::Resume() {}

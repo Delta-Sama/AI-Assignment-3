@@ -20,7 +20,7 @@ public:
 
 	static bool PointRectCheck(const SDL_FPoint point, const SDL_FRect& object1);
 
-	static bool LineLineCheck(Vec2 line1_start, Vec2 line1_end, Vec2 line2_start, Vec2 line2_end);
+	static bool LineLineCheck(SDL_FPoint line1_start, SDL_FPoint line1_end, SDL_FPoint line2_start, SDL_FPoint line2_end);
 	static bool LineRectCheck(const SDL_FPoint& line1_start, const SDL_FPoint& line1_end, const SDL_FRect* box);
 	
 	static bool LOSCheck(GameObject* from, GameObject* to);

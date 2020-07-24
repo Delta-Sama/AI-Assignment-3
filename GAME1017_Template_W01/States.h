@@ -53,6 +53,8 @@ public:
 	void Exit();
 	void Resume();
 
+	Player* GetPlayer() { return m_player; }
+
 private:
 	DebugMode* m_debugger;
 	Player* m_player;

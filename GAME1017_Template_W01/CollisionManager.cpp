@@ -95,7 +95,7 @@ GameObject* CollisionManager::FindFirstObjectOnTheRay(SDL_FPoint Pos, SDL_FPoint
 	return nullptr;
 }
 
-bool CollisionManager::LineLineCheck(Vec2 line1_start, Vec2 line1_end, Vec2 line2_start, Vec2 line2_end)
+bool CollisionManager::LineLineCheck(SDL_FPoint line1_start, SDL_FPoint line1_end, SDL_FPoint line2_start, SDL_FPoint line2_end)
 {
 	const auto x1 = line1_start.x;
 	const auto x2 = line1_end.x;
@@ -132,10 +132,10 @@ bool CollisionManager::LineRectCheck(const SDL_FPoint& line1_start, const SDL_FP
 
 	// check if the line has hit any of the rectangle's sides
 	// uses the Line/Line function below
-	const bool left = LineLineCheck(Vec2(x1, y1), Vec2(x2, y2), Vec2(rx, ry), Vec2(rx, ry + rh));
-	const bool right = LineLineCheck(Vec2(x1, y1), Vec2(x2, y2), Vec2(rx + rw, ry), Vec2(rx + rw, ry + rh));
-	const bool top = LineLineCheck(Vec2(x1, y1), Vec2(x2, y2), Vec2(rx, ry), Vec2(rx + rw, ry));
-	const bool bottom = LineLineCheck(Vec2(x1, y1), Vec2(x2, y2), Vec2(rx, ry + rh), Vec2(rx + rw, ry + rh));
+	const bool left = LineLineCheck({x1, y1}, {x2, y2}, {rx, ry}, {rx, ry + rh});
+	const bool right = LineLineCheck({ x1, y1 }, { x2, y2 }, { rx + rw, ry }, { rx + rw, ry + rh });
+	const bool top = LineLineCheck({ x1, y1 }, { x2, y2 }, { rx, ry }, { rx + rw, ry });
+	const bool bottom = LineLineCheck({ x1, y1 }, { x2, y2 }, { rx, ry + rh }, { rx + rw, ry + rh });
 
 	// if ANY of the above are true, the line
 	// has hit the rectangle

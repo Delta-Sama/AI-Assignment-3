@@ -47,8 +47,12 @@ bool Engine::Init(const char* title, int xpos, int ypos, int width, int height, 
 	FOMA::RegisterFont("Img/TITLEFONT.otf", "Title", 50);
 	FOMA::RegisterFont("Img/LTYPE.ttf", "Title", 24);
 	
-	SOMA::Load("Aud/button.wav", "button", SOUND_SFX);
+	SOMA::Load("Audio/button.wav", "button", SOUND_SFX);
 
+	SOMA::Load("Audio/sans.mp3", "background", SOUND_MUSIC);
+	SOMA::SetMusicVolume(18);
+	SOMA::PlayMusic("background");
+	
 	STMA::ChangeState(new TitleState);
 	SOMA::AllocateChannels(16);
 	m_running = true; // Everything is okay, start the engine.

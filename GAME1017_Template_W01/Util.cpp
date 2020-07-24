@@ -61,7 +61,7 @@ float Util::clamp01(const float value)
 /**
 * Returns the Euclidean distance of vecA and vecB
 */
-float Util::distance(const Vec2 vecA, const Vec2 vecB)
+float Util::distance(const SDL_FPoint vecA, const SDL_FPoint vecB)
 {
 	const auto x = vecB.x - vecA.x;
 	const auto y = vecB.y - vecA.y;
@@ -72,7 +72,7 @@ float Util::distance(const Vec2 vecA, const Vec2 vecB)
 * Returns the Squared Euclidean distance of vecA and vecB
 * No Square Root
 */
-float Util::squaredDistance(const Vec2 vecA, const Vec2 vecB)
+float Util::squaredDistance(const SDL_FPoint vecA, const SDL_FPoint vecB)
 {
 	const auto x = vecB.x - vecA.x;
 	const auto y = vecB.y - vecA.y;
@@ -80,10 +80,10 @@ float Util::squaredDistance(const Vec2 vecA, const Vec2 vecB)
 }
 
 /**
-* Returns the magnitude of a vec2
+* Returns the magnitude of a SDL_FPoint
 *
 */
-float Util::magnitude(const Vec2 vec)
+float Util::magnitude(const SDL_FPoint vec)
 {
 	const auto x = vec.x;
 	const auto y = vec.y;
@@ -91,10 +91,10 @@ float Util::magnitude(const Vec2 vec)
 }
 
 /**
-* Returns the squared Magnitude of a vec2
+* Returns the squared Magnitude of a SDL_FPoint
 * No Square Root
 */
-float Util::squaredMagnitude(Vec2 vec)
+float Util::squaredMagnitude(SDL_FPoint vec)
 {
 	const auto x = vec.x;
 	const auto y = vec.y;
@@ -106,9 +106,9 @@ float Util::squaredMagnitude(Vec2 vec)
  *
  * @param vector
  * @param magnitude
- * @return Vec2
+ * @return SDL_FPoint
  */
-Vec2 Util::limitMagnitude(Vec2 vector, const float magnitude)
+SDL_FPoint Util::limitMagnitude(SDL_FPoint vector, const float magnitude)
 {
 	const auto length = Util::magnitude(vector);
 
@@ -184,12 +184,12 @@ float Util::Sanitize(float value)
 
 /**
 * This method computes the minimum values for x and y from vecA and vecB
-* and returns them in dest or returns the result in a new vec2
+* and returns them in dest or returns the result in a new SDL_FPoint
 *
 */
-Vec2 Util::min(const Vec2 vecA, const Vec2 vecB)
+SDL_FPoint Util::min(const SDL_FPoint vecA, const SDL_FPoint vecB)
 {
-	Vec2 dest;
+	SDL_FPoint dest;
 	dest.x = std::min(vecA.x, vecB.x);
 	dest.y = std::min(vecA.y, vecB.y);
 	return dest;
@@ -202,12 +202,12 @@ float Util::min(float a, float b)
 
 /**
 * This method computes the maximum values of x and y from vecA and vecB
-* and returns the result in dest or returns the result as a new vec2
+* and returns the result in dest or returns the result as a new SDL_FPoint
 *
 */
-Vec2 Util::max(const Vec2 vecA, const Vec2 vecB)
+SDL_FPoint Util::max(const SDL_FPoint vecA, const SDL_FPoint vecB)
 {
-	Vec2  dest;
+	SDL_FPoint  dest;
 	dest.x = std::max(vecA.x, vecB.x);
 	dest.y = std::max(vecA.y, vecB.y);
 	return dest;
@@ -219,24 +219,24 @@ float Util::max(float a, float b)
 }
 
 /**
-* Negates the x and y components of a vec2 and returns them in a new vec2 object
+* Negates the x and y components of a SDL_FPoint and returns them in a new SDL_FPoint object
 *
 */
-Vec2 Util::negate(const Vec2 vec)
+SDL_FPoint Util::negate(const SDL_FPoint vec)
 {
-	Vec2 dest;
+	SDL_FPoint dest;
 	dest.x = -vec.x;
 	dest.y = -vec.y;
 	return dest;
 }
 
 /**
-* Returns the inverse x and y components of src vec2 and returns them in a new vec2 object
+* Returns the inverse x and y components of src SDL_FPoint and returns them in a new SDL_FPoint object
 *
 */
-Vec2 Util::inverse(const Vec2 vec)
+SDL_FPoint Util::inverse(const SDL_FPoint vec)
 {
-	Vec2 dest;
+	SDL_FPoint dest;
 	dest.x = 1.0 / vec.x;
 	dest.y = 1.0 / vec.y;
 	return dest;
@@ -244,12 +244,12 @@ Vec2 Util::inverse(const Vec2 vec)
 
 
 /**
-* Normalizes vec2 and stores the result in a new vec2 object
+* Normalizes SDL_FPoint and stores the result in a new SDL_FPoint object
 *
 */
-Vec2 Util::normalize(const Vec2 vec)
+SDL_FPoint Util::normalize(const SDL_FPoint vec)
 {
-	Vec2 dest;
+	SDL_FPoint dest;
 	auto x = vec.x;
 	auto y = vec.y;
 	auto length = (x * x) + (y * y);
@@ -264,7 +264,7 @@ Vec2 Util::normalize(const Vec2 vec)
 /**
 * Returns the angle in degrees between from and to.
 */
-float Util::angle(const Vec2 from, const Vec2 to)
+float Util::angle(const SDL_FPoint from, const SDL_FPoint to)
 {
 	return acos(Util::clamp(Util::dot(Util::normalize(from), Util::normalize(to)), -1.0f, 1.0f)) * 57.29578f;
 }
@@ -272,19 +272,19 @@ float Util::angle(const Vec2 from, const Vec2 to)
 /**
 * Dot Product of two vectors.
 */
-float Util::dot(const Vec2 lhs, const Vec2 rhs)
+float Util::dot(const SDL_FPoint lhs, const SDL_FPoint rhs)
 {
 	return lhs.x * rhs.x + lhs.y * rhs.y;
 }
 
-float Util::signedAngle(const Vec2 from, const Vec2 to)
+float Util::signedAngle(const SDL_FPoint from, const SDL_FPoint to)
 {
 	const auto unsigned_angle = Util::angle(from, to);
 	const auto sign = Util::sign(from.x * to.y - from.y * to.x);
 	return unsigned_angle * sign;
 }
 
-void Util::DrawLine(Vec2 start, Vec2 end, Vec4 colour)
+void Util::DrawLine(SDL_FPoint start, SDL_FPoint end, Vec4 colour)
 {
 	int r = floor(colour.r * 255.0f);
 	int g = floor(colour.g * 255.0f);
@@ -298,7 +298,7 @@ void Util::DrawLine(Vec2 start, Vec2 end, Vec4 colour)
 	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 }
 
-void Util::DrawRect(Vec2 position, int width, int height, Vec4 colour)
+void Util::DrawRect(SDL_FPoint position, int width, int height, Vec4 colour)
 {
 	int r = floor(colour.r * 255.0f);
 	int g = floor(colour.g * 255.0f);
@@ -318,7 +318,7 @@ void Util::DrawRect(Vec2 position, int width, int height, Vec4 colour)
 	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 }
 
-void Util::DrawCircle(Vec2 centre, int radius, Vec4 colour, ShapeType type)
+void Util::DrawCircle(SDL_FPoint centre, int radius, Vec4 colour, ShapeType type)
 {
 	int r = floor(colour.r * 255.0f);
 	int g = floor(colour.g * 255.0f);
@@ -400,7 +400,7 @@ void Util::DrawCircle(Vec2 centre, int radius, Vec4 colour, ShapeType type)
 	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 }
 
-void Util::DrawCapsule(Vec2 position, int width, int height, Vec4 colour)
+void Util::DrawCapsule(SDL_FPoint position, int width, int height, Vec4 colour)
 {
 	int diameter;
 	int radius;
@@ -411,20 +411,20 @@ void Util::DrawCapsule(Vec2 position, int width, int height, Vec4 colour)
 		// Horizontal Capsule
 		diameter = height;
 		radius = halfHeight * 0.5f;
-		DrawCircle(Vec2(position.x - halfWidth + halfHeight, position.y), halfHeight, colour, SEMI_CIRCLE_LEFT);
-		DrawCircle(Vec2(position.x + halfWidth - halfHeight, position.y), halfHeight, colour, SEMI_CIRCLE_RIGHT);
-		DrawLine(Vec2(position.x - halfWidth + halfHeight, position.y - halfHeight), Vec2(position.x + halfWidth - halfHeight, position.y - halfHeight));
-		DrawLine(Vec2(position.x - halfWidth + halfHeight, position.y + halfHeight), Vec2(position.x + halfWidth - halfHeight, position.y + halfHeight));
+		DrawCircle({ position.x - halfWidth + halfHeight, position.y }, halfHeight, colour, SEMI_CIRCLE_LEFT);
+		DrawCircle({ position.x + halfWidth - halfHeight, position.y }, halfHeight, colour, SEMI_CIRCLE_RIGHT);
+		DrawLine({ position.x - halfWidth + halfHeight, position.y - halfHeight }, { position.x + halfWidth - halfHeight, position.y - halfHeight });
+		DrawLine({ position.x - halfWidth + halfHeight, position.y + halfHeight }, { position.x + halfWidth - halfHeight, position.y + halfHeight });
 	}
 	else if (width < height)
 	{
 		// Vertical Capsule
 		diameter = width;
 		radius = halfWidth * 0.5f;
-		DrawCircle(Vec2(position.x, position.y - halfHeight + radius), radius, colour, SEMI_CIRCLE_TOP);
-		DrawCircle(Vec2(position.x, position.y + halfHeight - radius), radius, colour, SEMI_CIRCLE_BOTTOM);
-		DrawLine(Vec2(position.x - radius, position.y - halfHeight + radius), Vec2(position.x - halfWidth * 0.5f, position.y + halfHeight * 0.5f));
-		DrawLine(Vec2(position.x + radius, position.y - halfHeight + radius), Vec2(position.x + halfWidth * 0.5f, position.y + halfHeight * 0.5f));
+		DrawCircle({ position.x, position.y - halfHeight + radius }, radius, colour, SEMI_CIRCLE_TOP);
+		DrawCircle({ position.x, position.y + halfHeight - radius }, radius, colour, SEMI_CIRCLE_BOTTOM);
+		DrawLine({ position.x - radius, position.y - halfHeight + radius }, { position.x - halfWidth * 0.5f, position.y + halfHeight * 0.5f });
+		DrawLine({ position.x + radius, position.y - halfHeight + radius }, { position.x + halfWidth * 0.5f, position.y + halfHeight * 0.5f });
 	}
 	else
 	{
@@ -434,5 +434,3 @@ void Util::DrawCapsule(Vec2 position, int width, int height, Vec4 colour)
 		DrawCircle(position, radius = halfWidth, colour);
 	}
 }
-
-

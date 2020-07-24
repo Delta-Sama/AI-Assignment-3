@@ -74,6 +74,15 @@
     <ClCompile Include="Tile.cpp">
       <Filter>Objects\Source</Filter>
     </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>Entities\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyManager.cpp">
+      <Filter>Managers\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="RedSniper.cpp">
+      <Filter>Entities\Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CollisionManager.h">
@@ -153,6 +162,15 @@
     </ClInclude>
     <ClInclude Include="Tile.h">
       <Filter>Objects\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>Entities\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyManager.h">
+      <Filter>Managers\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="RedSniper.h">
+      <Filter>Entities\Header</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
