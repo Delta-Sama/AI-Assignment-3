@@ -7,6 +7,26 @@
 
 enum Status { IDLE, PATROL, ATTACK, FLEE};
 
+const float SPEED = 1;
+const int MAXCHECK = 2;
+const int PREVNODESSIZE = 4;
+
+struct LocalPathManager
+{
+	LocalPathManager()
+	{
+		for (int i = 0; i < PREVNODESSIZE; i++)
+		{
+			prevNode[i] = nullptr;
+		}
+		prevCheck = 0;
+		goalCounter = 0;
+	}
+	PathNode* prevNode[PREVNODESSIZE];
+	int prevCheck;
+	int goalCounter;
+};
+
 class Enemy : public Entity
 {
 public:
@@ -27,6 +47,7 @@ protected:
 	Status m_status;
 	bool m_reachedGoal;
 	PathNode* m_goal;
+	LocalPathManager m_pathManager;
 };
 
 #endif

@@ -86,6 +86,7 @@ void Level1::Load()
 	
 	ENMA::AddEnemy(REDSNIPER, { 10,3 });
 	ENMA::AddEnemy(REDSNIPER, { 16,7 });
+	ENMA::AddEnemy(REDSNIPER, { 4,10 });
 }
 
 void Level1::Render()

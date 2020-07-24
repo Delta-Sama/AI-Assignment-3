@@ -4,10 +4,6 @@
 #include "MathManager.h"
 #include "TextureManager.h"
 
-const float SPEED = 1;
-const int MAXCHECK = 2;
-const int PREVNODESSIZE = 4;
-
 RedSniper::RedSniper(Vec2 pos) : Enemy(TEMA::GetTexture("enemy"), pos)
 {
 	this->addAnimator(new Animator(this));
@@ -25,8 +21,6 @@ RedSniper::~RedSniper()
 
 void RedSniper::MakeDecision()
 {
-	static PathNode* prevNode[PREVNODESSIZE] = { nullptr };
-	static int prevCheck = 0;
 	switch (m_status)
 	{
 	case IDLE:
@@ -34,8 +28,19 @@ void RedSniper::MakeDecision()
 		break;
 	case PATROL:
 		{
+			if (m_pathManager.goalCounter++ > 60 * 2.5)
+			{
+				for (int i = 0; i < PREVNODESSIZE; i++)
+				{
+					m_pathManager.prevNode[i] = nullptr;
+				}
+				std::cout << "Failed to reach\n";
+				m_pathManager.prevNode[PREVNODESSIZE-1] = m_goal;
+				m_goal = nullptr;
+			}
 			if (m_reachedGoal or m_goal == nullptr)
 			{
+				m_pathManager.goalCounter = 0;
 				m_reachedGoal = false;
 				float minDist = 999999;
 				PathNode* goToNode = nullptr;
@@ -47,7 +52,7 @@ void RedSniper::MakeDecision()
 
 					for (int i = 0; i < PREVNODESSIZE; i++)
 					{
-						if (patrolNode == prevNode[i])
+						if (patrolNode == m_pathManager.prevNode[i])
 						{
 							notRecorded = false;
 							break;
@@ -65,19 +70,19 @@ void RedSniper::MakeDecision()
 				{
 					for (int i = 1; i < PREVNODESSIZE; i++)
 					{
-						prevNode[i-1] = prevNode[i];
+						m_pathManager.prevNode[i-1] = m_pathManager.prevNode[i];
 					}
 					
-					prevNode[PREVNODESSIZE-1] = goToNode;
+					m_pathManager.prevNode[PREVNODESSIZE-1] = goToNode;
 					m_goal = goToNode;
-					prevCheck = MAXCHECK;
+					m_pathManager.prevCheck = MAXCHECK;
 				}
 			}
 			else if (m_goal)
 			{
-				if (prevCheck++ >= MAXCHECK)
+				if (m_pathManager.prevCheck++ >= MAXCHECK)
 				{
-					prevCheck = 0;
+					m_pathManager.prevCheck = 0;
 					
 					float angle = MAMA::AngleBetweenPoints((m_goal->y - this->GetCenter().y), (m_goal->x - this->GetCenter().x));
 					angle = MAMA::Rad2Deg(angle) + 90;
