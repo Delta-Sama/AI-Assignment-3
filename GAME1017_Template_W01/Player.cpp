@@ -10,9 +10,9 @@
 #include "MathManager.h"
 
 Player::Player()
-	:Entity({0,0,34,34}, {100,100,68,68}, TEMA::GetTexture("player"))
+	:Entity({0,0,34,34}, {100,100,60,60}, TEMA::GetTexture("player"))
 {
-	this->m_body = {0,0,40,40};
+	this->m_body = {0,0,35,35};
 	this->SetBodyPosition();
 	
 	this->addAnimator(new Animator(this));

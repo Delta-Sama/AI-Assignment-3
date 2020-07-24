@@ -10,6 +10,7 @@ public:
 	~RedSniper();
 
 	virtual void update() override;
+	virtual void MakeDecision() override;
 	
 private:
 	

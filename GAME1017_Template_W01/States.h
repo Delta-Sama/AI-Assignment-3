@@ -53,7 +53,7 @@ public:
 	void Resume();
 
 	Player* GetPlayer() { return m_player; }
-
+	Level* GetLevel() { return m_level; }
 private:
 	DebugMode* m_debugger;
 	Player* m_player;

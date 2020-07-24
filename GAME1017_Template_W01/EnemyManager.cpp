@@ -4,6 +4,7 @@
 #include "RedSniper.h"
 
 std::vector<Enemy*> ENMA::EnemiesVec;
+GameState* ENMA::m_scene;
 
 void EnemyManager::Update()
 {

@@ -1,10 +1,13 @@
 #include "Enemy.h"
 
+
+#include "CollisionManager.h"
+#include "EnemyManager.h"
 #include "TextureManager.h"
 
-Enemy::Enemy(SDL_Texture* t, Vec2 pos) : Entity({0,0,34,34},{pos.x * 32,pos.y * 32,68,68},t)
+Enemy::Enemy(SDL_Texture* t, Vec2 pos) : Entity({0,0,34,34},{pos.x * 48,pos.y * 48,60,60},t)
 {
-	this->m_body = { 0,0,40,40 };
+	this->m_body = { 0,0,35,35 };
 	this->SetBodyPosition();
 
 	std::cout << "Enemy created\n";
@@ -18,9 +21,7 @@ Enemy::~Enemy()
 
 void Enemy::update()
 {
-	movementUpdate();
-
-	this->SetBodyPosition();
+	
 }
 
 void Enemy::clean()

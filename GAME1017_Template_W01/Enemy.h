@@ -3,6 +3,9 @@
 #define _ENEMY_H_
 
 #include "Entity.h"
+#include "States.h"
+
+enum Status { IDLE, PATROL, ATTACK, FLEE};
 
 class Enemy : public Entity
 {
@@ -12,10 +15,14 @@ public:
 	
 	virtual void update() override;
 	virtual void clean() override;
+	virtual void MakeDecision() = 0;
+
+	bool GetPlayerLOS() { return m_playerLOS; }
 
 	int movement[2] = { 0,0 };
-private:
-	
+protected:
+	bool m_playerLOS;
+	Status m_status;
 };
 
 #endif

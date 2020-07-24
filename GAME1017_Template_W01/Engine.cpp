@@ -8,8 +8,8 @@
 #include "TextureManager.h"
 
 #include <iostream>
-#define WIDTH 1024
-#define HEIGHT 768
+#define WIDTH 960
+#define HEIGHT 640
 
 using namespace std;
 
@@ -42,7 +42,7 @@ bool Engine::Init(const char* title, int xpos, int ypos, int width, int height, 
 	TEMA::RegisterTexture("Img/PlayButton.png", "playButton");
 	TEMA::RegisterTexture("Img/Player.png", "player");
 	TEMA::RegisterTexture("Img/Enemy.png", "enemy");
-	TEMA::RegisterTexture("Img/Tiles.png", "tiles");
+	TEMA::RegisterTexture("Img/TileMap.png", "tiles");
 	
 	FOMA::RegisterFont("Img/TITLEFONT.otf", "Title", 50);
 	FOMA::RegisterFont("Img/LTYPE.ttf", "Title", 24);
@@ -50,7 +50,7 @@ bool Engine::Init(const char* title, int xpos, int ypos, int width, int height, 
 	SOMA::Load("Audio/button.wav", "button", SOUND_SFX);
 
 	SOMA::Load("Audio/sans.mp3", "background", SOUND_MUSIC);
-	SOMA::SetMusicVolume(18);
+	SOMA::SetMusicVolume(0);//18);
 	SOMA::PlayMusic("background");
 	
 	STMA::ChangeState(new TitleState);
@@ -111,7 +111,7 @@ int Engine::Run()
 {
 	if (m_running) // What does this do and what can it prevent?
 		return -1;
-	if (Init("Mastiv First", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIDTH, HEIGHT, 0) == false)
+	if (Init("Comso Bugs", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIDTH, HEIGHT, 0) == false)
 		return 1;
 	while (m_running) // Main engine loop.
 	{

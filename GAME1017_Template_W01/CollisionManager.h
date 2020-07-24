@@ -23,7 +23,8 @@ public:
 	static bool LineLineCheck(SDL_FPoint line1_start, SDL_FPoint line1_end, SDL_FPoint line2_start, SDL_FPoint line2_end);
 	static bool LineRectCheck(const SDL_FPoint& line1_start, const SDL_FPoint& line1_end, const SDL_FRect* box);
 	
-	static bool LOSCheck(GameObject* from, GameObject* to);
+	static bool LOSCheck(SDL_FPoint* from, SDL_FPoint* to);
+	
 	static GameObject* FindFirstObjectOnTheRay(SDL_FPoint Pos, SDL_FPoint Move, float maxDist = 9e3);
 	static float SquareRectDistance(const SDL_FRect& object1, const SDL_FRect& object2);
 	static void CheckMapCollision(Entity* obj);

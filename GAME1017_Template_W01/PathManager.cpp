@@ -3,6 +3,55 @@
 #include "MathManager.h"
 #include <iostream>
 
+#include "CollisionManager.h"
+#include "EnemyManager.h"
+
+#define MAXCONNECTIONDISTANCE 200.0
+
+std::vector<PathNode*> PAMA::s_nodes;
+
+PathNode* PathManager::CreateNode(float x, float y)
+{
+	s_nodes.push_back(new PathNode(x * 32, y * 32));
+
+	PathNode* back = s_nodes.back();
+	SDL_FPoint backTemp = { (float)back->x, (float)back->y };
+	
+	for (PathNode* node : s_nodes)
+	{
+		SDL_FPoint temp = { (float)node->x,(float)node->y };
+		float dist = MAMA::Distance(backTemp.x, temp.x, backTemp.y, temp.y);
+		
+		if (node != s_nodes.back() and COMA::LOSCheck(&backTemp,&temp)
+			and dist < MAXCONNECTIONDISTANCE)
+		{
+			back->AddConnection(new PathConnection(back, node, dist));
+			node->AddConnection(new PathConnection(node, back, dist));
+		}
+	}
+
+	return back;
+}
+
+void PathManager::Clear()
+{
+	for (PathNode* node : s_nodes)
+	{
+		delete node;
+	}
+	s_nodes.clear();
+	s_nodes.shrink_to_fit();
+}
+
+void PathManager::Update()
+{
+	for (PathNode* node : s_nodes)
+	{
+		SDL_FPoint temp = { (float)node->x,(float)node->y };
+		node->SetPlayerLOS(COMA::LOSCheck(&ENMA::GetScene()->GetPlayer()->GetCenter(), &temp));
+	}
+}
+
 void PathManager::GetShortestPath(PathNode* start, PathNode* goal)
 {
 	// std::cout << "Starting pathing..." << std::endl;

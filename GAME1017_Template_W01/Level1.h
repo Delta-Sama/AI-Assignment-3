@@ -6,12 +6,15 @@
 
 #include <array>
 
-#define ROWS 24
-#define COLS 32
+#define ROWS 20
+#define COLS 30
 
 class Level1 : public Level
 {
 public:
+	Level1(GameState* scene) : Level(scene) {};
+	~Level1() {};
+	
 	virtual void Load() override;
 	virtual void Render() override;
 	virtual void Clean() override;

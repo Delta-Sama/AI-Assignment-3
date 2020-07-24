@@ -146,16 +146,13 @@ bool CollisionManager::LineRectCheck(const SDL_FPoint& line1_start, const SDL_FP
 	return false;
 }
 
-bool CollisionManager::LOSCheck(GameObject* from, GameObject* to)
+bool CollisionManager::LOSCheck(SDL_FPoint* from, SDL_FPoint* to)
 {
-	const SDL_FPoint lineStart = from->GetCenter();
-	const SDL_FPoint lineEnd = to->GetCenter();
-
 	for (Tile* tile : *GameObjectManager::GetCollidableTiles())
 	{
 		const SDL_FRect* box = tile->GetDstP();
 
-		if (LineRectCheck(lineStart, lineEnd, box))
+		if (LineRectCheck(*from, *to, box))
 		{
 			return false;
 		}

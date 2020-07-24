@@ -89,11 +89,8 @@ void GameState::Enter()
 	m_debugger = new DebugMode(this);
 
 	m_player = new Player();
-
-	ENMA::AddEnemy(REDSNIPER, { 10,3 });
-	ENMA::AddEnemy(REDSNIPER, { 16,7 });
 	
-	m_level = new Level1();
+	m_level = new Level1(this);
 	m_level->Load();
 }
 
@@ -107,6 +104,7 @@ void GameState::Update()
 	m_player->update();
 
 	ENMA::Update();
+	PAMA::Update();
 
 	CheckCollision();
 }
@@ -138,7 +136,7 @@ void GameState::Exit()
 	delete m_debugger;
 
 	ENMA::Clean();
-	m_level.Clean();
+	m_level->Clean();
 	delete m_level;
 }
 

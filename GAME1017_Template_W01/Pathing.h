@@ -17,8 +17,12 @@ public:
 	SDL_Point Point() { return { x, y }; }
 	double Heuristic() { return m_heur; }
 	void SetHeuristic(double heur) { m_heur = heur; }
+
+	void SetPlayerLOS(bool LOS) { m_playerLOS = LOS; }
+	bool GetPlayerLOS() { return m_playerLOS; }
 private:
 	double m_heur; // Heuristic cost for node.
+	bool m_playerLOS;
 	std::vector<PathConnection*> m_connections;
 };
 
