@@ -5,6 +5,11 @@ double MathManager::Distance(const double& x1, const double& x2, const double& y
 	return sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
 }
 
+double MathManager::SquareDistance(SDL_FPoint* from, SDL_FPoint* to)
+{
+	return (to->x - from->x) * (to->x - from->x) + (to->y - from->y) * (to->y - from->y);
+}
+
 double MathManager::AngleBetweenPoints(const double dy, const double dx)
 {
 	return atan2(dy, dx); // In radians.
@@ -45,4 +50,12 @@ SDL_Rect MathManager::ConvertFRect2Rect(const SDL_FRect& r)
 SDL_Point MathManager::HalfwayPoint(const SDL_Point& from, const SDL_Point& to)
 {
 	return { (int)(((double)from.x + (double)to.x) / 2.0), (int)(((double)from.y + (double)to.y) / 2.0) };
+}
+
+double MathManager::Angle180(double a)
+{
+	a = fmod(a + 180.0, 360.0);
+	if (a < 0)
+		a += 360.0;
+	return a - 180.0;
 }

@@ -20,9 +20,13 @@ public:
 	bool GetPlayerLOS() { return m_playerLOS; }
 
 	int movement[2] = { 0,0 };
+
+	PathNode* GetGoal() { return m_goal; }
 protected:
 	bool m_playerLOS;
 	Status m_status;
+	bool m_reachedGoal;
+	PathNode* m_goal;
 };
 
 #endif

@@ -15,11 +15,11 @@ PathNode* PathManager::CreateNode(float x, float y)
 	s_nodes.push_back(new PathNode(x * 32, y * 32));
 
 	PathNode* back = s_nodes.back();
-	SDL_FPoint backTemp = { (float)back->x, (float)back->y };
+	SDL_FPoint backTemp = { back->x, back->y };
 	
 	for (PathNode* node : s_nodes)
 	{
-		SDL_FPoint temp = { (float)node->x,(float)node->y };
+		SDL_FPoint temp = { node->x,node->y };
 		float dist = MAMA::Distance(backTemp.x, temp.x, backTemp.y, temp.y);
 		
 		if (node != s_nodes.back() and COMA::LOSCheck(&backTemp,&temp)
@@ -47,7 +47,7 @@ void PathManager::Update()
 {
 	for (PathNode* node : s_nodes)
 	{
-		SDL_FPoint temp = { (float)node->x,(float)node->y };
+		SDL_FPoint temp = { node->x,node->y };
 		node->SetPlayerLOS(COMA::LOSCheck(&ENMA::GetScene()->GetPlayer()->GetCenter(), &temp));
 	}
 }
@@ -198,12 +198,12 @@ void PathManager::DrawPath()
 {
 	for (unsigned i = 0; i < s_path.size(); i++)
 	{
-		DEMA::QueueLine({ s_path[i]->GetFromNode()->x + 16, s_path[i]->GetFromNode()->y + 16 },
+		/*DEMA::QueueLine({ s_path[i]->GetFromNode()->x + 16, s_path[i]->GetFromNode()->y + 16 },
 			{ MAMA::HalfwayPoint(s_path[i]->GetFromNode()->Point(), s_path[i]->GetToNode()->Point()).x + 16,
 			MAMA::HalfwayPoint(s_path[i]->GetFromNode()->Point(), s_path[i]->GetToNode()->Point()).y + 16 }, { 255,0,0,255 });
 		DEMA::QueueLine({ MAMA::HalfwayPoint(s_path[i]->GetFromNode()->Point(), s_path[i]->GetToNode()->Point()).x + 16,
 			MAMA::HalfwayPoint(s_path[i]->GetFromNode()->Point(), s_path[i]->GetToNode()->Point()).y + 16 },
-			{ s_path[i]->GetToNode()->x + 16, s_path[i]->GetToNode()->y + 16 }, { 0,255,0,255 });
+			{ s_path[i]->GetToNode()->x + 16, s_path[i]->GetToNode()->y + 16 }, { 0,255,0,255 });*/
 	}
 }
 

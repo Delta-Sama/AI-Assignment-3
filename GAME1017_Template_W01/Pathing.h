@@ -6,15 +6,15 @@
 
 class PathConnection;
 
-class PathNode : public SDL_Point
+class PathNode : public SDL_FPoint
 {
 public:
-	PathNode(int x, int y);
+	PathNode(float x, float y);
 	~PathNode();
 	void Update();
 	void AddConnection(PathConnection* c);
 	std::vector<PathConnection*>& GetConnections();
-	SDL_Point Point() { return { x, y }; }
+	SDL_FPoint Point() { return { x, y }; }
 	double Heuristic() { return m_heur; }
 	void SetHeuristic(double heur) { m_heur = heur; }
 

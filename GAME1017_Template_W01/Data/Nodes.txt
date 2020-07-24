@@ -10,10 +10,10 @@ OO~~p~~~~~~~~~n~~~~~~~~~~~p~OO
 OO~~~~~!~~~~~~~~~~~~~n~~~~~~OO
 OO~~~~~~~~~n~~~~!~~~~~~~~~~~OO
 OO~p~~as~~~~~~~~~~~~n~~~~p~~OO
-OO~~~~df~~~~~~p~~~~~~~~~~~~~OO
+OO~~~~df~~~p~~~p~~~~~~~~~~~~OO
 OO~~~~~~~p~~~~~~~~p~~~!~~~~~OO
 OO~p~~~~~~~OOOOOO~~~~~~~~p~~OO
-OO~~~~~~~~~OOOOOO~~~p~~~~~~~OO
+OO~~p~~~p~~OOOOOO~~~p~~p~~~~OO
 OO~~~~p~~~~OOOOOO~~~~~~~~~~~OO
 OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
 OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO

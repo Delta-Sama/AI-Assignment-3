@@ -2,7 +2,7 @@
 #include "EventManager.h"
 #include "MathManager.h"
 
-PathNode::PathNode(int x, int y)
+PathNode::PathNode(float x, float y)
 {
 	this->x = x;
 	this->y = y;

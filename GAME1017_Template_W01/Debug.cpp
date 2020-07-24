@@ -43,11 +43,20 @@ void DebugMode::Draw()
 				nodeColor = Vec4(1, 0, 0, 1);
 			Util::DrawCircle({ (float)node->x, (float)node->y }, 5, nodeColor);
 
-			for (PathConnection* connection : node->GetConnections())
+			/*for (PathConnection* connection : node->GetConnections())
 			{
 				SDL_FPoint from = {(float)connection->GetFromNode()->x, (float)connection->GetFromNode()->y};
 				SDL_FPoint to = { (float)connection->GetToNode()->x, (float)connection->GetToNode()->y };
 				Util::DrawLine(from, to, {1,1,0,1});
+			*/
+		}
+
+		for (Enemy* enemy : *ENMA::GetEnemies())
+		{
+			if (enemy->GetGoal())
+			{
+				SDL_FPoint to = { enemy->GetGoal()->x, enemy->GetGoal()->y };
+				Util::DrawLine(enemy->GetCenter(), to, { 1,1,0,1 });
 			}
 		}
 	}
