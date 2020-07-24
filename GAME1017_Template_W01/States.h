@@ -3,13 +3,18 @@
 #define _STATES_H_
 
 #include "Animator.h"
-
-#include <SDL.h>
-#include <vector>
 #include "Label.h"
 #include "Button.h"
 #include "Debug.h"
 #include "Player.h"
+#include "Tile.h"
+
+#include <SDL.h>
+#include <vector>
+#include <array>
+
+#define ROWS 24
+#define COLS 32
 
 class State // This is the abstract base class for all specific states.
 {
@@ -51,7 +56,9 @@ public:
 private:
 	DebugMode* m_debugger;
 	Player* m_player;
-	
+
+	std::map<char, Tile*> m_tiles;
+	std::array<std::array<Tile*, COLS>, ROWS> m_level;
 };
 
 class EndState : public State

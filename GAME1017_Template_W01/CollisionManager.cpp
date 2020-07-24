@@ -83,9 +83,9 @@ GameObject* CollisionManager::FindFirstObjectOnTheRay(SDL_FPoint Pos, SDL_FPoint
 		{
 			dist += dx * dx + dy * dy;
 		}
-		for (GameObject* obj : GameObjectManager::GameObjectsVec)
+		for (GameObject* obj : *GameObjectManager::GetObjects())
 		{
-			if (COMA::PointRectCheck(curPos, *obj->GetDstP()))//obj->getCanCollide() and
+			if (COMA::PointRectCheck(curPos, *obj->GetDstP()))//entity->getCanCollide() and
 			{
 				return obj;
 			}
@@ -150,7 +150,7 @@ bool CollisionManager::LOSCheck(GameObject* from, GameObject* to)
 	const SDL_FPoint lineStart = from->GetCenter();
 	const SDL_FPoint lineEnd = to->GetCenter();
 
-	for (GameObject* object : GameObjectManager::GameObjectsVec)
+	for (GameObject* object : *GameObjectManager::GetObjects())
 	{
 		const SDL_FRect* box = object->GetDstP();
 
@@ -172,7 +172,34 @@ float CollisionManager::SquareRectDistance(const SDL_FRect& object1, const SDL_F
 	return (pow(x1 - x2, 2.0f) + pow(y1 - y2, 2.0f));
 }
 
-void CollisionManager::CheckMapCollision(const std::vector<GameObject*> GameObjects, GameObject* obj)
+void CollisionManager::CheckMapCollision(Entity* entity)
 {
-	
+	for (Tile* tile : *GameObjectManager::GetCollidableTiles()) // For each platform.
+	{
+		SDL_FRect* tileRect = tile->GetDstP();
+		SDL_FRect* entityRect = entity->GetDstP();
+		if (tile->IsObstacle() and COMA::AABBCheck(*entityRect, *tileRect))
+		{
+			if (entityRect->y + entityRect->h - (float)entity->GetVelY() <= tileRect->y)
+			{ // Colliding top side of platform.
+				entity->StopY();
+				entity->SetY(tileRect->y - entity->GetDstP()->h);
+			}
+			else if (entity->GetDstP()->y - (float)entity->GetVelY() >= tileRect->y + tileRect->h)
+			{ // Colliding bottom side of platform.
+				entity->StopY();
+				entity->SetY(tileRect->y + tileRect->h);
+			}
+			else if (entity->GetDstP()->x + entity->GetDstP()->w - (float)entity->GetVelX() <= tileRect->x)
+			{ // Collision from left.
+				entity->StopX();
+				entity->SetX(tileRect->x - entity->GetDstP()->w);
+			}
+			else if (entity->GetDstP()->x - (float)entity->GetVelX() >= tileRect->x + tileRect->w)
+			{
+				entity->StopX();
+				entity->SetX(tileRect->x + tileRect->w);
+			}
+		}
+	}
 }

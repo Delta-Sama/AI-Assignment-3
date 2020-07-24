@@ -14,7 +14,7 @@ Player::Player()
 {
 	this->addAnimator(new Animator(this));
 
-	this->getAnimator()->addAnimation("idle", 3, 1, 34, 0, 0, 0);
+	this->getAnimator()->addAnimation("idle", 3, 1, 34, 0, 0, 0,16);
 	this->getAnimator()->addAnimation("run", 8, 2, 34, 0,0,34);
 	
 	std::cout << "Player created\n";
@@ -64,7 +64,7 @@ void Player::update()
 	float dy = this->GetDstP()->y - mouse.y;
 	float angle = MAMA::AngleBetweenPoints(dy,dx);
 	
-	this->SetAngle(MAMA::Rad2Deg(angle)-90);
+	this->SetAngle(MAMA::Rad2Deg(angle) - 90);
 	
 	this->getAnimator()->playAnimation();
 	movementUpdate();

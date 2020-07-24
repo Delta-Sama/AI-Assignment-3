@@ -71,6 +71,9 @@
     <ClCompile Include="Player.cpp">
       <Filter>Entities\Source</Filter>
     </ClCompile>
+    <ClCompile Include="Tile.cpp">
+      <Filter>Objects\Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CollisionManager.h">
@@ -147,6 +150,9 @@
     </ClInclude>
     <ClInclude Include="Player.h">
       <Filter>Entities\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Tile.h">
+      <Filter>Objects\Header</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

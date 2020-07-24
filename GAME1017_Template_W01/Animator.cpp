@@ -34,6 +34,7 @@ void Animator::playAnimation()
 			curAnimType = nextAnimation;
 			maxAnimationFrames = anim->getMaxFrames();
 		}
+		//std::cout << SDL_GetTicks() - lastFrameTime << " vs " << anim->getFramesFrequency() << "\n";
 		if (SDL_GetTicks() - lastFrameTime >= anim->getFramesFrequency())
 		{
 			lastFrameTime = SDL_GetTicks();
@@ -52,7 +53,7 @@ void Animator::playAnimation()
 void Animator::addAnimation(const std::string& key, Uint32 maxFrames, Uint32 priority, Uint32 moveX, Uint32 moveY, Uint32 startX
 	, Uint32 startY, Uint32 framesFrequency)
 {
-	animationsMap[key] = new Animation(maxFrames, priority, moveX, moveY, startX, startY);
+	animationsMap[key] = new Animation(maxFrames, priority, moveX, moveY, startX, startY, framesFrequency);
 }
 
 Animation::Animation(Uint32 maxFrames, Uint32 priority, Uint32 moveX, Uint32 moveY, Uint32 startX, Uint32 startY, Uint32 framesFrequency)

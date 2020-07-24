@@ -47,3 +47,7 @@ void GameObjectManager::Clean()
 	}
 }
 
+void GameObjectManager::AddObject(GameObject* obj)
+{
+	GameObjectsVec.push_back(obj);
+}

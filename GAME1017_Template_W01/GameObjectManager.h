@@ -1,11 +1,13 @@
 #pragma once
 #ifndef _GAMEOBJECTMANAGER_H_
 #define _GAMEOBJECTMANAGER_H_
+
 #include <SDL_rect.h>
 #include <SDL_render.h>
 #include <vector>
 
 #include "GameObject.h"
+#include "Tile.h"
 
 enum MapObjectType
 {
@@ -21,11 +23,16 @@ public:
 	static void Update();
 	static void Render();
 	static void Clean();
-	
-	static std::vector<GameObject*> GameObjectsVec;
+	static void AddObject(GameObject* obj);
+
+	static std::vector<GameObject*>* GetObjects() { return &GameObjectsVec; }
+	static std::vector<Tile*>* GetCollidableTiles() { return &CollidableTilesVec; }
 private:
 	GameObjectManager();
 	~GameObjectManager();
+
+	static std::vector<GameObject*> GameObjectsVec;
+	static std::vector<Tile*> CollidableTilesVec;
 };
 
 #endif

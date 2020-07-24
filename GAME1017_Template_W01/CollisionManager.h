@@ -6,7 +6,7 @@
 #include <SDL.h>
 
 #include <vector>
-#include "GameObject.h"
+#include "Entity.h"
 
 class CollisionManager
 {
@@ -26,7 +26,7 @@ public:
 	static bool LOSCheck(GameObject* from, GameObject* to);
 	static GameObject* FindFirstObjectOnTheRay(SDL_FPoint Pos, SDL_FPoint Move, float maxDist = 9e3);
 	static float SquareRectDistance(const SDL_FRect& object1, const SDL_FRect& object2);
-	static void CheckMapCollision(const std::vector<GameObject*> mapObjects, GameObject* obj);
+	static void CheckMapCollision(Entity* obj);
 
 private:
 	CollisionManager() {}

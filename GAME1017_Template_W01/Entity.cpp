@@ -3,7 +3,7 @@
 
 #include <algorithm>
 
-const float MAXVELOCITY = 4.0;
+const float MAXVELOCITY = 3.0;
 
 Entity::Entity(SDL_Rect s, SDL_FRect d, SDL_Texture* t) : GameObject(s, d, t)
 {
@@ -44,21 +44,25 @@ void Entity::movementUpdate()
 
 	m_accel.x = m_accel.y = 0.0;
 
-	if (GetDstP()->x < 0 + GetDstP()->w)
+	static int x = 0, y = 0;
+	if (x == 0 or y == 0)
+		SDL_GetWindowSize(Engine::Instance().GetWindow(), &x, &y);
+	
+	if (GetDstP()->x < 0)
 	{
-		GetDstP()->x = 0 + GetDstP()->w;
+		GetDstP()->x = 0;
 	}
-	else if (GetDstP()->x > 800 - GetDstP()->w)
+	else if (GetDstP()->x > x - GetDstP()->w)
 	{
-		GetDstP()->x = 800 - GetDstP()->w;
+		GetDstP()->x = x - GetDstP()->w;
 	}
-	if (GetDstP()->y < 0 + GetDstP()->h)
+	if (GetDstP()->y < 0)
 	{
-		GetDstP()->y = 0 + GetDstP()->h;
+		GetDstP()->y = 0;
 	}
-	else if (GetDstP()->y > 600 - GetDstP()->h)
+	else if (GetDstP()->y > y - GetDstP()->h)
 	{
-		GetDstP()->y = 600 - GetDstP()->h;
+		GetDstP()->y = y - GetDstP()->h;
 	}
 }
 
