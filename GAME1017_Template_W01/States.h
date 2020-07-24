@@ -9,6 +9,7 @@
 #include "Label.h"
 #include "Button.h"
 #include "Debug.h"
+#include "Player.h"
 
 class State // This is the abstract base class for all specific states.
 {
@@ -48,7 +49,9 @@ public:
 	void Resume();
 
 private:
-	DebugMode* debugger;
+	DebugMode* m_debugger;
+	Player* m_player;
+	
 };
 
 class EndState : public State

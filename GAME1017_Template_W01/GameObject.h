@@ -12,9 +12,6 @@ public:
 	GameObject(SDL_Rect s, SDL_FRect d, SDL_Texture* t);
 	virtual ~GameObject();
 
-	// Draw the object
-	virtual void draw() = 0;
-
 	// Update the object
 	virtual void update() = 0;
 
@@ -24,7 +21,7 @@ public:
 	GameObjectType getType() const;
 	void setType(GameObjectType new_type);
 
-private:
+protected:
 	GameObjectType m_type;
 };
 

@@ -41,3 +41,8 @@ SDL_Rect MathManager::ConvertFRect2Rect(const SDL_FRect& r)
 	SDL_Rect temp = { (int)r.x, (int)r.y, (int)r.w, (int)r.h };
 	return temp;
 }
+
+SDL_Point MathManager::HalfwayPoint(const SDL_Point& from, const SDL_Point& to)
+{
+	return { (int)(((double)from.x + (double)to.x) / 2.0), (int)(((double)from.y + (double)to.y) / 2.0) };
+}

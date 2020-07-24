@@ -17,6 +17,7 @@ public:
 	static double Deg2Rad(const double angle);
 	static double Rad2Deg(const double angle);
 	static SDL_Rect ConvertFRect2Rect(const SDL_FRect& r);
+	static SDL_Point HalfwayPoint(const SDL_Point& from, const SDL_Point& to);
 
 private:
 	MathManager() {}

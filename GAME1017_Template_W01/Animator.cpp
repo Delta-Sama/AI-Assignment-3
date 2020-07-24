@@ -1,8 +1,8 @@
 #include "Animator.h"
 
-Animator::Animator()//Entity* Player)
+Animator::Animator(Entity* animEntity)
 {
-	//this->entity = Player;
+	this->entity = animEntity;
 	this->curAnimationPriority = 0;
 	this->faceSide = 0;
 	this->animFrame = 0;
@@ -22,7 +22,7 @@ void Animator::setNextAnimation(const std::string& type)
 
 void Animator::playAnimation()
 {
-	/*if (animationsMap[nextAnimation] != nullptr)
+	if (animationsMap[nextAnimation] != nullptr)
 	{
 		//std::cout << "Playing " << nextAnimation << std::endl;
 		Animation* anim = animationsMap[nextAnimation];
@@ -46,7 +46,7 @@ void Animator::playAnimation()
 			}
 		}
 	}
-	nextAnimation = "";*/
+	nextAnimation = "";
 }
 
 void Animator::addAnimation(const std::string& key, Uint32 maxFrames, Uint32 priority, Uint32 moveX, Uint32 moveY, Uint32 startX

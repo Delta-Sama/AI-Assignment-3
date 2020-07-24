@@ -68,7 +68,9 @@ GameState::GameState()
 
 void GameState::Enter()
 {
-	debugger = new DebugMode(this);
+	m_debugger = new DebugMode(this);
+
+	m_player = new Player({0,0,0,0},{ 0,0,0,0 });
 }
 
 void GameState::Update()
