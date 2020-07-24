@@ -1,8 +1,7 @@
 #pragma once
-#ifndef _PLATFORMPLAYER_H_
-#define _PLATFORMPLAYER_H_
+#ifndef _PLAYER_H_
+#define _PLAYER_H_
 
-#include "Sprite.h"
 #include "Entity.h"
 
 class Player : public Entity

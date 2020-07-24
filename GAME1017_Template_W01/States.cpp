@@ -70,13 +70,12 @@ void GameState::Enter()
 {
 	m_debugger = new DebugMode(this);
 
-	m_player = new Player({0,0,0,0},{ 0,0,0,0 });
+	m_player = new Player({0,0,128,64},{ 100,100,128,64 });
 }
 
 void GameState::Update()
 {
-
-	
+	m_player->update();
 }
 
 void GameState::CheckCollision()
@@ -89,12 +88,13 @@ void GameState::Render()
 	SDL_SetRenderDrawColor(Engine::Instance().GetRenderer(), 64, 128, 255, 255);
 	SDL_RenderClear(Engine::Instance().GetRenderer());
 
-	
+	m_player->Render();
 }
 
 void GameState::Exit()
 {
-	
+	delete m_player;
+	delete m_debugger;
 }
 
 void GameState::Resume() {}
