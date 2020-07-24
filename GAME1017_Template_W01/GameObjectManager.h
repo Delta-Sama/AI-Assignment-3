@@ -23,7 +23,7 @@ public:
 	static void Update();
 	static void Render();
 	static void Clean();
-	static void AddObject(GameObject* obj);
+	static void AddCollidableTile(Tile* obj);
 
 	static std::vector<GameObject*>* GetObjects() { return &GameObjectsVec; }
 	static std::vector<Tile*>* GetCollidableTiles() { return &CollidableTilesVec; }

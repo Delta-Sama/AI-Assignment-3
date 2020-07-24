@@ -27,6 +27,8 @@ public:
 	void movementUpdate();
 	Animator* getAnimator() { return animator; }
 	void addAnimator(Animator* animator);
+
+	SDL_FRect* GetBody() { return &m_body; }
 	
 private:
 	Vec2 m_velocity;
@@ -35,7 +37,10 @@ private:
 	
 	float m_drag, m_speed;
 	Animator* animator;
-	
+
+protected:
+	SDL_FRect m_body;
+	void SetBodyPosition();
 };
 
 #include "Animator.h"

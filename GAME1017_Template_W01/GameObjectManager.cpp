@@ -4,6 +4,7 @@
 #include <iostream>
 
 std::vector<GameObject*> GameObjectManager::GameObjectsVec;
+std::vector<Tile*> GameObjectManager::CollidableTilesVec;
 
 GameObjectManager::GameObjectManager()
 {
@@ -47,7 +48,7 @@ void GameObjectManager::Clean()
 	}
 }
 
-void GameObjectManager::AddObject(GameObject* obj)
+void GameObjectManager::AddCollidableTile(Tile* obj)
 {
-	GameObjectsVec.push_back(obj);
+	CollidableTilesVec.push_back(obj);
 }

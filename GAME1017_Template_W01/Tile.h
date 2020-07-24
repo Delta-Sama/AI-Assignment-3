@@ -18,8 +18,8 @@ public:
 	bool& IsObstacle() { return m_obstacle; }
 	bool IsHazard() { return m_hazard; }
 
-	virtual void update() override;
-	virtual void clean() override;
+	virtual void update() override {};
+	virtual void clean() override {};
 	
 	Tile* Clone() { return new Tile(m_src, m_dst, m_pText, m_obstacle, m_hazard); }
 	PathNode* Node() { return m_node; }

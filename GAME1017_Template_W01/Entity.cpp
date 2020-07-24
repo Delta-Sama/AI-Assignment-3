@@ -12,6 +12,12 @@ Entity::Entity(SDL_Rect s, SDL_FRect d, SDL_Texture* t) : GameObject(s, d, t)
 	this->m_drag = 0.88;
 }
 
+void Entity::SetBodyPosition()
+{
+	this->m_body.x = this->GetDstP()->x + (this->GetDstP()->w - this->m_body.w) / 2;
+	this->m_body.y = this->GetDstP()->y + (this->GetDstP()->h - this->m_body.h) / 2;
+}
+
 void Entity::Stop()
 {
 	StopX();
@@ -25,8 +31,8 @@ void Entity::SetAccelX(float a) { m_accel.x = a; }
 void Entity::SetAccelY(float a) { m_accel.y = a; }
 float Entity::GetVelX() { return m_velocity.x; }
 float Entity::GetVelY() { return m_velocity.y; }
-void Entity::SetX(float y) { m_dst.x = y; }
-void Entity::SetY(float y) { m_dst.y = y; }
+void Entity::SetX(float x) { m_dst.x = x - (m_dst.w - m_body.w) / 2; }
+void Entity::SetY(float y) { m_dst.y = y - (m_dst.h - m_body.h) / 2; }
 
 void Entity::movementUpdate()
 {

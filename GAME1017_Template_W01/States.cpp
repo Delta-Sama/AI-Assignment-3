@@ -124,7 +124,7 @@ void GameState::Enter()
 				if (!tile->IsObstacle() or tile->IsHazard())
 					tile->m_node = new PathNode((int)(tile->GetDstP()->x), (int)(tile->GetDstP()->y));
 				if (tile->IsObstacle())
-					GameObjectManager::AddObject(tile);
+					GameObjectManager::AddCollidableTile(tile);
 			}
 		}
 	}

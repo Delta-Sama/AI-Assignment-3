@@ -12,6 +12,9 @@
 Player::Player()
 	:Entity({0,0,34,34}, {100,100,68,68}, TEMA::GetTexture("player"))
 {
+	this->m_body = {0,0,40,40};
+	this->SetBodyPosition();
+	
 	this->addAnimator(new Animator(this));
 
 	this->getAnimator()->addAnimation("idle", 3, 1, 34, 0, 0, 0,16);
@@ -67,7 +70,10 @@ void Player::update()
 	this->SetAngle(MAMA::Rad2Deg(angle) - 90);
 	
 	this->getAnimator()->playAnimation();
+	
 	movementUpdate();
+	
+	this->SetBodyPosition();
 }
 
 void Player::clean()

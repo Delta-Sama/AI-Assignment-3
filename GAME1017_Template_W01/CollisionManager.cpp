@@ -4,6 +4,7 @@
 #include "GameObjectManager.h"
 #include "MathManager.h"
 #include "StateManager.h"
+#include "Tile.h"
 
 bool CollisionManager::AABBCheck(const SDL_FRect& object1, const SDL_FRect& object2)
 {
@@ -174,28 +175,28 @@ float CollisionManager::SquareRectDistance(const SDL_FRect& object1, const SDL_F
 
 void CollisionManager::CheckMapCollision(Entity* entity)
 {
-	for (Tile* tile : *GameObjectManager::GetCollidableTiles()) // For each platform.
+	for (Tile* tile : *GameObjectManager::GetCollidableTiles())
 	{
 		SDL_FRect* tileRect = tile->GetDstP();
-		SDL_FRect* entityRect = entity->GetDstP();
+		SDL_FRect* entityRect = entity->GetBody();
 		if (tile->IsObstacle() and COMA::AABBCheck(*entityRect, *tileRect))
 		{
 			if (entityRect->y + entityRect->h - (float)entity->GetVelY() <= tileRect->y)
 			{ // Colliding top side of platform.
 				entity->StopY();
-				entity->SetY(tileRect->y - entity->GetDstP()->h);
+				entity->SetY(tileRect->y - entityRect->h);
 			}
-			else if (entity->GetDstP()->y - (float)entity->GetVelY() >= tileRect->y + tileRect->h)
+			else if (entityRect->y - (float)entity->GetVelY() >= tileRect->y + tileRect->h)
 			{ // Colliding bottom side of platform.
 				entity->StopY();
 				entity->SetY(tileRect->y + tileRect->h);
 			}
-			else if (entity->GetDstP()->x + entity->GetDstP()->w - (float)entity->GetVelX() <= tileRect->x)
+			else if (entityRect->x + entityRect->w - (float)entity->GetVelX() <= tileRect->x)
 			{ // Collision from left.
 				entity->StopX();
-				entity->SetX(tileRect->x - entity->GetDstP()->w);
+				entity->SetX(tileRect->x - entityRect->w);
 			}
-			else if (entity->GetDstP()->x - (float)entity->GetVelX() >= tileRect->x + tileRect->w)
+			else if (entityRect->x - (float)entity->GetVelX() >= tileRect->x + tileRect->w)
 			{
 				entity->StopX();
 				entity->SetX(tileRect->x + tileRect->w);
