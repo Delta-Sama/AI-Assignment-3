@@ -3,7 +3,7 @@
 
 #include <algorithm>
 
-const float MAXVELOCITY = 10.0;
+const float MAXVELOCITY = 4.0;
 
 Entity::Entity(SDL_Rect s, SDL_FRect d, SDL_Texture* t) : GameObject(s, d, t)
 {

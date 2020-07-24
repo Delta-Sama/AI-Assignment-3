@@ -70,7 +70,7 @@ void GameState::Enter()
 {
 	m_debugger = new DebugMode(this);
 
-	m_player = new Player({0,0,128,64},{ 100,100,128,64 });
+	m_player = new Player();
 }
 
 void GameState::Update()

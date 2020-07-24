@@ -7,14 +7,16 @@
 #include <iostream>
 
 #include "EventManager.h"
+#include "MathManager.h"
 
-Player::Player(SDL_Rect s, SDL_FRect d)
-	:Entity(s, d, TEMA::GetTexture("player"))
+Player::Player()
+	:Entity({0,0,34,34}, {100,100,68,68}, TEMA::GetTexture("player"))
 {
 	this->addAnimator(new Animator(this));
 
-	this->getAnimator()->addAnimation("run", 6, 2, 128, 64,0,128);
-	this->getAnimator()->addAnimation("idle", 1, 1, 128, 64, 0, 0);
+	this->getAnimator()->addAnimation("idle", 3, 1, 34, 0, 0, 0);
+	this->getAnimator()->addAnimation("run", 8, 2, 34, 0,0,34);
+	
 	std::cout << "Player created\n";
 }
 
@@ -57,6 +59,13 @@ void Player::update()
 	else
 		this->getAnimator()->setNextAnimation("run");
 
+	SDL_Point mouse = EVMA::GetMousePos();
+	float dx = this->GetDstP()->x - mouse.x;
+	float dy = this->GetDstP()->y - mouse.y;
+	float angle = MAMA::AngleBetweenPoints(dy,dx);
+	
+	this->SetAngle(MAMA::Rad2Deg(angle)-90);
+	
 	this->getAnimator()->playAnimation();
 	movementUpdate();
 }

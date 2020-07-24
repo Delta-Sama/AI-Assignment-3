@@ -7,7 +7,7 @@
 class Player : public Entity
 {
 public: // Methods
-	Player(SDL_Rect s, SDL_FRect d);
+	Player();
 	~Player();
 
 	virtual void update() override;
