@@ -3,10 +3,13 @@
 #include "TextureManager.h"
 #include "UIManager.h"
 
-HealthBar::HealthBar(Entity* entity) : UIObject({0,0,200,35},{100,17,0,0},TEMA::GetTexture("healthBar"), HIGH)
+const float w = 50.0;
+const float h = 7.0;
+
+HealthBar::HealthBar(Entity* entity) : UIObject({0,0,200,35},{0,0,w,h},TEMA::GetTexture("healthBar"), HIGH)
 {
 	m_entity = entity;
-	m_scale = new Sprite({0,0,200,35},{100,17,0,0},TEMA::GetTexture("healthBarScale"));
+	m_scale = new Sprite({0,0,200,35},{0,0,w,h},TEMA::GetTexture("healthBarScale"));
 
 	UIMA::AddObject(this);
 }
@@ -14,16 +17,18 @@ HealthBar::HealthBar(Entity* entity) : UIObject({0,0,200,35},{100,17,0,0},TEMA::
 void HealthBar::Update()
 {
 	this->m_dst.x = m_entity->GetCenter().x - this->m_dst.w / 2;
-	this->m_dst.y = m_entity->GetCenter().y - this->m_dst.h / 1.5;
+	this->m_dst.y = m_entity->GetCenter().y - this->m_dst.h * 4.5;
 
-	m_scale->GetDstP()->x = m_entity->GetCenter().x - m_scale->GetDstP()->w / 2;
-	m_scale->GetDstP()->y = m_entity->GetCenter().y - m_scale->GetDstP()->h / 1.5;
+	m_scale->GetDstP()->x = this->m_dst.x;
+	m_scale->GetDstP()->y = this->m_dst.y;
+
+	m_scale->GetDstP()->w = (m_entity->GetHealth() / m_entity->GetMaxHealth()) * w;
 }
 
 void HealthBar::Render()
 {
-	SDL_RenderCopyF(Engine::Instance().GetRenderer(), m_scale->GetTexture(), &m_src, &m_dst);
 	SDL_RenderCopyF(Engine::Instance().GetRenderer(), m_pText, &m_src, &m_dst);
+	SDL_RenderCopyF(Engine::Instance().GetRenderer(), m_scale->GetTexture(), &*m_scale->GetSrcP(), &*m_scale->GetDstP());
 }
 
 void HealthBar::Clean()

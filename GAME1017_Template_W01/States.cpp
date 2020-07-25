@@ -101,11 +101,29 @@ void GameState::Update()
 	{
 		m_debugger->SetMode(!m_debugger->GetMode());
 	}
+	if (EVMA::KeyPressed(SDL_SCANCODE_P))
+	{
+		for (Enemy* enemy : *ENMA::GetEnemies())
+		{
+			if (enemy->GetStatus() == IDLE)
+				enemy->SetStatus(PATROL);
+			else
+				enemy->SetStatus(IDLE);
+		}
+	}
+	if (EVMA::KeyPressed(SDL_SCANCODE_P))
+	{
+		for (Enemy* enemy : *ENMA::GetEnemies())
+		{
+			
+		}
+	}
 	
 	m_player->update();
 
 	ENMA::Update();
 	PAMA::Update();
+	UIMA::Update();
 
 	CheckCollision();
 }

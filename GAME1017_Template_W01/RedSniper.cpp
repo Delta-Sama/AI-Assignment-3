@@ -24,17 +24,16 @@ void RedSniper::MakeDecision()
 	switch (m_status)
 	{
 	case IDLE:
-		
+		m_pathManager.CleanNodes();
+		m_goal = nullptr;
+		this->Stop();
 		break;
 	case PATROL:
 		{
 			if (m_pathManager.goalCounter++ > 60 * 2.5)
 			{
-				for (int i = 0; i < PREVNODESSIZE; i++)
-				{
-					m_pathManager.prevNode[i] = nullptr;
-				}
-				std::cout << "Failed to reach\n";
+				m_pathManager.CleanNodes();
+				std::cout << "Failed to reach the goal\n";
 				m_pathManager.prevNode[PREVNODESSIZE-1] = m_goal;
 				m_goal = nullptr;
 			}

@@ -24,7 +24,6 @@ void UIManager::Render(Priority priority)
 {
 	for (UIObject* obj : s_UIObjects)
 	{
-		std::cout << "Render\n";
 		if (obj->GetPriority() == priority)
 		{
 			obj->Render();
