@@ -18,7 +18,6 @@ SlimeProjectile::SlimeProjectile(SDL_FPoint start, SDL_FPoint direction, Side si
 	this->m_animFreqCounter = 0;
 	this->m_animXMove = 18;
 
-	this->m_prevStatus = ACTIVE;
 }
 
 SlimeProjectile::~SlimeProjectile()
@@ -27,9 +26,7 @@ SlimeProjectile::~SlimeProjectile()
 }
 
 void SlimeProjectile::Update()
-{
-	m_prevStatus = m_status;
-	
+{	
 	switch (m_status)
 	{
 	case ACTIVE:
@@ -46,19 +43,18 @@ void SlimeProjectile::Update()
 				this->m_src.x = this->m_animCurFrame * this->m_animXMove;
 			}
 			this->CheckCollision();
+
+			if (m_status == DYING)
+			{
+				this->m_animCurFrame = 0;
+				this->m_animFreqCounter = 0;
+				this->m_animMaxFrames = 5;
+				this->m_animFrequency = 2;
+			}
 			break;
 		}
 	case DYING:
 		{
-		
-			if (m_prevStatus == ACTIVE)
-			{
-				std::cout << "Prev was active\n";
-				this->m_animCurFrame = 0;
-				this->m_animFreqCounter = 0;
-				this->m_animMaxFrames = 5;
-				this->m_animFrequency = 8;
-			}
 			if (this->m_animFreqCounter++ >= this->m_animFrequency)
 			{
 				this->m_animFreqCounter = 0;

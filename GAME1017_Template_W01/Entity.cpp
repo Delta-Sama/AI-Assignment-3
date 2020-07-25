@@ -11,6 +11,8 @@ Entity::Entity(SDL_Rect s, SDL_FRect d, SDL_Texture* t, float maxHealth) : GameO
 	this->m_maxVelocity = MAXVELOCITY;
 	this->m_drag = 0.88;
 	this->m_health = maxHealth;
+
+	this->m_projectileTime = 0;
 }
 
 void Entity::SetBodyPosition()

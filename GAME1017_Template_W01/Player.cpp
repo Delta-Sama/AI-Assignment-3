@@ -11,6 +11,8 @@
 #include "ProjectileManager.h"
 #include "SlimeProjectile.h"
 
+const float PROJCOOLDOWN = 0.4;
+
 Player::Player()
 	:Entity({0,0,34,34}, {100,100,60,60}, TEMA::GetTexture("player"), PLAYERMAXHEALTH)
 {
@@ -65,7 +67,11 @@ void Player::update()
 	}
 	if (EVMA::KeyPressed(SDL_SCANCODE_F))
 	{
-		PRMA::AddProjectile(new SlimeProjectile(this->GetCenter(), { dx / hyp , dy / hyp }, PLAYERSIDE));
+		if ((m_projectileTime + PROJCOOLDOWN * 1000) < SDL_GetTicks())
+		{
+			m_projectileTime = SDL_GetTicks();
+			PRMA::AddProjectile(new SlimeProjectile(this->GetCenter(), { dx / hyp , dy / hyp }, PLAYERSIDE));
+		}
 	}
 	
 	if (this->movement[0] == 0 and this->movement[1] == 0)

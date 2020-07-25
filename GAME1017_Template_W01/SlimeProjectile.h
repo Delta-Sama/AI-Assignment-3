@@ -19,8 +19,6 @@ private:
 	int m_animFreqCounter;
 	int m_animXMove;
 	
-	ProjStatus m_prevStatus;
-	
 };
 
 #endif

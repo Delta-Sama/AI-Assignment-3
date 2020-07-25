@@ -51,6 +51,8 @@ protected:
 	SDL_FRect m_body;
 	void SetBodyPosition();
 
+	int m_projectileTime;
+	
 	int m_dying = 0;
 };
 

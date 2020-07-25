@@ -32,7 +32,7 @@ void Projectile::CheckCollision()
 	{
 		for (Enemy* enemy : *ENMA::GetEnemies())
 		{
-			if (COMA::AABBCheck(m_dst, *enemy->GetDstP()))
+			if (COMA::AABBCheck(m_dst, *enemy->GetBody()))
 			{
 				enemy->TakeDamage(m_damage);
 				m_status = DYING;
@@ -42,7 +42,7 @@ void Projectile::CheckCollision()
 	}
 	else
 	{
-		if (COMA::AABBCheck(m_dst, *ENMA::GetPlayer()->GetDstP()))
+		if (COMA::AABBCheck(m_dst, *ENMA::GetPlayer()->GetBody()))
 		{
 			ENMA::GetPlayer()->TakeDamage(m_damage);
 			m_status = DYING;
