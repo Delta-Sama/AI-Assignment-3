@@ -27,8 +27,11 @@ void HealthBar::Update()
 
 void HealthBar::Render()
 {
-	SDL_RenderCopyF(Engine::Instance().GetRenderer(), m_pText, &m_src, &m_dst);
-	SDL_RenderCopyF(Engine::Instance().GetRenderer(), m_scale->GetTexture(), &*m_scale->GetSrcP(), &*m_scale->GetDstP());
+	if (m_enabled)
+	{
+		SDL_RenderCopyF(Engine::Instance().GetRenderer(), m_pText, &m_src, &m_dst);
+		SDL_RenderCopyF(Engine::Instance().GetRenderer(), m_scale->GetTexture(), &*m_scale->GetSrcP(), &*m_scale->GetDstP());
+	}
 }
 
 void HealthBar::Clean()

@@ -47,7 +47,7 @@ bool Engine::Init(const char* title, int xpos, int ypos, int width, int height, 
 	TEMA::RegisterTexture("Img/HealthBarScale.png", "healthBarScale");
 	
 	FOMA::RegisterFont("Img/TITLEFONT.otf", "Title", 50);
-	FOMA::RegisterFont("Img/LTYPE.ttf", "Title", 24);
+	FOMA::RegisterFont("Img/TITLEFONT.otf", "SmallTitle", 35);
 	
 	SOMA::Load("Audio/button.wav", "button", SOUND_SFX);
 

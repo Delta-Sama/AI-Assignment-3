@@ -19,8 +19,6 @@ Player::Player()
 
 	this->getAnimator()->addAnimation("idle", 3, 1, 34, 0, 0, 0,16);
 	this->getAnimator()->addAnimation("run", 8, 2, 34, 0,0,34);
-
-	this->m_healthBar = new PlayerHealthBar(this);
 	
 	std::cout << "Player created\n";
 }
@@ -29,7 +27,6 @@ Player::~Player()
 {
 	if (this->getAnimator() != nullptr)
 		delete this->getAnimator();
-	delete this->m_healthBar;
 }
 
 void Player::update()

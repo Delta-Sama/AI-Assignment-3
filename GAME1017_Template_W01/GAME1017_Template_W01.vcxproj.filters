@@ -95,6 +95,9 @@
     <ClCompile Include="PlayerHealthBar.cpp">
       <Filter>UI\Source</Filter>
     </ClCompile>
+    <ClCompile Include="GameHud.cpp">
+      <Filter>UI\Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CollisionManager.h">
@@ -203,6 +206,9 @@
       <Filter>Engine\Header</Filter>
     </ClInclude>
     <ClInclude Include="PlayerHealthBar.h">
+      <Filter>UI\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="GameHUD.h">
       <Filter>UI\Header</Filter>
     </ClInclude>
   </ItemGroup>

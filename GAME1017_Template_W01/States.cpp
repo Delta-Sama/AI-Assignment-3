@@ -90,6 +90,8 @@ void GameState::Enter()
 	m_debugger = new DebugMode(this);
 
 	m_player = new Player();
+
+	m_gameHUD = new GameHUD(m_player);
 	
 	m_level = new Level1(this);
 	m_level->Load();
@@ -118,6 +120,8 @@ void GameState::Update()
 	
 	m_player->update();
 
+	m_gameHUD->Update();
+	
 	ENMA::Update();
 	PAMA::Update();
 	UIMA::Update();
@@ -145,6 +149,10 @@ void GameState::Render()
 	
 	m_player->Render();
 
+	m_gameHUD->Render();
+	
+	UIMA::Render(LOW);
+	UIMA::Render(MEDIUM);
 	UIMA::Render(HIGH);
 }
 
@@ -156,6 +164,9 @@ void GameState::Exit()
 	ENMA::Clean();
 	m_level->Clean();
 	delete m_level;
+
+	m_gameHUD->Clean();
+	delete m_gameHUD;
 }
 
 void GameState::Resume() {}

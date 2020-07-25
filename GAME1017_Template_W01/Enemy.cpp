@@ -42,6 +42,7 @@ void Enemy::EnemyUpdate()
 
 	if (m_health <= 0)
 	{
+		this->m_healthBar->SetEnabled(false);
 		this->m_status = DIE;
 	}
 }

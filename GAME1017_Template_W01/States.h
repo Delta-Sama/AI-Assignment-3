@@ -8,6 +8,7 @@
 #include "Debug.h"
 #include "Player.h"
 #include "Tile.h"
+#include "GameHUD.h"
 
 #include <SDL.h>
 #include <vector>
@@ -59,6 +60,8 @@ private:
 	Player* m_player;
 
 	Level* m_level;
+
+	GameHUD* m_gameHUD;
 };
 
 class EndState : public State

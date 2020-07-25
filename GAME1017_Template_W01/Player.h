@@ -18,7 +18,7 @@ public: // Methods
 	
 	int movement[2] = { 0,0 };
 private:
-	PlayerHealthBar* m_healthBar;
+	
 	
 };
 

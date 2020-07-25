@@ -1,19 +1,32 @@
 #include "Engine.h"
 #include "Label.h"
 #include "FontManager.h"
+#include "UIManager.h"
+
 #include <cstring>
 
 Label::Label(std::string key, const float x, const float y, const char* str,
-	const SDL_Color col) :m_TextColor(col)
+             const SDL_Color col)
 {
 	m_Font = FontManager::GetFont(key);
-	SetPos(x, y);
+
 	SetText(str);
+	SetColor(col);
+
+	SetPos(x, y);
 }
 
 Label::~Label()
 {
 	SDL_DestroyTexture(m_pTexture);
+}
+
+void Label::Update()
+{
+}
+
+void Label::Clean()
+{
 }
 
 void Label::Render()
