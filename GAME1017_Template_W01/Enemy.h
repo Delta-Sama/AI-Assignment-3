@@ -22,7 +22,6 @@ public:
 
 	void EnemyUpdate();
 	void Seek(SDL_FPoint& goal);
-	void TakeDamage(float damage);
 	
 	bool GetPlayerLOS() { return m_playerLOS; }
 	bool GetPlayerDetectRad() { return m_playerDetectRad; }

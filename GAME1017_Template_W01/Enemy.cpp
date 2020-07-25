@@ -74,10 +74,3 @@ void Enemy::Seek(SDL_FPoint& goal)
 		this->SetAccelY(dy * SPEED);
 	}
 }
-
-void Enemy::TakeDamage(float damage)
-{
-	m_health = m_health - damage;
-	if (m_health < 0)
-		m_health = 0;
-}

@@ -98,6 +98,15 @@
     <ClCompile Include="GameHud.cpp">
       <Filter>UI\Source</Filter>
     </ClCompile>
+    <ClCompile Include="Projectile.cpp">
+      <Filter>Objects\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="ProjectileManager.cpp">
+      <Filter>Managers\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="SlimeProjectile.cpp">
+      <Filter>Objects\Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CollisionManager.h">
@@ -210,6 +219,15 @@
     </ClInclude>
     <ClInclude Include="GameHUD.h">
       <Filter>UI\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="ProjectileManager.h">
+      <Filter>Managers\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Projectile.h">
+      <Filter>Objects\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="SlimeProjectile.h">
+      <Filter>Objects\Header</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

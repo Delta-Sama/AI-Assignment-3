@@ -33,6 +33,8 @@ public:
 
 	float GetHealth() { return m_health; }
 	float GetMaxHealth() { return m_maxHealth; }
+
+	void TakeDamage(float damage);
 	
 private:
 	Vec2 m_velocity;

@@ -8,6 +8,8 @@
 
 #include "EventManager.h"
 #include "MathManager.h"
+#include "ProjectileManager.h"
+#include "SlimeProjectile.h"
 
 Player::Player()
 	:Entity({0,0,34,34}, {100,100,60,60}, TEMA::GetTexture("player"), PLAYERMAXHEALTH)
@@ -33,6 +35,11 @@ void Player::update()
 {
 	this->movement[0] = 0;
 	this->movement[1] = 0;
+
+	SDL_Point mouse = EVMA::GetMousePos();
+	float dx = mouse.x - this->m_dst.x;
+	float dy = mouse.y - this->m_dst.y;
+	float hyp = sqrt(dx * dx + dy * dy);
 	
 	if (EVMA::KeyHeld(SDL_SCANCODE_A))
 	{
@@ -56,18 +63,19 @@ void Player::update()
 		this->movement[1] = -1;
 		this->SetAccelY(1.0f);
 	}
+	if (EVMA::KeyPressed(SDL_SCANCODE_F))
+	{
+		PRMA::AddProjectile(new SlimeProjectile(this->GetCenter(), { dx / hyp , dy / hyp }, PLAYERSIDE));
+	}
 	
 	if (this->movement[0] == 0 and this->movement[1] == 0)
 		this->getAnimator()->setNextAnimation("idle");
 	else
 		this->getAnimator()->setNextAnimation("run");
 
-	SDL_Point mouse = EVMA::GetMousePos();
-	float dx = this->GetDstP()->x - mouse.x;
-	float dy = this->GetDstP()->y - mouse.y;
 	float angle = MAMA::AngleBetweenPoints(dy,dx);
 	
-	this->SetAngle(MAMA::Rad2Deg(angle) - 90);
+	this->SetAngle(MAMA::Rad2Deg(angle) + 90);
 	
 	this->getAnimator()->playAnimation();
 	

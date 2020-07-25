@@ -80,3 +80,10 @@ void Entity::addAnimator(Animator* animator)
 	else
 		delete animator;
 }
+
+void Entity::TakeDamage(float damage)
+{
+	m_health = m_health - damage;
+	if (m_health < 0)
+		m_health = 0;
+}

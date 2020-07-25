@@ -20,6 +20,7 @@
 #include "EventManager.h"
 #include "GameObjectManager.h"
 #include "Level1.h"
+#include "ProjectileManager.h"
 #include "Tile.h"
 #include "UIManager.h"
 
@@ -95,6 +96,8 @@ void GameState::Enter()
 	
 	m_level = new Level1(this);
 	m_level->Load();
+
+	ENMA::SetPlayer(m_player);
 }
 
 void GameState::Update()
@@ -125,6 +128,7 @@ void GameState::Update()
 	ENMA::Update();
 	PAMA::Update();
 	UIMA::Update();
+	PRMA::Update();
 
 	CheckCollision();
 }
@@ -150,10 +154,13 @@ void GameState::Render()
 	m_player->Render();
 
 	m_gameHUD->Render();
+
+	PRMA::Render();
 	
 	UIMA::Render(LOW);
 	UIMA::Render(MEDIUM);
 	UIMA::Render(HIGH);
+	
 }
 
 void GameState::Exit()
@@ -167,6 +174,8 @@ void GameState::Exit()
 
 	m_gameHUD->Clean();
 	delete m_gameHUD;
+
+	ENMA::SetPlayer(nullptr);
 }
 
 void GameState::Resume() {}

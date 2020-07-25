@@ -8,6 +8,8 @@
 #include "TextureManager.h"
 
 #include <iostream>
+
+#include "ProjectileManager.h"
 #define WIDTH 960
 #define HEIGHT 640
 
@@ -31,6 +33,7 @@ bool Engine::Init(const char* title, int xpos, int ypos, int width, int height, 
 				EVMA::Init();
 				SOMA::Init();
 				TEMA::Init();
+				PRMA::Init();
 			}
 			else return false; // Renderer init fail.
 		}
@@ -45,6 +48,7 @@ bool Engine::Init(const char* title, int xpos, int ypos, int width, int height, 
 	TEMA::RegisterTexture("Img/TileMap.png", "tiles");
 	TEMA::RegisterTexture("Img/HealthBar.png", "healthBar");
 	TEMA::RegisterTexture("Img/HealthBarScale.png", "healthBarScale");
+	TEMA::RegisterTexture("Img/Slime.png", "slime");
 	
 	FOMA::RegisterFont("Img/TITLEFONT.otf", "Title", 50);
 	FOMA::RegisterFont("Img/TITLEFONT.otf", "SmallTitle", 35);
@@ -52,7 +56,7 @@ bool Engine::Init(const char* title, int xpos, int ypos, int width, int height, 
 	SOMA::Load("Audio/button.wav", "button", SOUND_SFX);
 
 	SOMA::Load("Audio/sans.mp3", "background", SOUND_MUSIC);
-	SOMA::SetMusicVolume(0);//18);
+	SOMA::SetMusicVolume(18);//18);
 	SOMA::PlayMusic("background");
 	
 	STMA::ChangeState(new TitleState);

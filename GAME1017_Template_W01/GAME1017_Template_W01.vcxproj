@@ -138,7 +138,10 @@
     <ClCompile Include="PathManager.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerHealthBar.cpp" />
+    <ClCompile Include="Projectile.cpp" />
+    <ClCompile Include="ProjectileManager.cpp" />
     <ClCompile Include="RedSniper.cpp" />
+    <ClCompile Include="SlimeProjectile.cpp" />
     <ClCompile Include="SoundManager.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="StateManager.cpp" />
@@ -177,7 +180,10 @@
     <ClInclude Include="PathManager.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerHealthBar.h" />
+    <ClInclude Include="Projectile.h" />
+    <ClInclude Include="ProjectileManager.h" />
     <ClInclude Include="RedSniper.h" />
+    <ClInclude Include="SlimeProjectile.h" />
     <ClInclude Include="SoundManager.h" />
     <ClInclude Include="StateManager.h" />
     <ClInclude Include="MathManager.h" />

@@ -21,13 +21,16 @@ public:
 	static std::vector<Enemy*>* GetEnemies() { return &EnemiesVec; }
 	static int GetKilledEnemies() { return m_diedEnemies; }
 	static GameState* GetScene() { return m_scene; }
+	static Player* GetPlayer() { return m_player; }
 	
 	static void SetScene(GameState* scene) { m_scene = scene; };
+	static void SetPlayer(Player* player) { m_player = player; }
 	
 private:
 	static std::vector<Enemy*> EnemiesVec;
 	static GameState* m_scene;
 	static int m_diedEnemies;
+	static Player* m_player;
 	
 	EnemyManager() {}
 };
