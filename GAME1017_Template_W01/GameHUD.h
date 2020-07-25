@@ -19,8 +19,6 @@ private:
 	PlayerHealthBar* m_healthBar;
 	Label* m_enemiesLeft;
 	Label* m_enemiesKilled;
-
-	int m_enemiesCounter;
 	
 };
 

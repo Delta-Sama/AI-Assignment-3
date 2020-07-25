@@ -17,14 +17,18 @@ public:
 	static void Clean();
 	
 	static void AddEnemy(EnemyType type, Vec2 pos);
+	
 	static std::vector<Enemy*>* GetEnemies() { return &EnemiesVec; }
-
-	static void SetScene(GameState* scene) { m_scene = scene; };
+	static int GetKilledEnemies() { return m_diedEnemies; }
 	static GameState* GetScene() { return m_scene; }
+	
+	static void SetScene(GameState* scene) { m_scene = scene; };
+	
 private:
 	static std::vector<Enemy*> EnemiesVec;
 	static GameState* m_scene;
-private:
+	static int m_diedEnemies;
+	
 	EnemyManager() {}
 };
 

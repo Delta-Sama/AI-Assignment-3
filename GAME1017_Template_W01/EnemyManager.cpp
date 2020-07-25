@@ -5,6 +5,7 @@
 
 std::vector<Enemy*> ENMA::EnemiesVec;
 GameState* ENMA::m_scene;
+int ENMA::m_diedEnemies = 0;
 
 void EnemyManager::Update()
 {
@@ -12,6 +13,7 @@ void EnemyManager::Update()
 	{
 		if (!(*enemy)->GetActive())
 		{
+			m_diedEnemies++;
 			enemy = EnemiesVec.erase(enemy);
 		}
 		else

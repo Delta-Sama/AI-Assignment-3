@@ -21,7 +21,7 @@ void GameHUD::Update()
 {
 	std::string left = "Left: " + std::to_string(ENMA::GetEnemies()->size());
 	m_enemiesLeft->SetText(left.c_str());
-	std::string killed = "Killed: " + std::to_string(m_enemiesCounter);
+	std::string killed = "Killed: " + std::to_string(ENMA::GetKilledEnemies());
 	m_enemiesKilled->SetText(killed.c_str());
 }
 
