@@ -15,7 +15,8 @@ public: // Inherited and public.
 	SDL_Rect* GetSrcP() { return &m_src; }
 	SDL_FRect* GetDstP() { return &m_dst; }
 	double& GetAngle() { return m_angle; }
-
+	SDL_Texture* GetTexture() { return m_pText; }
+	
 	SDL_FPoint GetCenter();
 	
 	void SetAngle(double a) { m_angle = a; }

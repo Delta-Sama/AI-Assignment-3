@@ -3,6 +3,8 @@
 #define _REDSNIPER_H_
 #include "Enemy.h"
 
+const float SNIPERMAXHEALTH = 100.0;
+
 class RedSniper : public Enemy
 {
 public:

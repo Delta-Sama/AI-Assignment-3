@@ -1,12 +1,10 @@
 #include "Button.h"
 #include "EventManager.h"
-#include <SDL.h>
-
-
-
 #include "Engine.h"
 #include "StateManager.h"
 #include "TextureManager.h"
+
+#include <SDL.h>
 
 Button::Button(SDL_Rect src, SDL_FRect dst, SDL_Texture* t)
 	: Sprite(src, dst, t), m_state(STATE_UP) {}

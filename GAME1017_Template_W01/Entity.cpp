@@ -5,11 +5,12 @@
 
 const float MAXVELOCITY = 3.0;
 
-Entity::Entity(SDL_Rect s, SDL_FRect d, SDL_Texture* t) : GameObject(s, d, t)
+Entity::Entity(SDL_Rect s, SDL_FRect d, SDL_Texture* t, float maxHealth) : GameObject(s, d, t), m_maxHealth(maxHealth)
 {
 	this->m_accel.x = this->m_accel.y = this->m_velocity.x = this->m_velocity.y = 0.0;
 	this->m_maxVelocity = MAXVELOCITY;
 	this->m_drag = 0.88;
+	this->m_health = maxHealth;
 }
 
 void Entity::SetBodyPosition()

@@ -4,6 +4,8 @@
 
 #include "Entity.h"
 
+const float PLAYERMAXHEALTH = 100.0;
+
 class Player final : public Entity
 {
 public: // Methods

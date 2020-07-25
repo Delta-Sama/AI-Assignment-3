@@ -10,7 +10,7 @@
 #include "MathManager.h"
 
 Player::Player()
-	:Entity({0,0,34,34}, {100,100,60,60}, TEMA::GetTexture("player"))
+	:Entity({0,0,34,34}, {100,100,60,60}, TEMA::GetTexture("player"), PLAYERMAXHEALTH)
 {
 	this->m_body = {0,0,35,35};
 	this->SetBodyPosition();

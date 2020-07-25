@@ -11,6 +11,8 @@ class Button : public Sprite
 public:
 	int Update();
 	void Render();
+
+	
 protected: // Private but inherited!
 	Button(SDL_Rect src, SDL_FRect dst, SDL_Texture* t);
 	enum state { STATE_UP, STATE_OVER, STATE_DOWN } m_state;

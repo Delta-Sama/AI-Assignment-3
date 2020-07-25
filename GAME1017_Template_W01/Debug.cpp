@@ -1,6 +1,7 @@
 #include "Debug.h"
 #include "CollisionManager.h"
 #include "EnemyManager.h"
+#include "MathManager.h"
 #include "PathManager.h"
 #include "Util.h"
 
@@ -58,6 +59,10 @@ void DebugMode::Draw()
 				SDL_FPoint to = { enemy->GetGoal()->x, enemy->GetGoal()->y };
 				Util::DrawLine(enemy->GetCenter(), to, { 1,1,0,1 });
 			}
+			Vec4 circColor = { 1,1,0,1 };
+			if (enemy->GetPlayerDetectRad())
+				circColor = { 1,0,0,1 };
+			Util::DrawCircle(enemy->GetCenter(), DETECTRADIUS, circColor);
 		}
 	}
 }

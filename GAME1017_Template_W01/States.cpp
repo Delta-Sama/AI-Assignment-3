@@ -21,6 +21,7 @@
 #include "GameObjectManager.h"
 #include "Level1.h"
 #include "Tile.h"
+#include "UIManager.h"
 
 void print(std::string msg)
 {
@@ -128,6 +129,8 @@ void GameState::Render()
 	m_debugger->Draw();
 	
 	m_player->Render();
+
+	UIMA::Render(HIGH);
 }
 
 void GameState::Exit()

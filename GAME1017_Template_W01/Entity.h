@@ -9,7 +9,7 @@ class Animator;
 class Entity : public GameObject
 {
 public:
-	Entity(SDL_Rect s, SDL_FRect d, SDL_Texture* t);
+	Entity(SDL_Rect s, SDL_FRect d, SDL_Texture* t, float maxHealth);
 	
 	virtual void update() = 0;
 	virtual void clean() = 0;
@@ -29,6 +29,9 @@ public:
 	void addAnimator(Animator* animator);
 
 	SDL_FRect* GetBody() { return &m_body; }
+
+	float GetHealth() { return m_health; }
+	float GetMaxHealth() { return m_maxHealth; }
 	
 private:
 	Vec2 m_velocity;
@@ -39,6 +42,8 @@ private:
 	Animator* animator;
 
 protected:
+	float m_health;
+	const float m_maxHealth;
 	SDL_FRect m_body;
 	void SetBodyPosition();
 };
