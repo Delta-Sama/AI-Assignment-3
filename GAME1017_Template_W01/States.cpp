@@ -111,12 +111,9 @@ void GameState::Update()
 				enemy->SetStatus(IDLE);
 		}
 	}
-	if (EVMA::KeyPressed(SDL_SCANCODE_P))
+	if (EVMA::KeyPressed(SDL_SCANCODE_K))
 	{
-		for (Enemy* enemy : *ENMA::GetEnemies())
-		{
-			
-		}
+		ENMA::GetEnemies()->back()->TakeDamage(10);
 	}
 	
 	m_player->update();

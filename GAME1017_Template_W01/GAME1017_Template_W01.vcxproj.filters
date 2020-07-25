@@ -92,6 +92,9 @@
     <ClCompile Include="UIManager.cpp">
       <Filter>Managers\Source</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerHealthBar.cpp">
+      <Filter>UI\Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CollisionManager.h">
@@ -192,6 +195,15 @@
     </ClInclude>
     <ClInclude Include="UIManager.h">
       <Filter>Managers\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="LocalPathManager.h">
+      <Filter>Entities\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Config.h">
+      <Filter>Engine\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerHealthBar.h">
+      <Filter>UI\Header</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

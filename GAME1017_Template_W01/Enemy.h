@@ -6,35 +6,9 @@
 #include "HealthBar.h"
 #include "States.h"
 
-enum Status { IDLE, PATROL, ATTACK, FLEE};
+enum Status { IDLE, PATROL, ATTACK, FLEE, DIE};
 
 const float SPEED = 1;
-const int MAXCHECK = 2;
-const int PREVNODESSIZE = 4;
-const float DETECTRADIUS = 100;
-
-struct LocalPathManager
-{
-	LocalPathManager()
-	{
-		for (int i = 0; i < PREVNODESSIZE; i++)
-		{
-			prevNode[i] = nullptr;
-		}
-		prevCheck = 0;
-		goalCounter = 0;
-	}
-	void CleanNodes()
-	{
-		for (int i = 0; i < PREVNODESSIZE; i++)
-		{
-			prevNode[i] = nullptr;
-		}
-	}
-	PathNode* prevNode[PREVNODESSIZE];
-	int prevCheck;
-	int goalCounter;
-};
 
 class Enemy : public Entity
 {
@@ -48,11 +22,13 @@ public:
 
 	void EnemyUpdate();
 	void Seek(SDL_FPoint& goal);
+	void TakeDamage(float damage);
 	
 	bool GetPlayerLOS() { return m_playerLOS; }
 	bool GetPlayerDetectRad() { return m_playerDetectRad; }
 	PathNode* GetGoal() { return m_goal; }
 	Status GetStatus() { return m_status; }
+	bool GetActive() { return m_active; }
 	
 	void SetStatus(Status stat) { m_status = stat; }
 
@@ -69,6 +45,8 @@ protected:
 	Status m_status;
 
 	HealthBar* m_healthBar;
+
+	bool m_active;
 };
 
 #endif

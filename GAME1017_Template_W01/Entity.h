@@ -3,6 +3,7 @@
 #define _ENTITY_H_
 
 #include "GameObject.h"
+#include "LocalPathManager.h"
 
 class Animator;
 
@@ -44,8 +45,11 @@ private:
 protected:
 	float m_health;
 	const float m_maxHealth;
+	
 	SDL_FRect m_body;
 	void SetBodyPosition();
+
+	int m_dying = 0;
 };
 
 #include "Animator.h"

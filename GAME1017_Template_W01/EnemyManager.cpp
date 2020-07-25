@@ -8,9 +8,17 @@ GameState* ENMA::m_scene;
 
 void EnemyManager::Update()
 {
-	for (Enemy* enemy : EnemiesVec)
+	for (std::vector<Enemy*>::iterator enemy = EnemiesVec.begin(); enemy != EnemiesVec.end();)
 	{
-		enemy->update();
+		if (!(*enemy)->GetActive())
+		{
+			enemy = EnemiesVec.erase(enemy);
+		}
+		else
+		{
+			(*enemy)->update();
+			enemy++;
+		}
 	}
 }
 

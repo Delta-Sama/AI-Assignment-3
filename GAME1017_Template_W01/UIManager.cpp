@@ -10,6 +10,7 @@ void UIManager::Update()
 	{
 		if (!(*obj)->GetActive())
 		{
+			delete (*obj);
 			obj = s_UIObjects.erase(obj);
 		}
 		else

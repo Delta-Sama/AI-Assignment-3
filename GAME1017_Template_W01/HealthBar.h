@@ -6,7 +6,7 @@
 #include "UIObject.h"
 #include "Entity.h"
 
-class HealthBar final : public UIObject
+class HealthBar : public UIObject
 {
 public:
 	HealthBar(Entity* entity);
@@ -15,7 +15,7 @@ public:
 	virtual void Render() override;
 	virtual void Clean() override;
 	
-private:
+protected:
 	Sprite* m_scale;
 	Entity* m_entity;
 };

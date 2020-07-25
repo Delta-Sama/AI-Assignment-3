@@ -1,5 +1,6 @@
 #include "Enemy.h"
 #include "CollisionManager.h"
+#include "Config.h"
 #include "EnemyManager.h"
 #include "MathManager.h"
 #include "TextureManager.h"
@@ -10,6 +11,8 @@ Enemy::Enemy(SDL_Texture* t, Vec2 pos, float maxHealth) : Entity({0,0,34,34},{po
 	this->SetBodyPosition();
 
 	this->m_healthBar = new HealthBar(this);
+
+	this->m_active = true;
 
 	std::cout << "Enemy created\n";
 }
@@ -36,10 +39,16 @@ void Enemy::EnemyUpdate()
 	this->getAnimator()->playAnimation();
 
 	this->SetBodyPosition();
+
+	if (m_health <= 0)
+	{
+		this->m_status = DIE;
+	}
 }
 
 void Enemy::clean()
 {
+	this->m_active = false;
 	this->m_healthBar->SetActive(false);
 }
 
@@ -63,4 +72,11 @@ void Enemy::Seek(SDL_FPoint& goal)
 		this->SetAccelX(dx * SPEED);
 		this->SetAccelY(dy * SPEED);
 	}
+}
+
+void Enemy::TakeDamage(float damage)
+{
+	m_health = m_health - damage;
+	if (m_health < 0)
+		m_health = 0;
 }

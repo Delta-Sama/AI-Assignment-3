@@ -3,6 +3,7 @@
 #define _PLAYER_H_
 
 #include "Entity.h"
+#include "PlayerHealthBar.h"
 
 const float PLAYERMAXHEALTH = 100.0;
 
@@ -17,6 +18,7 @@ public: // Methods
 	
 	int movement[2] = { 0,0 };
 private:
+	PlayerHealthBar* m_healthBar;
 	
 };
 
