@@ -18,8 +18,8 @@ public:
 	// remove anything that needs to be deleted
 	virtual void clean() = 0;
 
-	GameObjectType getType() const;
-	void setType(GameObjectType new_type);
+	GameObjectType GetType() const;
+	void SetType(GameObjectType new_type);
 
 protected:
 	GameObjectType m_type;

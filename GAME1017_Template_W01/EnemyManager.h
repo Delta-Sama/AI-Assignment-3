@@ -16,7 +16,7 @@ public:
 	static void CheckCollision();
 	static void Clean();
 	
-	static void AddEnemy(EnemyType type, Vec2 pos);
+	static void AddEnemy(EnemyType type, Vec2 pos, int angle = 0);
 	
 	static std::vector<Enemy*>* GetEnemies() { return &EnemiesVec; }
 	static int GetKilledEnemies() { return m_diedEnemies; }

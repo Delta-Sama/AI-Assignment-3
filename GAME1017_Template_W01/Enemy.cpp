@@ -11,6 +11,8 @@ Enemy::Enemy(SDL_Texture* t, Vec2 pos, float maxHealth) : Entity({0,0,34,34},{po
 	this->m_body = { 0,0,35,35 };
 	this->SetBodyPosition();
 
+	this->SetType(ENEMY);
+	
 	this->m_healthBar = new HealthBar(this);
 
 	this->m_active = true;

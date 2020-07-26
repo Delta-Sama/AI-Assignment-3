@@ -101,5 +101,5 @@ void Entity::TakeDamage(float damage)
 	Animation* damagedAnim = this->GetAnimator()->GetAnimation("damaged");
 	
 	if (damagedAnim)
-		m_damaged = damagedAnim->GetMaxFrames() * damagedAnim->GetFramesFrequency()/10;
+		m_damaged = 2 * damagedAnim->GetMaxFrames() * damagedAnim->GetFramesFrequency()/10;
 }

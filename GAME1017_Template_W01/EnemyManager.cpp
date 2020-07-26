@@ -54,7 +54,7 @@ void EnemyManager::Clean()
 	EnemiesVec.shrink_to_fit();
 }
 
-void EnemyManager::AddEnemy(EnemyType type, Vec2 pos)
+void EnemyManager::AddEnemy(EnemyType type, Vec2 pos, int angle)
 {
 	Enemy* enemy;
 
@@ -66,6 +66,9 @@ void EnemyManager::AddEnemy(EnemyType type, Vec2 pos)
 	default:
 		return;
 	}
+
+	if (angle != 0)
+		enemy->SetAngle(angle);
 	
 	EnemiesVec.push_back(enemy);
 }

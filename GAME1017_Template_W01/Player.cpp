@@ -26,6 +26,8 @@ Player::Player()
 {
 	this->m_body = {0,0,35,35};
 	this->SetBodyPosition();
+
+	this->SetType(PLAYER);
 	
 	this->AddAnimator(new Animator(this));
 

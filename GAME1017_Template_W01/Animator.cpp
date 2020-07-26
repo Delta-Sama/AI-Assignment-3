@@ -24,7 +24,6 @@ void Animator::PlayAnimation()
 {
 	if (m_animationsMap[m_nextAnimation] != nullptr)
 	{
-		//std::cout << "Playing " << nextAnimation << std::endl;
 		Animation* anim = m_animationsMap[m_nextAnimation];
 		if (m_curAnimType != m_nextAnimation)
 		{
