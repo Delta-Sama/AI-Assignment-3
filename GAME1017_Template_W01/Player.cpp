@@ -10,6 +10,7 @@
 #include "MathManager.h"
 #include "ProjectileManager.h"
 #include "SlimeProjectile.h"
+#include "SoundManager.h"
 
 const float PROJCOOLDOWN = 0.4;
 
@@ -42,6 +43,8 @@ void Player::update()
 	float dx = mouse.x - this->m_dst.x;
 	float dy = mouse.y - this->m_dst.y;
 	float hyp = sqrt(dx * dx + dy * dy);
+	float dirX = dx / hyp;
+	float dirY = dy / hyp;
 	
 	if (EVMA::KeyHeld(SDL_SCANCODE_A))
 	{
@@ -65,12 +68,17 @@ void Player::update()
 		this->movement[1] = -1;
 		this->SetAccelY(1.0f);
 	}
-	if (EVMA::KeyPressed(SDL_SCANCODE_F))
+	if (EVMA::MousePressed(3))
 	{
 		if ((m_projectileTime + PROJCOOLDOWN * 1000) < SDL_GetTicks())
 		{
+			SOMA::PlaySound("projectile", 0, 1);
 			m_projectileTime = SDL_GetTicks();
-			PRMA::AddProjectile(new SlimeProjectile(this->GetCenter(), { dx / hyp , dy / hyp }, PLAYERSIDE));
+
+			float dist = 25.0;
+			SDL_FPoint projPos = { this->GetCenter().x + dirX * dist,this->GetCenter().y + dirY * dist};
+			
+			PRMA::AddProjectile(new SlimeProjectile(projPos, { dirX , dirY }, PLAYERSIDE));
 		}
 	}
 	

@@ -26,7 +26,7 @@ public:
 	static void ResumeMusic();
 	static void PlaySound(const std::string& id, int loop = 0, int channel = -1);
 	static void SetMusicVolume(const int vol);
-	static void SetSoundVolume(const int vol);
+	static void SetSoundVolume(const int vol, int channel = -1);
 	static void SetAllVolume(const int vol);
 	
 	// Panning converts a single slider value from 0 to 100 to the stereo speaker volumes.

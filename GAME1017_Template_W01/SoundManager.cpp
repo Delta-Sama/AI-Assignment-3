@@ -112,11 +112,11 @@ void SoundManager::SetMusicVolume(const int vol)
 	}
 }
 
-void SoundManager::SetSoundVolume(const int vol)
+void SoundManager::SetSoundVolume(const int vol, int channel)
 {
 	if (vol >= 0 && vol <= 128)
 	{
-		Mix_Volume(-1, vol);
+		Mix_Volume(channel, vol);
 	}	
 }
 

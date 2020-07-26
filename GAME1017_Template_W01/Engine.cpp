@@ -53,10 +53,14 @@ bool Engine::Init(const char* title, int xpos, int ypos, int width, int height, 
 	FOMA::RegisterFont("Img/TITLEFONT.otf", "Title", 50);
 	FOMA::RegisterFont("Img/TITLEFONT.otf", "SmallTitle", 35);
 	
-	SOMA::Load("Audio/button.wav", "button", SOUND_SFX);
-
+	
+	SOMA::Load("Audio/projectile.wav", "projectile", SOUND_SFX);
+	SOMA::SetSoundVolume(40,1);
+	SOMA::Load("Audio/dead.wav", "dead", SOUND_SFX);
+	SOMA::SetSoundVolume(20, 2);
+	
 	SOMA::Load("Audio/sans.mp3", "background", SOUND_MUSIC);
-	SOMA::SetMusicVolume(18);//18);
+	SOMA::SetMusicVolume(12);//18);
 	SOMA::PlayMusic("background");
 	
 	STMA::ChangeState(new TitleState);

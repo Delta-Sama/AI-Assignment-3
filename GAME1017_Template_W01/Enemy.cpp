@@ -3,6 +3,7 @@
 #include "Config.h"
 #include "EnemyManager.h"
 #include "MathManager.h"
+#include "SoundManager.h"
 #include "TextureManager.h"
 
 Enemy::Enemy(SDL_Texture* t, Vec2 pos, float maxHealth) : Entity({0,0,34,34},{pos.x * 48,pos.y * 48,60,60},t,maxHealth)
@@ -40,8 +41,9 @@ void Enemy::EnemyUpdate()
 
 	this->SetBodyPosition();
 
-	if (m_health <= 0)
+	if (m_health <= 0 and this->m_status != DIE)
 	{
+		SOMA::PlaySound("dead", 0, 2);
 		this->m_healthBar->SetEnabled(false);
 		this->m_status = DIE;
 	}
