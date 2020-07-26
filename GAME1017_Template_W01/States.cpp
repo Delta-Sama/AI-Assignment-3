@@ -4,25 +4,22 @@
 #include "SoundManager.h"
 #include "TextureManager.h"
 #include "Engine.h"
-
 #include "MathManager.h"
 #include "Pathing.h"
 #include "PathManager.h"
-
-#include <iostream>
-#include <ctime>
-#include <fstream>
-#include <string>
-
-
-
 #include "EnemyManager.h"
 #include "EventManager.h"
 #include "GameObjectManager.h"
 #include "Level1.h"
 #include "ProjectileManager.h"
+#include "StateManager.h"
 #include "Tile.h"
 #include "UIManager.h"
+
+#include <iostream>
+#include <ctime>
+#include <fstream>
+#include <string>
 
 void print(std::string msg)
 {
@@ -42,10 +39,10 @@ TitleState::TitleState() {}
 
 void TitleState::Enter()
 {
-	m_labels.push_back(new Label("Title",250,50, "Maxim Dobrivskiy",{0,0,255,255}));
-	m_labels.push_back(new Label("Title", 350, 100, "101290100", { 100,100,255,255 }));
+	m_labels.push_back(new Label("Title",200,50, "Maxim Dobrivskiy",{0,0,255,255}));
+	m_labels.push_back(new Label("Title", 300, 100, "101290100", { 100,100,255,255 }));
 
-	m_playButton = new PlayButton({0,0,512,200},{300,250,424,120});
+	m_playButton = new PlayButton({0,0,512,200},{278,250,424,120});
 }
 
 void TitleState::Update()
@@ -116,6 +113,10 @@ void GameState::Update()
 				enemy->SetStatus(IDLE);
 		}
 	}
+	if (EVMA::KeyPressed(SDL_SCANCODE_X))
+	{
+		m_player->TakeDamage(10);
+	}
 	if (EVMA::KeyPressed(SDL_SCANCODE_K))
 	{
 		ENMA::GetEnemies()->back()->TakeDamage(10);
@@ -131,6 +132,11 @@ void GameState::Update()
 	PRMA::Update();
 
 	CheckCollision();
+
+	if (m_player->GetHealth() <= 0)
+	{
+		STMA::ChangeState(new EndState);
+	}
 }
 
 void GameState::CheckCollision()
@@ -188,25 +194,32 @@ EndState::EndState()
 
 void EndState::Enter()
 {
-	
+	m_restartButton = new RestartButton({ 0,0,512,200 }, { 278,250,424,120 },TEMA::GetTexture("playButton"));
+	m_exitButton = new ExitButton({ 0,0,400,100 }, { 278,420,424,120 }, TEMA::GetTexture("exit_b"));
+	m_finish = false;
 }
 
 void EndState::Update()
 {
-	
+	//if (m_restartButton->Update() == 1)
+		//return;
+	if (m_exitButton->Update() == 1)
+		return;
 }
 
 void EndState::Render()
 {
 	SDL_RenderClear(Engine::Instance().GetRenderer());
 
-
+	//m_restartButton->Render();
+	m_exitButton->Render();
 	
 	State::Render();
 }
 
 void EndState::Exit()
 {
-	
+	//delete m_exitButton;
+	//delete m_restartButton;
 }
 //End EndState

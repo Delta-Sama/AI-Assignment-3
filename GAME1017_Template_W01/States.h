@@ -73,6 +73,9 @@ public:
 	void Enter();
 	void Exit();
 private:
+	RestartButton* m_restartButton;
+	ExitButton* m_exitButton;
+	bool m_finish = false;
 	
 };
 

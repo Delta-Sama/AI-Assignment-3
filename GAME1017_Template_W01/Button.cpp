@@ -61,6 +61,7 @@ void Button::Render()
 PlayButton::PlayButton(SDL_Rect src, SDL_FRect dst) :Button(src, dst, TEMA::GetTexture("playButton")) {}
 RestartButton::RestartButton(SDL_Rect src, SDL_FRect dst, SDL_Texture* t) : Button(src, dst, t) {}
 ExitButton::ExitButton(SDL_Rect src, SDL_FRect dst, SDL_Texture* t) : Button(src, dst, t) {}
+
 void PlayButton::Execute()
 {
 	STMA::ChangeState(new GameState);
@@ -68,10 +69,11 @@ void PlayButton::Execute()
 
 void RestartButton::Execute()
 {
-	
+	STMA::ChangeState(new GameState);
 }
 
 void ExitButton::Execute()
 {
-	
+	Engine::Instance().setRunning(false);
+	exit(0);
 }
