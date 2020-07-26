@@ -20,7 +20,8 @@ public: // Methods
 	
 	int movement[2] = { 0,0 };
 private:
-	
+	int m_meleeAnimFrames;
+	std::string m_curMeleeAnim;
 	
 };
 

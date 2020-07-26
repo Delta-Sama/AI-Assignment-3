@@ -35,6 +35,9 @@ Player::Player()
 
 	this->getAnimator()->addAnimation("idle", 3, 1, 34, 0, 0, 0,16);
 	this->getAnimator()->addAnimation("run", 8, 2, 34, 0,0,34);
+	this->getAnimator()->addAnimation("die", 4, 3, 34, 0, 0, 68);
+	this->getAnimator()->addAnimation("melee", 6, 3, 34, 0, 0, 102,4);
+	this->getAnimator()->addAnimation("run_melee", 6, 3, 34, 0, 0, 136, 4);
 	
 	std::cout << "Player created\n";
 }
@@ -83,12 +86,26 @@ void Player::update()
 	{
 		if ((m_meleeTime + MELEECOOLDOWN * 1000) < SDL_GetTicks())
 		{
+			m_meleeAnimFrames = 0;
+			
 			SOMA::PlaySound("melee", 0, 3);
 			m_meleeTime = SDL_GetTicks();
 
+			if (this->movement[0] == 0 and this->movement[1] == 0)
+				m_curMeleeAnim = "melee";
+			else
+				m_curMeleeAnim = "run_melee";
+			
 			Melee();
 		}
 	}
+	Animation* meleeAnim = this->getAnimator()->getAnimation("melee");
+	if (m_meleeAnimFrames < meleeAnim->getFramesFrequency()/10 * (meleeAnim->getMaxFrames() - 1))
+	{
+		m_meleeAnimFrames++;
+		this->getAnimator()->setNextAnimation(m_curMeleeAnim);
+	}
+	
 	if (EVMA::MousePressed(3))
 	{
 		if ((m_projectileTime + PROJCOOLDOWN * 1000) < SDL_GetTicks())

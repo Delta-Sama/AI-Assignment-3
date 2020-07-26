@@ -56,6 +56,11 @@ void Animator::addAnimation(const std::string& key, Uint32 maxFrames, Uint32 pri
 	animationsMap[key] = new Animation(maxFrames, priority, moveX, moveY, startX, startY, framesFrequency);
 }
 
+Animation* Animator::getAnimation(const std::string& key)
+{
+	return animationsMap[key];
+}
+
 Animation::Animation(Uint32 maxFrames, Uint32 priority, Uint32 moveX, Uint32 moveY, Uint32 startX, Uint32 startY, Uint32 framesFrequency)
 {
 	this->startX = startX;
