@@ -6,6 +6,11 @@
 #include <algorithm>
 #include <iostream>
 
+
+
+#include "CollisionManager.h"
+#include "Enemy.h"
+#include "EnemyManager.h"
 #include "EventManager.h"
 #include "MathManager.h"
 #include "ProjectileManager.h"
@@ -13,6 +18,12 @@
 #include "SoundManager.h"
 
 const float PROJCOOLDOWN = 0.4;
+const float PROJDAMAGE = 10.0;
+
+const float MELEECOOLDOWN = 0.6;
+const float MELEEDIST = 60.0;
+const float MELEEDAMAGE = 15.0;
+const float MELEEANGLE = 50.0;
 
 Player::Player()
 	:Entity({0,0,34,34}, {100,100,60,60}, TEMA::GetTexture("player"), PLAYERMAXHEALTH)
@@ -40,8 +51,8 @@ void Player::update()
 	this->movement[1] = 0;
 
 	SDL_Point mouse = EVMA::GetMousePos();
-	float dx = mouse.x - this->m_dst.x;
-	float dy = mouse.y - this->m_dst.y;
+	float dx = mouse.x - this->GetCenter().x;
+	float dy = mouse.y - this->GetCenter().y;
 	float hyp = sqrt(dx * dx + dy * dy);
 	float dirX = dx / hyp;
 	float dirY = dy / hyp;
@@ -67,6 +78,16 @@ void Player::update()
 	{
 		this->movement[1] = -1;
 		this->SetAccelY(1.0f);
+	}
+	if (EVMA::MousePressed(1))
+	{
+		if ((m_meleeTime + MELEECOOLDOWN * 1000) < SDL_GetTicks())
+		{
+			SOMA::PlaySound("melee", 0, 3);
+			m_meleeTime = SDL_GetTicks();
+
+			Melee();
+		}
 	}
 	if (EVMA::MousePressed(3))
 	{
@@ -101,4 +122,26 @@ void Player::update()
 void Player::clean()
 {
 	
+}
+
+void Player::Melee()
+{
+	bool hit = false;
+	for (Enemy* enemy : *ENMA::GetEnemies())
+	{
+		if (COMA::SquareRectDistance(m_body, *enemy->GetBody()) < pow(MELEEDIST,2))
+		{
+			float dy = enemy->GetBody()->y - m_body.y;
+			float dx = enemy->GetBody()->x - m_body.x;
+			if (abs(MAMA::Rad2Deg(MAMA::AngleBetweenPoints(dy, dx)) + 90 - m_angle) < MELEEANGLE)
+			{
+				enemy->TakeDamage(MELEEDAMAGE);
+				hit = true;
+			}
+		}
+	}
+	if (hit)
+	{
+		SOMA::PlaySound("sharpDamage", 0, 4);
+	}
 }

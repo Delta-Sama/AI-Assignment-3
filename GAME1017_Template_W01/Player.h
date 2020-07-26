@@ -15,6 +15,8 @@ public: // Methods
 
 	virtual void update() override;
 	virtual void clean() override;
+
+	void Melee();
 	
 	int movement[2] = { 0,0 };
 private:

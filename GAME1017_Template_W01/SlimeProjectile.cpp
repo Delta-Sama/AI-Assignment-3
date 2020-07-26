@@ -3,6 +3,8 @@
 
 #include <iostream>
 
+#include "SoundManager.h"
+
 const float SLIMEDAMAGE = 15.0;
 const float SLIMESPEED = 7.0;
 const float w = 27.0;
@@ -46,6 +48,8 @@ void SlimeProjectile::Update()
 
 			if (m_status == DYING)
 			{
+				SOMA::PlaySound("projDamage", 0, 2);
+				
 				this->m_animCurFrame = 0;
 				this->m_animFreqCounter = 0;
 				this->m_animMaxFrames = 5;

@@ -43,7 +43,7 @@ void Enemy::EnemyUpdate()
 
 	if (m_health <= 0 and this->m_status != DIE)
 	{
-		SOMA::PlaySound("dead", 0, 2);
+		SOMA::PlaySound("dead", 0, 5);
 		this->m_healthBar->SetEnabled(false);
 		this->m_status = DIE;
 	}

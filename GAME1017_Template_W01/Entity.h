@@ -52,6 +52,7 @@ protected:
 	void SetBodyPosition();
 
 	int m_projectileTime;
+	int m_meleeTime;
 	
 	int m_dying = 0;
 };

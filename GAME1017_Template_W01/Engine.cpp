@@ -56,11 +56,17 @@ bool Engine::Init(const char* title, int xpos, int ypos, int width, int height, 
 	
 	SOMA::Load("Audio/projectile.wav", "projectile", SOUND_SFX);
 	SOMA::SetSoundVolume(40,1);
+	SOMA::Load("Audio/projDamage.wav", "projDamage", SOUND_SFX);
+	SOMA::SetSoundVolume(40, 2);
+	SOMA::Load("Audio/melee.wav", "melee", SOUND_SFX);
+	SOMA::SetSoundVolume(90, 3);
+	SOMA::Load("Audio/sharpDamage.wav", "sharpDamage", SOUND_SFX);
+	SOMA::SetSoundVolume(40, 4);
 	SOMA::Load("Audio/dead.wav", "dead", SOUND_SFX);
-	SOMA::SetSoundVolume(20, 2);
+	SOMA::SetSoundVolume(20, 5);
 	
 	SOMA::Load("Audio/sans.mp3", "background", SOUND_MUSIC);
-	SOMA::SetMusicVolume(12);//18);
+	SOMA::SetMusicVolume(11);//18);
 	SOMA::PlayMusic("background");
 	
 	STMA::ChangeState(new TitleState);
