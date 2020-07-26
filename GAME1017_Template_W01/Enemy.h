@@ -44,7 +44,7 @@ protected:
 	Status m_status;
 
 	HealthBar* m_healthBar;
-
+	
 	bool m_active;
 };
 

@@ -20,8 +20,6 @@ Enemy::Enemy(SDL_Texture* t, Vec2 pos, float maxHealth) : Entity({0,0,34,34},{po
 
 Enemy::~Enemy()
 {
-	if (this->getAnimator() != nullptr)
-		delete this->getAnimator();
 }
 
 void Enemy::EnemyUpdate()
@@ -30,14 +28,14 @@ void Enemy::EnemyUpdate()
 	this->m_playerLOS = COMA::LOSCheck(&PlayerCenter, &this->GetCenter());
 	this->m_playerDetectRad = MAMA::Distance(this->GetCenter().x, PlayerCenter.x, this->GetCenter().y, PlayerCenter.y) < DETECTRADIUS;
 
-	this->movementUpdate();
+	this->MovementUpdate();
 
 	if (this->GetVelX() == 0 and this->GetVelY() == 0)
-		this->getAnimator()->setNextAnimation("idle");
+		this->GetAnimator()->SetNextAnimation("idle");
 	else
-		this->getAnimator()->setNextAnimation("run");
+		this->GetAnimator()->SetNextAnimation("run");
 
-	this->getAnimator()->playAnimation();
+	this->GetAnimator()->PlayAnimation();
 
 	this->SetBodyPosition();
 

@@ -16,8 +16,12 @@ public: // Methods
 	virtual void update() override;
 	virtual void clean() override;
 
+	void KeyboardInput();
+	void GamepadInput();
+
 	void Melee();
-	
+	void ShootProjectile(float dirX, float dirY);
+
 	int movement[2] = { 0,0 };
 private:
 	int m_meleeAnimFrames;

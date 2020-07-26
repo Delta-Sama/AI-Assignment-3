@@ -6,12 +6,13 @@
 
 RedSniper::RedSniper(Vec2 pos) : Enemy(TEMA::GetTexture("enemy"), pos, SNIPERMAXHEALTH)
 {
-	this->addAnimator(new Animator(this));
+	this->AddAnimator(new Animator(this));
 
-	this->getAnimator()->addAnimation("idle", 3, 1, 34, 0, 0, 0, 16);
-	this->getAnimator()->addAnimation("run", 8, 2, 34, 0, 0, 34);
-	this->getAnimator()->addAnimation("die", 4, 3, 34, 0, 0, 68);
-
+	this->GetAnimator()->AddAnimation("idle", 3, 1, 34, 0, 0, 0, 16);
+	this->GetAnimator()->AddAnimation("run", 8, 2, 34, 0, 0, 34);
+	this->GetAnimator()->AddAnimation("die", 4, 4, 34, 0, 0, 68);
+	this->GetAnimator()->AddAnimation("damaged", 3, 3, 34, 0, 0, 102,4);
+	
 	m_status = IDLE;
 }
 
@@ -103,7 +104,7 @@ void RedSniper::MakeDecision()
 		if (this->m_dying++ < 4 * 8)
 		{
 			this->Stop();
-			this->getAnimator()->setNextAnimation("die");
+			this->GetAnimator()->SetNextAnimation("die");
 		}
 		else
 		{
@@ -119,5 +120,10 @@ void RedSniper::update()
 {
 	MakeDecision();
 
+	if (m_damaged-- > 0)
+	{
+		this->GetAnimator()->SetNextAnimation("damaged");
+	}
+	
 	EnemyUpdate();
 }

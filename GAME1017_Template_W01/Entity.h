@@ -11,6 +11,7 @@ class Entity : public GameObject
 {
 public:
 	Entity(SDL_Rect s, SDL_FRect d, SDL_Texture* t, float maxHealth);
+	~Entity();
 	
 	virtual void update() = 0;
 	virtual void clean() = 0;
@@ -25,9 +26,9 @@ public:
 	float GetVelY();
 	void SetX(float y);
 	void SetY(float y);
-	void movementUpdate();
-	Animator* getAnimator() { return animator; }
-	void addAnimator(Animator* animator);
+	void MovementUpdate();
+	Animator* GetAnimator() { return animator; }
+	void AddAnimator(Animator* animator);
 
 	SDL_FRect* GetBody() { return &m_body; }
 
@@ -55,6 +56,8 @@ protected:
 	int m_meleeTime;
 	
 	int m_dying = 0;
+
+	int m_damaged;
 };
 
 #include "Animator.h"

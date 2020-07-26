@@ -15,6 +15,16 @@ Entity::Entity(SDL_Rect s, SDL_FRect d, SDL_Texture* t, float maxHealth) : GameO
 	this->m_projectileTime = 0;
 }
 
+Entity::~Entity()
+{
+	if (this->GetAnimator() != nullptr)
+	{
+		this->GetAnimator()->Clean();
+		delete this->GetAnimator();
+		this->AddAnimator(nullptr);
+	}
+}
+
 void Entity::SetBodyPosition()
 {
 	this->m_body.x = this->GetDstP()->x + (this->GetDstP()->w - this->m_body.w) / 2;
@@ -37,7 +47,7 @@ float Entity::GetVelY() { return m_velocity.y; }
 void Entity::SetX(float x) { m_dst.x = x - (m_dst.w - m_body.w) / 2; }
 void Entity::SetY(float y) { m_dst.y = y - (m_dst.h - m_body.h) / 2; }
 
-void Entity::movementUpdate()
+void Entity::MovementUpdate()
 {
 	m_velocity.x += m_accel.x;
 	m_velocity.x *= m_drag;
@@ -75,7 +85,7 @@ void Entity::movementUpdate()
 	}
 }
 
-void Entity::addAnimator(Animator* animator)
+void Entity::AddAnimator(Animator* animator)
 {
 	if (this->animator == nullptr)
 		this->animator = animator;
@@ -88,4 +98,8 @@ void Entity::TakeDamage(float damage)
 	m_health = m_health - damage;
 	if (m_health < 0)
 		m_health = 0;
+	Animation* damagedAnim = this->GetAnimator()->GetAnimation("damaged");
+	
+	if (damagedAnim)
+		m_damaged = damagedAnim->GetMaxFrames() * damagedAnim->GetFramesFrequency()/10;
 }

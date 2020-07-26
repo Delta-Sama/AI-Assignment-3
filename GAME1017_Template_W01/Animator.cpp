@@ -2,72 +2,80 @@
 
 Animator::Animator(Entity* animEntity)
 {
-	this->entity = animEntity;
-	this->curAnimationPriority = 0;
-	this->faceSide = 0;
-	this->animFrame = 0;
-	this->maxAnimationFrames = 0;
-	this->lastFrameTime = 0;
+	this->m_entity = animEntity;
+	this->m_curAnimationPriority = 0;
+	this->m_faceSide = 0;
+	this->m_animFrame = 0;
+	this->m_maxAnimationFrames = 0;
+	this->m_lastFrameTime = 0;
 }
 
-void Animator::setNextAnimation(const std::string& type)
+void Animator::SetNextAnimation(const std::string& type)
 {
-	Animation* anim = animationsMap[type];
-	Animation* nextAnim = animationsMap[nextAnimation];
-	if ((nextAnim == nullptr) or (anim->getPriotity() >= nextAnim->getPriotity()))
+	Animation* anim = m_animationsMap[type];
+	Animation* nextAnim = m_animationsMap[m_nextAnimation];
+	if ((nextAnim == nullptr) or (anim->GetPriotity() >= nextAnim->GetPriotity()))
 	{
-		nextAnimation = type;
+		m_nextAnimation = type;
 	}
 }
 
-void Animator::playAnimation()
+void Animator::PlayAnimation()
 {
-	if (animationsMap[nextAnimation] != nullptr)
+	if (m_animationsMap[m_nextAnimation] != nullptr)
 	{
 		//std::cout << "Playing " << nextAnimation << std::endl;
-		Animation* anim = animationsMap[nextAnimation];
-		if (curAnimType != nextAnimation)
+		Animation* anim = m_animationsMap[m_nextAnimation];
+		if (m_curAnimType != m_nextAnimation)
 		{
-			curAnimationPriority = anim->getPriotity();
-			animFrame = 0;
-			lastFrameTime = 0;
-			curAnimType = nextAnimation;
-			maxAnimationFrames = anim->getMaxFrames();
+			m_curAnimationPriority = anim->GetPriotity();
+			m_animFrame = 0;
+			m_lastFrameTime = 0;
+			m_curAnimType = m_nextAnimation;
+			m_maxAnimationFrames = anim->GetMaxFrames();
 		}
 		//std::cout << SDL_GetTicks() - lastFrameTime << " vs " << anim->getFramesFrequency() << "\n";
-		if (SDL_GetTicks() - lastFrameTime >= anim->getFramesFrequency())
+		if (SDL_GetTicks() - m_lastFrameTime >= anim->GetFramesFrequency())
 		{
-			lastFrameTime = SDL_GetTicks();
-			if (entity == nullptr)
+			m_lastFrameTime = SDL_GetTicks();
+			if (m_entity == nullptr)
 				std::cout << "No entity!!!!!!!!!\n";
-			entity->SetSrcCords(anim->getStartX() + anim->getMoveX() * animFrame, anim->getStartY() + anim->getMoveY() * faceSide);
-			if (++animFrame >= maxAnimationFrames)
+			m_entity->SetSrcCords(anim->GetStartX() + anim->GetMoveX() * m_animFrame, anim->GetStartY() + anim->GetMoveY() * m_faceSide);
+			if (++m_animFrame >= m_maxAnimationFrames)
 			{
-				animFrame = 0;
+				m_animFrame = 0;
 			}
 		}
 	}
-	nextAnimation = "";
+	m_nextAnimation = "";
 }
 
-void Animator::addAnimation(const std::string& key, Uint32 maxFrames, Uint32 priority, Uint32 moveX, Uint32 moveY, Uint32 startX
+void Animator::AddAnimation(const std::string& key, Uint32 maxFrames, Uint32 priority, Uint32 moveX, Uint32 moveY, Uint32 startX
 	, Uint32 startY, Uint32 framesFrequency)
 {
-	animationsMap[key] = new Animation(maxFrames, priority, moveX, moveY, startX, startY, framesFrequency);
+	m_animationsMap[key] = new Animation(maxFrames, priority, moveX, moveY, startX, startY, framesFrequency);
 }
 
-Animation* Animator::getAnimation(const std::string& key)
+void Animator::Clean()
 {
-	return animationsMap[key];
+	for (auto animPare : m_animationsMap)
+	{
+		delete animPare.second;
+	}
+}
+
+Animation* Animator::GetAnimation(const std::string& key)
+{
+	return m_animationsMap[key];
 }
 
 Animation::Animation(Uint32 maxFrames, Uint32 priority, Uint32 moveX, Uint32 moveY, Uint32 startX, Uint32 startY, Uint32 framesFrequency)
 {
-	this->startX = startX;
-	this->startY = startY;
-	this->maxFrames = maxFrames;
-	this->moveX = moveX;
-	this->moveY = moveY;
-	this->priority = priority;
-	this->framesFrequency = framesFrequency*10;
+	this->m_startX = startX;
+	this->m_startY = startY;
+	this->m_maxFrames = maxFrames;
+	this->m_moveX = moveX;
+	this->m_moveY = moveY;
+	this->m_priority = priority;
+	this->m_framesFrequency = framesFrequency*10;
 }

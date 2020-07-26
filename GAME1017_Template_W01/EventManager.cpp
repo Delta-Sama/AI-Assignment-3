@@ -10,6 +10,8 @@ void EventManager::Init()
 	std::memcpy(s_keysLast, s_keysCurr, s_numKeys);
 	s_mouseCurr = SDL_GetMouseState(&s_mousePos.x, &s_mousePos.y);
 	s_mouseLast = s_mouseCurr;
+
+	InitializeControllers();
 	std::cout << "EventManager init done!" << std::endl;
 }
 
@@ -28,16 +30,29 @@ void EventManager::HandleEvents()
 		case SDL_QUIT: // User pressed window's 'x' button.
 			Engine::Instance().Running() = false;
 			break;
+			
 		case SDL_KEYDOWN:
 			s_lastKeyDown = event.key.keysym.sym;
 			if (event.key.keysym.sym == SDLK_SPACE)
-
+				
 				break;
+			
 		case SDL_KEYUP:
 			s_lastKeyUp = event.key.keysym.sym;
 			if (event.key.keysym.sym == SDLK_ESCAPE)
 				Engine::Instance().Running() = false;
 			break;
+			
+		case SDL_CONTROLLERDEVICEADDED:
+			std::cout << "Controller Added " << std::endl;
+			InitializeControllers();
+			break;
+
+		case SDL_CONTROLLERDEVICEREMOVED:
+			std::cout << "Controller Removed " << std::endl;
+			InitializeControllers();
+			break;
+			
 		}
 	}
 	s_keysCurr = SDL_GetKeyboardState(&s_numKeys);
@@ -99,6 +114,27 @@ SDL_Point& EventManager::GetMousePos()
 	return s_mousePos;
 }
 
+GameController* EventManager::GetGameController(int controller_number)
+{
+	if (SDL_GameControllerGetAttached(m_gameControllers[controller_number]->handle))
+	{
+		return m_gameControllers[controller_number];
+	}
+
+	return nullptr;
+}
+
+void EventManager::InitializeControllers()
+{
+	m_gameControllers.clear();
+
+	for (int count = 0; count < SDL_NumJoysticks(); ++count)
+	{
+		GameController* controller = new GameController(SDL_GameControllerOpen(count));
+		m_gameControllers.push_back(controller);
+	}
+}
+
 void EventManager::Quit()
 {
 	delete s_keysLast;
@@ -113,3 +149,4 @@ int EventManager::s_lastKeyUp;
 SDL_Point EventManager::s_mousePos = { 0,0 };
 Uint32 EventManager::s_mouseCurr;
 Uint32 EventManager::s_mouseLast;
+std::vector<GameController*> EVMA::m_gameControllers;

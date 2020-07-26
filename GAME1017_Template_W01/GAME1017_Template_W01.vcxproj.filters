@@ -107,6 +107,9 @@
     <ClCompile Include="SlimeProjectile.cpp">
       <Filter>Objects\Source</Filter>
     </ClCompile>
+    <ClCompile Include="GameController.cpp">
+      <Filter>Engine\Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CollisionManager.h">
@@ -228,6 +231,9 @@
     </ClInclude>
     <ClInclude Include="SlimeProjectile.h">
       <Filter>Objects\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="GameController.h">
+      <Filter>Engine\Header</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

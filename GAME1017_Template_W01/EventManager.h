@@ -3,6 +3,10 @@
 #define _EVENTMANAGER_H_
 
 #include <SDL.h>
+#include <vector>
+
+
+#include "GameController.h"
 
 class EventManager
 {
@@ -18,6 +22,11 @@ public:
 	static bool MousePressed(const int b);
 	static bool MouseReleased(const int b);
 	static SDL_Point& GetMousePos();
+	
+	// Game Controller
+	static GameController* GetGameController(int controller_number);
+	static void InitializeControllers();
+	
 	static void Quit();
 private:
 	// Keyboard state containers.
@@ -30,6 +39,9 @@ private:
 	static SDL_Point s_mousePos;
 	static Uint32 s_mouseCurr;
 	static Uint32 s_mouseLast;
+
+	// GameControllers
+	static std::vector<GameController*> m_gameControllers;
 private: 
 	EventManager() {}
 };
