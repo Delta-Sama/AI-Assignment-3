@@ -25,7 +25,7 @@ void GameObjectManager::Update()
 {
 	for (GameObject* obj : GameObjectsVec)
 	{
-		obj->update();
+		obj->Update();
 	}
 }
 

@@ -110,6 +110,12 @@
     <ClCompile Include="GameController.cpp">
       <Filter>Engine\Source</Filter>
     </ClCompile>
+    <ClCompile Include="AIState.cpp">
+      <Filter>Entities\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="EntityMoveEngine.cpp">
+      <Filter>Entities\Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CollisionManager.h">
@@ -234,6 +240,12 @@
     </ClInclude>
     <ClInclude Include="GameController.h">
       <Filter>Engine\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="AIState.h">
+      <Filter>Entities\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="EntityMoveEngine.h">
+      <Filter>Entities\Header</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

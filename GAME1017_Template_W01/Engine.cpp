@@ -6,12 +6,9 @@
 #include "SoundManager.h"
 #include "StateManager.h"
 #include "TextureManager.h"
+#include "ProjectileManager.h"
 
 #include <iostream>
-
-#include "ProjectileManager.h"
-#define WIDTH 960
-#define HEIGHT 640
 
 using namespace std;
 

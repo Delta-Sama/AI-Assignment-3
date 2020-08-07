@@ -122,7 +122,7 @@ void GameState::Update()
 		ENMA::GetEnemies()->back()->TakeDamage(10);
 	}
 	
-	m_player->update();
+	m_player->Update();
 
 	m_gameHUD->Update();
 	

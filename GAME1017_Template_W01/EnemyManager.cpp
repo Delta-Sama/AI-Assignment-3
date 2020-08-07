@@ -20,7 +20,7 @@ void EnemyManager::Update()
 		}
 		else
 		{
-			(*enemy)->update();
+			(*enemy)->Update();
 			enemy++;
 		}
 	}
@@ -46,7 +46,7 @@ void EnemyManager::Clean()
 {
 	for (Enemy* enemy : EnemiesVec)
 	{
-		enemy->clean();
+		enemy->Clean();
 		delete enemy;
 	}
 

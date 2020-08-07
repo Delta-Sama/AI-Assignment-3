@@ -16,18 +16,26 @@ public:
 	Enemy(SDL_Texture* t, Vec2 pos, float maxHealth);
 	~Enemy();
 	
-	virtual void update() = 0;
-	virtual void clean() override;
+	virtual void Update() = 0;
+	virtual void Clean() override;
 	virtual void MakeDecision() = 0;
 
 	void EnemyUpdate();
 	void Seek(SDL_FPoint& goal);
 	
-	bool GetPlayerLOS() { return m_playerLOS; }
-	bool GetPlayerDetectRad() { return m_playerDetectRad; }
-	PathNode* GetGoal() { return m_goal; }
 	Status GetStatus() { return m_status; }
 	bool GetActive() { return m_active; }
+	bool GetPlayerLOS() { return m_playerLOS; }
+	bool GetPlayerDetectRad() { return m_playerDetectRad; }
+	
+	LocalPathManager* GetPathManager() { return &m_pathManager; }
+	PathNode* GetGoal() { return m_goal; }
+	bool GoalIsReached() { return m_reachedGoal; }
+	
+	void SetGoal(PathNode* newGoal) { m_goal = newGoal; }
+	void SetReachedGoal(bool result) { m_reachedGoal = result; }
+
+	void CleanLocalPath();
 	
 	void SetStatus(Status stat) { m_status = stat; }
 

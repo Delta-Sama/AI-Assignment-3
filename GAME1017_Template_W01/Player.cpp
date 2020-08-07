@@ -24,13 +24,14 @@ const float MELEEANGLE = 50.0;
 Player::Player()
 	:Entity({0,0,34,34}, {100,100,60,60}, TEMA::GetTexture("player"), PLAYERMAXHEALTH)
 {
-	this->m_body = {0,0,35,35};
+	
+	m_body = {0,0,35,35};
 	this->SetBodyPosition();
 
 	this->SetType(PLAYER);
 	
 	this->AddAnimator(new Animator(this));
-
+	
 	this->GetAnimator()->AddAnimation("idle", 3, 1, 34, 0, 0, 0,16);
 	this->GetAnimator()->AddAnimation("run", 8, 2, 34, 0,0,34);
 	this->GetAnimator()->AddAnimation("die", 4, 3, 34, 0, 0, 68);
@@ -45,10 +46,10 @@ Player::~Player()
 	
 }
 
-void Player::update()
+void Player::Update()
 {
-	this->movement[0] = 0;
-	this->movement[1] = 0;
+	m_movement[0] = 0;
+	m_movement[1] = 0;
 	
 	if (SDL_NumJoysticks() < 1)
 		this->KeyboardInput();
@@ -62,7 +63,7 @@ void Player::update()
 		this->GetAnimator()->SetNextAnimation(m_curMeleeAnim);
 	}
 	
-	if (this->movement[0] == 0 and this->movement[1] == 0)
+	if (m_movement[0] == 0 and m_movement[1] == 0)
 		this->GetAnimator()->SetNextAnimation("idle");
 	else
 		this->GetAnimator()->SetNextAnimation("run");
@@ -74,7 +75,7 @@ void Player::update()
 	this->SetBodyPosition();
 }
 
-void Player::clean()
+void Player::Clean()
 {
 	
 }
@@ -90,23 +91,23 @@ void Player::KeyboardInput()
 	
 	if (EVMA::KeyHeld(SDL_SCANCODE_A))
 	{
-		this->SetAccelX(-1.0f);
-		this->movement[0] = -1;
+		this->GetMoveEngine()->SetAccelX(-1.0f);
+		m_movement[0] = -1;
 	}
 	else if (EVMA::KeyHeld(SDL_SCANCODE_D))
 	{
-		this->SetAccelX(1.0f);
-		this->movement[0] = 1;
+		this->GetMoveEngine()->SetAccelX(1.0f);
+		m_movement[0] = 1;
 	}
 	if (EVMA::KeyHeld(SDL_SCANCODE_W))
 	{
-		this->SetAccelY(-1.0f);
-		this->movement[1] = 1;
+		this->GetMoveEngine()->SetAccelY(-1.0f);
+		m_movement[1] = 1;
 	}
 	else if (EVMA::KeyHeld(SDL_SCANCODE_S))
 	{
-		this->SetAccelY(1.0f);
-		this->movement[1] = -1;
+		this->GetMoveEngine()->SetAccelY(1.0f);
+		m_movement[1] = -1;
 	}
 	
 	if (EVMA::MousePressed(1))
@@ -135,23 +136,23 @@ void Player::GamepadInput()
 		const int deadZone = 10000;
 		if (EVMA::GetGameController(0)->LEFT_STICK_X < -deadZone)
 		{
-			this->SetAccelX(-1.0f);
-			this->movement[0] = -1;
+			this->GetMoveEngine()->SetAccelX(-1.0f);
+			m_movement[0] = -1;
 		}
 		else if (EVMA::GetGameController(0)->LEFT_STICK_X > deadZone)
 		{
-			this->SetAccelX(1.0f);
-			this->movement[0] = 1;
+			this->GetMoveEngine()->SetAccelX(1.0f);
+			m_movement[0] = 1;
 		}
 		if (EVMA::GetGameController(0)->LEFT_STICK_Y > deadZone)
 		{
-			this->SetAccelY(-1.0f);
-			this->movement[1] = 1;
+			this->GetMoveEngine()->SetAccelY(-1.0f);
+			m_movement[1] = 1;
 		}
 		else if (EVMA::GetGameController(0)->LEFT_STICK_Y < -deadZone)
 		{
-			this->SetAccelY(1.0f);
-			this->movement[1] = -1;
+			this->GetMoveEngine()->SetAccelY(1.0f);
+			m_movement[1] = -1;
 		}
 
 		if (EVMA::GetGameController(0)->DPAD_DOWN)
@@ -177,7 +178,7 @@ void Player::Melee()
 		SOMA::PlaySound("melee", 0, 3);
 		m_meleeTime = SDL_GetTicks();
 
-		if (this->movement[0] == 0 and this->movement[1] == 0)
+		if (m_movement[0] == 0 and m_movement[1] == 0)
 			m_curMeleeAnim = "melee";
 		else
 			m_curMeleeAnim = "run_melee";

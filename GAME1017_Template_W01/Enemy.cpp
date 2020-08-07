@@ -32,7 +32,7 @@ void Enemy::EnemyUpdate()
 
 	this->MovementUpdate();
 
-	if (this->GetVelX() == 0 and this->GetVelY() == 0)
+	if (m_moveEngine->GetVelX() == 0 and m_moveEngine->GetVelY() == 0)
 		this->GetAnimator()->SetNextAnimation("idle");
 	else
 		this->GetAnimator()->SetNextAnimation("run");
@@ -49,7 +49,7 @@ void Enemy::EnemyUpdate()
 	}
 }
 
-void Enemy::clean()
+void Enemy::Clean()
 {
 	this->m_active = false;
 	this->m_healthBar->SetActive(false);
@@ -72,7 +72,13 @@ void Enemy::Seek(SDL_FPoint& goal)
 		dx = dx / hyp;
 		dy = dy / hyp;
 
-		this->SetAccelX(dx * SPEED);
-		this->SetAccelY(dy * SPEED);
+		m_moveEngine->SetAccelX(dx * SPEED);
+		m_moveEngine->SetAccelY(dy * SPEED);
 	}
+}
+
+void Enemy::CleanLocalPath()
+{
+	m_pathManager.CleanNodes();
+	SetGoal(nullptr);
 }

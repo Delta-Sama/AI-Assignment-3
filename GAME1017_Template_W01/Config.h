@@ -6,4 +6,8 @@ const int MAXCHECK = 2;
 const int PREVNODESSIZE = 4;
 const float DETECTRADIUS = 100;
 
+const float SWITHNODEDISTANCE = 24;
+const float STANDARTDRAG = 0.88;
+const float MAXENTITYVELOCITY = 3.0;
+
 #endif

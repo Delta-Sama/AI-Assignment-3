@@ -2,6 +2,7 @@
 #ifndef _ENTITY_H_
 #define _ENTITY_H_
 
+#include "EntityMoveEngine.h"
 #include "GameObject.h"
 #include "LocalPathManager.h"
 
@@ -13,22 +14,16 @@ public:
 	Entity(SDL_Rect s, SDL_FRect d, SDL_Texture* t, float maxHealth);
 	~Entity();
 	
-	virtual void update() = 0;
-	virtual void clean() = 0;
+	virtual void Update() = 0;
+	virtual void Clean() = 0;
 
-	void Stop();
-	void StopX();
-	void StopY();
-	void SetAccelX(float a);
-	void SetAccelY(float a);
-	
-	float GetVelX();
-	float GetVelY();
-	void SetX(float y);
-	void SetY(float y);
 	void MovementUpdate();
 	Animator* GetAnimator() { return animator; }
+	EntityMoveEngine* GetMoveEngine() { return m_moveEngine; }
 	void AddAnimator(Animator* animator);
+
+	void SetX(float y);
+	void SetY(float y);
 
 	SDL_FRect* GetBody() { return &m_body; }
 
@@ -36,16 +31,11 @@ public:
 	float GetMaxHealth() { return m_maxHealth; }
 
 	void TakeDamage(float damage);
-	
-private:
-	Vec2 m_velocity;
-	Vec2 m_accel;
-	float m_maxVelocity;
-	
-	float m_drag, m_speed;
-	Animator* animator;
 
 protected:
+	Animator* animator;
+	EntityMoveEngine* m_moveEngine;
+	
 	float m_health;
 	const float m_maxHealth;
 	

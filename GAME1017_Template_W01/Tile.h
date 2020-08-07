@@ -19,8 +19,8 @@ public:
 	bool IsHazard() { return m_hazard; }
 	bool Rotatable() { return m_rotatable; }
 	
-	virtual void update() override {};
-	virtual void clean() override {};
+	virtual void Update() override {};
+	virtual void Clean() override {};
 	
 	Tile* Clone() { return new Tile(m_src, m_dst, m_pText, m_obstacle, m_hazard, m_rotatable); }
 	//PathNode* Node() { return m_node; }

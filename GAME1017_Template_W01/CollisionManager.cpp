@@ -178,24 +178,24 @@ void CollisionManager::CheckMapCollision(Entity* entity)
 		SDL_FRect* entityRect = entity->GetBody();
 		if (tile->IsObstacle() and COMA::AABBCheck(*entityRect, *tileRect))
 		{
-			if (entityRect->y + entityRect->h - (float)entity->GetVelY() <= tileRect->y)
+			if (entityRect->y + entityRect->h - (float)entity->GetMoveEngine()->GetVelY() <= tileRect->y)
 			{ // Colliding top side of platform.
-				entity->StopY();
+				entity->GetMoveEngine()->StopY();
 				entity->SetY(tileRect->y - entityRect->h);
 			}
-			else if (entityRect->y - (float)entity->GetVelY() >= tileRect->y + tileRect->h)
+			else if (entityRect->y - (float)entity->GetMoveEngine()->GetVelY() >= tileRect->y + tileRect->h)
 			{ // Colliding bottom side of platform.
-				entity->StopY();
+				entity->GetMoveEngine()->StopY();
 				entity->SetY(tileRect->y + tileRect->h);
 			}
-			else if (entityRect->x + entityRect->w - (float)entity->GetVelX() <= tileRect->x)
+			else if (entityRect->x + entityRect->w - (float)entity->GetMoveEngine()->GetVelX() <= tileRect->x)
 			{ // Collision from left.
-				entity->StopX();
+				entity->GetMoveEngine()->StopX();
 				entity->SetX(tileRect->x - entityRect->w);
 			}
-			else if (entityRect->x - (float)entity->GetVelX() >= tileRect->x + tileRect->w)
+			else if (entityRect->x - (float)entity->GetMoveEngine()->GetVelX() >= tileRect->x + tileRect->w)
 			{
-				entity->StopX();
+				entity->GetMoveEngine()->StopX();
 				entity->SetX(tileRect->x + tileRect->w);
 			}
 		}

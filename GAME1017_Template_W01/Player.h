@@ -13,8 +13,8 @@ public: // Methods
 	Player();
 	~Player();
 
-	virtual void update() override;
-	virtual void clean() override;
+	virtual void Update() override;
+	virtual void Clean() override;
 
 	void KeyboardInput();
 	void GamepadInput();
@@ -22,7 +22,7 @@ public: // Methods
 	void Melee();
 	void ShootProjectile(float dirX, float dirY);
 
-	int movement[2] = { 0,0 };
+	int m_movement[2] = { 0,0 };
 private:
 	int m_meleeAnimFrames;
 	std::string m_curMeleeAnim;

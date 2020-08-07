@@ -11,7 +11,7 @@ public:
 	RedSniper(Vec2 pos);
 	~RedSniper();
 
-	virtual void update() override;
+	virtual void Update() override;
 	virtual void MakeDecision() override;
 	
 private:

@@ -13,10 +13,10 @@ public:
 	virtual ~GameObject();
 
 	// Update the object
-	virtual void update() = 0;
+	virtual void Update() = 0;
 
 	// remove anything that needs to be deleted
-	virtual void clean() = 0;
+	virtual void Clean() = 0;
 
 	GameObjectType GetType() const;
 	void SetType(GameObjectType new_type);
