@@ -3,6 +3,7 @@
 #include "Config.h"
 #include "EnemyManager.h"
 #include "MathManager.h"
+#include "PathManager.h"
 #include "SoundManager.h"
 #include "TextureManager.h"
 
@@ -51,6 +52,24 @@ void Enemy::EnemyUpdate()
 	{
 
 		this->m_AIState->ChangeState(DIE);
+	}
+
+	m_shortestNode = nullptr;
+	long min_dist = 99999;
+	
+	for (PathNode* node : *PAMA::GetNodes())
+	{
+		SDL_FPoint temp_pos = { node->x, node->y };
+		if (COMA::LOSCheck(&temp_pos,&GetCenter()))
+		{
+			long dist = (long)MAMA::SquareDistance(&GetCenter(), &temp_pos);
+			
+			if (dist < min_dist)
+			{
+				min_dist = dist;
+				m_shortestNode = node;
+			}
+		}
 	}
 }
 

@@ -96,14 +96,6 @@ void GameState::Enter()
 	m_level->Load();
 
 	ENMA::SetPlayer(m_player);
-
-	if (not m_level->GetPatrolPath()->empty())
-	{
-		std::cout << "Create a path\n";
-		PathNode* start = (*m_level->GetPatrolPath())[0];
-		PathNode* goal = m_level->GetPatrolPath()->back();
-		m_path = PAMA::GetShortestPath(start, goal);
-	}
 }
 
 void GameState::Update()
@@ -124,7 +116,23 @@ void GameState::Update()
 	}
 	if (EVMA::KeyPressed(SDL_SCANCODE_K))
 	{
-		draw_path = not draw_path;
+		for (Enemy* enemy : *ENMA::GetEnemies())
+		{
+			if (enemy->GetStatus() == GOTOLOS)
+				enemy->GetAIState()->ChangeState(IDLE);
+			else
+				enemy->GetAIState()->ChangeState(GOTOLOS);
+		}
+	}
+	if (EVMA::KeyPressed(SDL_SCANCODE_L))
+	{
+		for (Enemy* enemy : *ENMA::GetEnemies())
+		{
+			if (enemy->GetStatus() == GOTOCOVER)
+				enemy->GetAIState()->ChangeState(IDLE);
+			else
+				enemy->GetAIState()->ChangeState(GOTOCOVER);
+		}
 	}
 	
 	m_player->Update();
@@ -169,19 +177,7 @@ void GameState::Render()
 	m_gameHUD->Render();
 
 	m_debugger->Draw();
-
-	if (draw_path)
-	{
-		if (not m_path.empty())
-		{
-			for (int i = 0; i < m_path.size(); i++)
-			{
-				PathNode* from = m_path[i]->GetFromNode();
-				PathNode* to = m_path[i]->GetToNode();
-				Util::DrawLine({ from->x, from->y }, { to->x, to->y }, {255,0,0,255});
-			}
-		}
-	}
+	Util::Draw();
 	
 	UIMA::Render(LOW);
 	UIMA::Render(MEDIUM);

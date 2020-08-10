@@ -7,7 +7,7 @@
 #include "HealthBar.h"
 #include "States.h"
 
-enum Status { IDLE, PATROL, ATTACK, FLEE, DIE };
+enum Status { IDLE, PATROL, GOTOLOS, GOTOCOVER, ATTACK, FLEE, DIE };
 
 const float SPEED = 1;
 
@@ -34,6 +34,7 @@ public:
 	PathNode* GetGoal() { return m_goal; }
 	bool GoalIsReached() { return m_reachedGoal; }
 	AIState* GetAIState() { return m_AIState; }
+	PathNode* GetShortestLOSNode() { return m_shortestNode; }
 	
 	void SetGoal(PathNode* newGoal) { m_goal = newGoal; }
 	void SetReachedGoal(bool result) { m_reachedGoal = result; }
@@ -57,6 +58,8 @@ protected:
 	HealthBar* m_healthBar;
 
 	AIState* m_AIState;
+
+	PathNode* m_shortestNode;
 	
 	bool m_active;
 };

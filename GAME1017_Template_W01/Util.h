@@ -3,6 +3,8 @@
 #define __UTIL__
 
 #include <SDL_rect.h>
+#include <vector>
+
 
 #include "Vector2.h"
 
@@ -15,7 +17,24 @@ enum ShapeType
 	SYMMETRICAL
 };
 
+struct Line
+{
+	Line(SDL_FPoint s, SDL_FPoint e, Vec4 col) : start(s), end(e), colour(col) {}
+	SDL_FPoint start;
+	SDL_FPoint end;
+	Vec4 colour;
+};
+
+struct Circle
+{
+	Circle(SDL_FPoint s, int r, Vec4 col) : start(s), radius(r), colour(col) {}
+	SDL_FPoint start;
+	int radius;
+	Vec4 colour;
+};
+
 class Util
+
 {
 public:
 	Util();
@@ -55,6 +74,16 @@ public:
 	static void DrawRect(SDL_FPoint position, int width, int height, Vec4 colour = Vec4(0.0f, 1.0f, 0.0f, 1.0f));
 	static void DrawCircle(SDL_FPoint centre, int radius, Vec4 colour = Vec4(0.0f, 1.0f, 0.0f, 1.0f), ShapeType type = SYMMETRICAL);
 	static void DrawCapsule(SDL_FPoint position, int width, int height, Vec4 colour = Vec4(0.0f, 1.0f, 0.0f, 1.0f));
+
+	static void QueueCircle(SDL_FPoint centre, int radius, Vec4 colour = Vec4(0.0f, 1.0f, 0.0f, 1.0f));
+	static void QueueLine(SDL_FPoint start, SDL_FPoint end, Vec4 colour = Vec4(0.0f, 1.0f, 0.0f, 1.0f));
+	static void DrawLines();
+	static void DrawCircles();
+	static void Draw();
+	
+private:
+	static std::vector<Line> m_lines;
+	static std::vector<Circle> m_circles;
 };
 
 #endif /* defined (__UTIL__) */

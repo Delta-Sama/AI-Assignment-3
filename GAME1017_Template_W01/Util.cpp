@@ -2,6 +2,7 @@
 #include "Engine.h"
 
 #include <algorithm>
+#include <iostream>
 #include <math.h>
 #include <SDL.h>
 
@@ -434,3 +435,42 @@ void Util::DrawCapsule(SDL_FPoint position, int width, int height, Vec4 colour)
 		DrawCircle(position, radius = halfWidth, colour);
 	}
 }
+
+void Util::QueueLine(SDL_FPoint start, SDL_FPoint end, Vec4 colour)
+{
+	m_lines.push_back(Line(start,end,colour));
+}
+
+void Util::QueueCircle(SDL_FPoint centre, int radius, Vec4 colour)
+{
+	m_circles.push_back(Circle(centre, radius, colour));
+}
+
+void Util::DrawLines()
+{
+	for (Line line : m_lines)
+	{
+		DrawLine(line.start, line.end, line.colour);
+	}
+	m_lines.clear();
+	m_lines.shrink_to_fit();
+}
+
+void Util::DrawCircles()
+{
+	for (Circle circle : m_circles)
+	{
+		DrawCircle(circle.start, circle.radius, circle.colour);
+	}
+	m_circles.clear();
+	m_circles.shrink_to_fit();
+}
+
+void Util::Draw()
+{
+	DrawLines();
+	DrawCircles();
+}
+
+std::vector<Line> Util::m_lines;
+std::vector<Circle> Util::m_circles;

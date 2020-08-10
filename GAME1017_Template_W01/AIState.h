@@ -84,7 +84,25 @@ public:
 	virtual void Exit() override;
 
 private:
+	int update_frame;
+	const int max_update_frame = 10;
 
+};
+
+class MoveBehindCoverState : public BehaviorState
+{
+public:
+	MoveBehindCoverState(Enemy* enemy);
+	~MoveBehindCoverState();
+
+	virtual void Enter() override;
+	virtual void Update() override;
+	virtual void Test() override;
+	virtual void Exit() override;
+
+private:
+	int update_frame;
+	const int max_update_frame = 10;
 
 };
 

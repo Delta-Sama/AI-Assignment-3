@@ -158,6 +158,16 @@ bool CollisionManager::LOSCheck(SDL_FPoint* from, SDL_FPoint* to)
 		}
 	}
 
+	for (Obstacle* obstacle : *GameObjectManager::GetObstacles())
+	{
+		const SDL_FRect* box = obstacle->GetDstP();
+
+		if (LineRectCheck(*from, *to, box))
+		{
+			return false;
+		}
+	}
+	
 	return true;
 }
 

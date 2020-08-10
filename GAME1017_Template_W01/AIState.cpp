@@ -3,7 +3,9 @@
 #include "CollisionManager.h"
 #include "EnemyManager.h"
 #include "MathManager.h"
+#include "PathManager.h"
 #include "SoundManager.h"
+#include "Util.h"
 
 BehaviorState::BehaviorState(Enemy* player) : m_entity(player)
 {
@@ -51,6 +53,12 @@ void AIState::ChangeState(Status status)
 		break;
 	case DIE:
 		ChangeState(new DieState(m_entity));
+		break;
+	case GOTOLOS:
+		ChangeState(new MoveToLOSState(m_entity));
+		break;
+	case GOTOCOVER:
+		ChangeState(new MoveBehindCoverState(m_entity));
 		break;
 	}
 }
@@ -194,7 +202,7 @@ void PatrolState::Exit()
 
 // MOVING TO LOS:
 
-MoveToLOSState::MoveToLOSState(Enemy* enemy) : BehaviorState(enemy)
+MoveToLOSState::MoveToLOSState(Enemy* enemy) : BehaviorState(enemy), update_frame(0)
 {
 }
 
@@ -207,7 +215,39 @@ void MoveToLOSState::Enter()
 
 void MoveToLOSState::Update()
 {
-	
+	// Find nearest LOS node:
+	PathNode* LOS_node = nullptr;
+	long min_dist = 99999;
+
+	for (PathNode* node : *PAMA::GetNodes())
+	{
+		if (node->GetPlayerLOS())
+		{
+			SDL_FPoint temp_pos = { node->x, node->y };
+			long dist = (long int)MAMA::SquareDistance(&ENMA::GetPlayer()->GetCenter(), &temp_pos);
+			
+			if (dist < min_dist)
+			{
+				
+				min_dist = dist;
+				LOS_node = node;
+			}
+		}
+	}
+	// Draw path:
+	if (LOS_node and m_entity->GetShortestLOSNode())
+	{
+		Util::QueueCircle({ m_entity->GetShortestLOSNode()->x, m_entity->GetShortestLOSNode()->y }, 15, {255,0,0,255});
+		Util::QueueCircle({ LOS_node->x, LOS_node->y }, 10);
+		std::vector<PathConnection*> path = PAMA::GetShortestPath(m_entity->GetShortestLOSNode(), LOS_node);
+		//std::cout << "Path size: " << path.size() << "\n";
+		for (int i = 0; i < path.size(); i++)
+		{
+			PathNode* from = path[i]->GetFromNode();
+			PathNode* to = path[i]->GetToNode();
+			Util::QueueLine({ from->x, from->y }, { to->x, to->y }, { 255,0,0,255 });
+		}
+	}
 }
 
 void MoveToLOSState::Test()
@@ -216,6 +256,66 @@ void MoveToLOSState::Test()
 }
 
 void MoveToLOSState::Exit()
+{
+	
+}
+
+// MOVE BEHIND COVER:
+
+MoveBehindCoverState::MoveBehindCoverState(Enemy* enemy) : BehaviorState(enemy)
+{
+}
+
+MoveBehindCoverState::~MoveBehindCoverState() = default;
+
+void MoveBehindCoverState::Enter()
+{
+	
+}
+
+void MoveBehindCoverState::Update()
+{
+	// Find nearest LOS node:
+	PathNode* LOS_node = nullptr;
+	long min_dist = 99999;
+
+	for (PathNode* node : *PAMA::GetNodes())
+	{
+		if (not node->GetPlayerLOS())
+		{
+			SDL_FPoint temp_pos = { node->x, node->y };
+			long dist = (long int)MAMA::SquareDistance(&m_entity->GetCenter(), &temp_pos);
+
+			if (dist < min_dist)
+			{
+
+				min_dist = dist;
+				LOS_node = node;
+			}
+		}
+	}
+	// Draw path:
+	if (LOS_node and m_entity->GetShortestLOSNode())
+	{
+		Util::QueueCircle({ m_entity->GetShortestLOSNode()->x, m_entity->GetShortestLOSNode()->y }, 15, { 255,0,0,255 });
+		Util::QueueCircle({ LOS_node->x, LOS_node->y }, 10);
+		std::vector<PathConnection*> path = PAMA::GetShortestPath(m_entity->GetShortestLOSNode(), LOS_node);
+		//std::cout << "Path size: " << path.size() << "\n";
+		for (int i = 0; i < path.size(); i++)
+		{
+			PathNode* from = path[i]->GetFromNode();
+			PathNode* to = path[i]->GetToNode();
+			Util::QueueLine({ from->x, from->y }, { to->x, to->y }, { 255,0,0,255 });
+		}
+	}
+}
+
+void MoveBehindCoverState::Test()
+{
+	
+}
+
+void MoveBehindCoverState::Exit()
 {
 	
 }
