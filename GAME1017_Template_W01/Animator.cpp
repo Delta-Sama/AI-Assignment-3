@@ -18,6 +18,24 @@ void Animator::SetNextAnimation(const std::string& type)
 	{
 		m_nextAnimation = type;
 	}
+
+}
+
+void Animator::PlayFullAnimation(const std::string& type)
+{
+	for (AnimRecord* rec : m_animRecords)
+	{
+		if (type == rec->animation->getName())
+		{
+			rec->curTick = 0;
+			rec->curFrame = 0;
+			m_animFrame = 0;
+			m_lastFrameTime = 0;
+			return;
+		}
+	}
+
+	m_animRecords.push_back(new AnimRecord(m_animationsMap[type]));
 }
 
 void Animator::PlayAnimation()
@@ -32,6 +50,14 @@ void Animator::PlayAnimation()
 			m_lastFrameTime = 0;
 			m_curAnimType = m_nextAnimation;
 			m_maxAnimationFrames = anim->GetMaxFrames();
+			for (AnimRecord* rec : m_animRecords)
+			{
+				if (m_nextAnimation == rec->animation->getName())
+				{
+					m_animFrame = rec->curFrame;
+					m_lastFrameTime = rec->curTick;
+				}
+			}
 		}
 		//std::cout << SDL_GetTicks() - lastFrameTime << " vs " << anim->getFramesFrequency() << "\n";
 		if (SDL_GetTicks() - m_lastFrameTime >= anim->GetFramesFrequency())
@@ -53,6 +79,40 @@ void Animator::AddAnimation(const std::string& key, Uint32 maxFrames, Uint32 pri
 	, Uint32 startY, Uint32 framesFrequency)
 {
 	m_animationsMap[key] = new Animation(maxFrames, priority, moveX, moveY, startX, startY, framesFrequency);
+	m_animationsMap[key]->setName(key);
+}
+
+void Animator::Update()
+{
+	Animation* nextAnim = m_animationsMap[m_nextAnimation];
+	for (AnimRecord* rec : m_animRecords)
+	{
+		if ((nextAnim == nullptr) or (rec->animation->GetPriotity() >= nextAnim->GetPriotity()))
+		{
+			m_nextAnimation = rec->animation->getName();
+		}
+	}
+
+	PlayAnimation();
+
+	for (auto animRec = m_animRecords.begin(); animRec != m_animRecords.end();)
+	{
+		bool moved = false;
+		if (SDL_GetTicks() - (*animRec)->curTick >= (*animRec)->animation->GetFramesFrequency())
+		{
+			(*animRec)->curTick = SDL_GetTicks();
+			if (++(*animRec)->curFrame >= (*animRec)->animation->GetMaxFrames())
+			{
+				delete* animRec;
+				animRec = m_animRecords.erase(animRec);
+				moved = true;
+			}
+		}
+		if (not moved)
+		{
+			animRec++;
+		}
+	}
 }
 
 void Animator::Clean()
@@ -63,9 +123,30 @@ void Animator::Clean()
 	}
 }
 
+bool Animator::AnimationIsPlaying(const std::string& key)
+{
+	bool foundInAnimRecords = false;
+	for (AnimRecord* rec : m_animRecords)
+	{
+		if (key == rec->animation->getName())
+		{
+			foundInAnimRecords = true;
+			break;
+		}
+	}
+	
+	return m_nextAnimation == key or foundInAnimRecords;
+}
+
 Animation* Animator::GetAnimation(const std::string& key)
 {
 	return m_animationsMap[key];
+}
+
+AnimRecord::AnimRecord(Animation* animation)
+{
+	this->animation = animation;
+	this->curFrame = 0;
 }
 
 Animation::Animation(Uint32 maxFrames, Uint32 priority, Uint32 moveX, Uint32 moveY, Uint32 startX, Uint32 startY, Uint32 framesFrequency)
@@ -76,5 +157,5 @@ Animation::Animation(Uint32 maxFrames, Uint32 priority, Uint32 moveX, Uint32 mov
 	this->m_moveX = moveX;
 	this->m_moveY = moveY;
 	this->m_priority = priority;
-	this->m_framesFrequency = framesFrequency*10;
+	this->m_framesFrequency = framesFrequency * 10;
 }

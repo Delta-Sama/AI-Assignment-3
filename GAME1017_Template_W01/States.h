@@ -62,6 +62,9 @@ private:
 	Level* m_level;
 
 	GameHUD* m_gameHUD;
+
+	bool draw_path = false;
+	std::vector<PathConnection*> m_path;
 };
 
 class EndState : public State

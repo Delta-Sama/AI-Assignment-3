@@ -1,9 +1,7 @@
 #include "ProjectileManager.h"
+#include "Engine.h"
 
 #include <iostream>
-
-
-#include "Engine.h"
 
 std::vector<Projectile*> PRMA::s_projectiles;
 SDL_Point PRMA::m_windowSize;
@@ -29,7 +27,6 @@ void ProjectileManager::Update()
 			
 			if (temp->x < 0 - temp->w or temp->x > m_windowSize.x or temp->y < 0 - temp->h or temp->y > m_windowSize.y)
 			{
-				std::cout << "Removed\n";
 				(*proj)->SetActive(false);
 			}
 			proj++;

@@ -13,7 +13,7 @@ RedSniper::RedSniper(Vec2 pos) : Enemy(TEMA::GetTexture("enemy"), pos, SNIPERMAX
 	this->GetAnimator()->AddAnimation("die", 4, 4, 34, 0, 0, 68);
 	this->GetAnimator()->AddAnimation("damaged", 3, 3, 34, 0, 0, 102,4);
 	
-	m_status = IDLE;
+	this->m_status = IDLE;
 }
 
 RedSniper::~RedSniper()
@@ -23,17 +23,12 @@ RedSniper::~RedSniper()
 
 void RedSniper::MakeDecision()
 {
-	// Call AIState->Update();
+	m_AIState->Update();
 }
 
 void RedSniper::Update()
 {
 	MakeDecision();
-
-	if (m_damaged-- > 0)
-	{
-		this->GetAnimator()->SetNextAnimation("damaged");
-	}
 	
 	EnemyUpdate();
 }

@@ -3,6 +3,7 @@
 #define _AISTATE_H_
 
 class Enemy;
+enum Status;
 
 class BehaviorState
 {
@@ -29,7 +30,8 @@ public:
 	void Update();
 
 	void ChangeState(BehaviorState* newState);
-
+	void ChangeState(Status status);
+	
 private:
 	BehaviorState* m_state;
 	Enemy* m_entity;
@@ -70,6 +72,22 @@ private:
 
 };
 
+class MoveToLOSState : public BehaviorState
+{
+public:
+	MoveToLOSState(Enemy* enemy);
+	~MoveToLOSState();
+
+	virtual void Enter() override;
+	virtual void Update() override;
+	virtual void Test() override;
+	virtual void Exit() override;
+
+private:
+
+
+};
+
 class DieState : public BehaviorState
 {
 public:
@@ -82,7 +100,6 @@ public:
 	virtual void Exit() override;
 
 private:
-
 
 };
 

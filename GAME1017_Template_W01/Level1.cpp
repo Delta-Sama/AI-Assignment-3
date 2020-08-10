@@ -50,6 +50,9 @@ void Level1::Load()
 				
 				if (tile->IsObstacle())
 					GameObjectManager::AddCollidableTile(tile);
+				else
+					GameObjectManager::AddBackgroundTile(tile);
+				
 				if (tile->Rotatable())
 					tile->SetAngle(90.0 * (rand() % 4));
 			}
@@ -57,7 +60,6 @@ void Level1::Load()
 	}
 	inFile.close();
 
-	
 	// Nodes:
 	inFile.open("Data/Nodes.txt");
 	if (inFile.is_open())
@@ -82,11 +84,32 @@ void Level1::Load()
 	inFile.close();
 	// -------- //
 
+	// Obstacles:
+	inFile.open("Data/Obstacles.txt");
+	if (inFile.is_open())
+	{
+		char key;
+		for (int row = 0; row < ROWS; row++)
+		{
+			for (int col = 0; col < COLS; col++)
+			{
+				inFile >> key;
+				if (key == 'b')
+				{
+					GOMA::CreateObstacle(BARREL, { (float)(TILESIZE * col) ,(float)(TILESIZE * row) });
+					std::cout << "Obstacle created\n";
+				}
+			}
+		}
+	}
+	inFile.close();
+	// -------- //
+	
 	ENMA::SetScene(m_scene);
 	
-	/*ENMA::AddEnemy(REDSNIPER, { 10,3 }, (rand() % 12) * 30);
+	ENMA::AddEnemy(REDSNIPER, { 10,3 }, (rand() % 12) * 30);
 	ENMA::AddEnemy(REDSNIPER, { 16,7 }, (rand() % 12) * 30);
-	ENMA::AddEnemy(REDSNIPER, { 4,10 }, (rand() % 12) * 30);*/
+	ENMA::AddEnemy(REDSNIPER, { 4,10 }, (rand() % 12) * 30);
 	/*ENMA::AddEnemy(REDSNIPER, { 8,7 }, (rand() % 12) * 30);
 	ENMA::AddEnemy(REDSNIPER, { 2,5 }, (rand() % 12) * 30);
 	ENMA::AddEnemy(REDSNIPER, { 9,5 }, (rand() % 12) * 30);*/
@@ -94,22 +117,10 @@ void Level1::Load()
 
 void Level1::Render()
 {
-	for (int row = 0; row < ROWS; row++)
-	{
-		for (int col = 0; col < COLS; col++)
-		{
-			m_level[row][col]->Render();
-		}
-	}
+	
 }
 
 void Level1::Clean()
 {
-	for (int row = 0; row < ROWS; row++)
-	{
-		for (int col = 0; col < COLS; col++)
-		{
-			delete m_level[row][col];
-		}
-	}
+	
 }

@@ -15,13 +15,15 @@ Enemy::Enemy(SDL_Texture* t, Vec2 pos, float maxHealth) : Entity({0,0,34,34},{po
 	
 	this->m_healthBar = new HealthBar(this);
 
+	this->m_AIState = new AIState(this);
+	
 	this->m_active = true;
-
-	std::cout << "Enemy created\n";
 }
 
 Enemy::~Enemy()
 {
+	if (this->m_AIState)
+		delete this->m_AIState;
 }
 
 void Enemy::EnemyUpdate()
@@ -32,20 +34,23 @@ void Enemy::EnemyUpdate()
 
 	this->MovementUpdate();
 
-	if (m_moveEngine->GetVelX() == 0 and m_moveEngine->GetVelY() == 0)
-		this->GetAnimator()->SetNextAnimation("idle");
-	else
+	if (this->m_moveEngine->GetVelX() != 0 or this->m_moveEngine->GetVelY() != 0)
 		this->GetAnimator()->SetNextAnimation("run");
-
-	this->GetAnimator()->PlayAnimation();
+	
+	this->GetAnimator()->Update();
 
 	this->SetBodyPosition();
 
-	if (m_health <= 0 and this->m_status != DIE)
+	if (this->m_damaged > 0)
 	{
-		SOMA::PlaySound("dead", 0, 5);
-		this->m_healthBar->SetEnabled(false);
-		this->m_status = DIE;
+		this->m_damaged--;
+		this->GetAnimator()->SetNextAnimation("damaged");
+	}
+	
+	if (this->m_health <= 0 and this->m_status != DIE)
+	{
+
+		this->m_AIState->ChangeState(DIE);
 	}
 }
 

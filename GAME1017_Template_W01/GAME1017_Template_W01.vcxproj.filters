@@ -116,6 +116,9 @@
     <ClCompile Include="EntityMoveEngine.cpp">
       <Filter>Entities\Source</Filter>
     </ClCompile>
+    <ClCompile Include="Obstacle.cpp">
+      <Filter>Objects\Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CollisionManager.h">
@@ -246,6 +249,9 @@
     </ClInclude>
     <ClInclude Include="EntityMoveEngine.h">
       <Filter>Entities\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Obstacle.h">
+      <Filter>Objects\Header</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

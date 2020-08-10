@@ -32,7 +32,7 @@ void Projectile::CheckCollision()
 	{
 		for (Enemy* enemy : *ENMA::GetEnemies())
 		{
-			if (COMA::AABBCheck(m_dst, *enemy->GetBody()))
+			if (COMA::AABBCheck(m_body, *enemy->GetBody()))
 			{
 				enemy->TakeDamage(m_damage);
 				m_status = DYING;
@@ -42,7 +42,7 @@ void Projectile::CheckCollision()
 	}
 	else
 	{
-		if (COMA::AABBCheck(m_dst, *ENMA::GetPlayer()->GetBody()))
+		if (COMA::AABBCheck(m_body, *ENMA::GetPlayer()->GetBody()))
 		{
 			ENMA::GetPlayer()->TakeDamage(m_damage);
 			m_status = DYING;
@@ -51,12 +51,27 @@ void Projectile::CheckCollision()
 
 	for (Tile* tile : *GameObjectManager::GetCollidableTiles())
 	{
-		if (COMA::AABBCheck(m_dst, *tile->GetDstP()))
+		if (COMA::AABBCheck(m_body, *tile->GetDstP()))
 		{
 			m_status = DYING;
-			break;
+			return;
 		}
 	}
+	for (Obstacle* obst : *GameObjectManager::GetObstacles())
+	{
+		if (COMA::AABBCheck(m_body, *obst->GetDstP()))
+		{
+			m_status = DYING;
+			obst->TakeDamage(m_damage);
+			return;
+		}
+	}
+}
+
+void Projectile::SetBodyPosition()
+{
+	this->m_body.x = this->m_dst.x + (this->m_dst.w - this->m_body.w) / 2 + m_direction.x * 5;
+	this->m_body.y = this->m_dst.y + (this->m_dst.h - this->m_body.h)/2 + m_direction.y * 5;
 }
 
 void Projectile::Update()
@@ -66,6 +81,8 @@ void Projectile::Update()
 		this->m_dst.x += this->m_direction.x * m_speed;
 		this->m_dst.y += this->m_direction.y * m_speed;
 
+		SetBodyPosition();
+		
 		this->CheckCollision();
 	}
 }

@@ -37,8 +37,6 @@ Player::Player()
 	this->GetAnimator()->AddAnimation("die", 4, 3, 34, 0, 0, 68);
 	this->GetAnimator()->AddAnimation("melee", 6, 3, 34, 0, 0, 102,4);
 	this->GetAnimator()->AddAnimation("run_melee", 6, 3, 34, 0, 0, 136, 4);
-	
-	std::cout << "Player created\n";
 }
 
 Player::~Player()

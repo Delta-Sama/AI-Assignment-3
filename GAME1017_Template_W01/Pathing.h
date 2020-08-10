@@ -20,10 +20,12 @@ public:
 
 	void SetPlayerLOS(bool LOS) { m_playerLOS = LOS; }
 	bool GetPlayerLOS() { return m_playerLOS; }
+	
 private:
 	double m_heur; // Heuristic cost for node.
 	bool m_playerLOS;
 	std::vector<PathConnection*> m_connections;
+	
 };
 
 class PathConnection
@@ -35,9 +37,11 @@ public:
 	void SetCost(double cost) { m_cost = cost; }
 	PathNode* GetFromNode() { return m_pFromNode; }
 	PathNode* GetToNode() { return m_pToNode; }
+	
 private:
 	double m_cost;
 	PathNode* m_pFromNode, * m_pToNode;
+	
 };
 
 struct NodeRecord
@@ -48,5 +52,6 @@ struct NodeRecord
 	NodeRecord* m_fromRecord;
 	double m_costSoFar;
 	double m_totalCost;
+	
 };
 #endif

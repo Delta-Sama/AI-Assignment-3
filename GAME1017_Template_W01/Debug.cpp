@@ -3,6 +3,7 @@
 #include "EnemyManager.h"
 #include "MathManager.h"
 #include "PathManager.h"
+#include "ProjectileManager.h"
 #include "Util.h"
 
 DebugMode::DebugMode(GameState* scene)
@@ -44,12 +45,12 @@ void DebugMode::Draw()
 				nodeColor = Vec4(1, 0, 0, 1);
 			Util::DrawCircle({ (float)node->x, (float)node->y }, 5, nodeColor);
 
-			for (PathConnection* connection : node->GetConnections())
+			/*for (PathConnection* connection : node->GetConnections())
 			{
 				SDL_FPoint from = { (float)connection->GetFromNode()->x, (float)connection->GetFromNode()->y };
 				SDL_FPoint to = { (float)connection->GetToNode()->x, (float)connection->GetToNode()->y };
 				Util::DrawLine(from, to, { 1,1,0,1 });
-			}
+			}*/
 		}
 
 		for (Enemy* enemy : *ENMA::GetEnemies())
@@ -63,6 +64,17 @@ void DebugMode::Draw()
 			if (enemy->GetPlayerDetectRad())
 				circColor = { 1,0,0,1 };
 			Util::DrawCircle(enemy->GetCenter(), DETECTRADIUS, circColor);
+		}
+
+		for (Projectile* proj : *PRMA::GetProjectiles())
+		{
+			Vec4 projColor = { 0.8,0.8,0,1 };
+			SDL_FRect* projRect = proj->GetDstP();
+			Util::DrawRect({ projRect->x, projRect->y }, (int)projRect->w, (int)projRect->h, projColor);
+			
+			Vec4 projBodyColor = { 1,0,0,1 };
+			SDL_FRect* projBodyRect = proj->GetBody();
+			Util::DrawRect({ projBodyRect->x, projBodyRect->y }, (int)projBodyRect->w, (int)projBodyRect->h, projBodyColor);
 		}
 	}
 }

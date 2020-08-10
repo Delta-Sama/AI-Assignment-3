@@ -7,32 +7,36 @@
 #include <vector>
 
 #include "GameObject.h"
+#include "Obstacle.h"
 #include "Tile.h"
-
-enum MapObjectType
-{
-	kPlate = 1,
-	kSpike,
-	kPortal
-};
 
 class GameObjectManager
 {
 public:
-	static void Init();
 	static void Update();
 	static void Render();
 	static void Clean();
+	
+	static void AddBackgroundTile(Tile* obj);
 	static void AddCollidableTile(Tile* obj);
+	
+	static void CreateObstacle(ObstacleType type, Vec2 pos);
 
-	static std::vector<GameObject*>* GetObjects() { return &GameObjectsVec; }
-	static std::vector<Tile*>* GetCollidableTiles() { return &CollidableTilesVec; }
+	static void CleanEmptyElements();
+	static void DeleteFromVectors(GameObject* delObj);
+
+	static std::vector<GameObject*>* GetObjects() { return &GameObjects; }
+	static std::vector<Tile*>* GetCollidableTiles() { return &CollidableTiles; }
+	static std::vector<Obstacle*>* GetObstacles() { return &Obstacles; }
+	
 private:
-	GameObjectManager();
-	~GameObjectManager();
 
-	static std::vector<GameObject*> GameObjectsVec;
-	static std::vector<Tile*> CollidableTilesVec;
+	static std::vector<GameObject*> GameObjects;
+	static std::vector<Tile*> CollidableTiles;
+	static std::vector<Tile*> BackgroundTiles;
+	static std::vector<Obstacle*> Obstacles;
 };
+
+typedef GameObjectManager GOMA;
 
 #endif

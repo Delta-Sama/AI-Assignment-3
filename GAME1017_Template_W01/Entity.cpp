@@ -13,7 +13,6 @@ Entity::~Entity()
 {
 	if (GetAnimator() != nullptr)
 	{
-		std::cout << "Delete entity\n";
 		GetAnimator()->Clean();
 		delete GetAnimator();
 		AddAnimator(nullptr);
@@ -38,7 +37,6 @@ void Entity::MovementUpdate()
 
 void Entity::AddAnimator(Animator* animator)
 {
-	std::cout << "add animator\n";
 	if (this->animator == nullptr)
 		this->animator = animator;
 	else

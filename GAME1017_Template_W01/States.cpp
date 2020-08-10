@@ -15,6 +15,7 @@
 #include "StateManager.h"
 #include "Tile.h"
 #include "UIManager.h"
+#include "Util.h"
 
 #include <iostream>
 #include <ctime>
@@ -26,7 +27,7 @@ void print(std::string msg)
 	std::cout << msg << "\n";
 }
 
-// Begin State. CTRL+M+H and CTRL+M+U to turn on/off collapsed code.
+// Begin State.
 void State::Render()
 {
 	SDL_RenderPresent(Engine::Instance().GetRenderer());
@@ -95,10 +96,18 @@ void GameState::Enter()
 	m_level->Load();
 
 	ENMA::SetPlayer(m_player);
+
+	if (not m_level->GetPatrolPath()->empty())
+	{
+		std::cout << "Create a path\n";
+		PathNode* start = (*m_level->GetPatrolPath())[0];
+		PathNode* goal = m_level->GetPatrolPath()->back();
+		m_path = PAMA::GetShortestPath(start, goal);
+	}
 }
 
 void GameState::Update()
-{
+{	
 	if (EVMA::KeyPressed(SDL_SCANCODE_H))
 	{
 		m_debugger->SetMode(!m_debugger->GetMode());
@@ -108,18 +117,14 @@ void GameState::Update()
 		for (Enemy* enemy : *ENMA::GetEnemies())
 		{
 			if (enemy->GetStatus() == IDLE)
-				enemy->SetStatus(PATROL);
-			else
-				enemy->SetStatus(IDLE);
+				enemy->GetAIState()->ChangeState(PATROL);
+			else if (enemy->GetStatus() == PATROL)
+				enemy->GetAIState()->ChangeState(IDLE);
 		}
-	}
-	if (EVMA::KeyPressed(SDL_SCANCODE_X))
-	{
-		m_player->TakeDamage(10);
 	}
 	if (EVMA::KeyPressed(SDL_SCANCODE_K))
 	{
-		ENMA::GetEnemies()->back()->TakeDamage(10);
+		draw_path = not draw_path;
 	}
 	
 	m_player->Update();
@@ -130,7 +135,8 @@ void GameState::Update()
 	PAMA::Update();
 	UIMA::Update();
 	PRMA::Update();
-
+	GOMA::Update();
+	
 	CheckCollision();
 
 	if (m_player->GetHealth() <= 0)
@@ -153,15 +159,29 @@ void GameState::Render()
 
 	m_level->Render();
 
+	GOMA::Render();
 	ENMA::Render();
-
-	m_debugger->Draw();
 	
 	m_player->Render();
 
+	PRMA::Render();
+
 	m_gameHUD->Render();
 
-	PRMA::Render();
+	m_debugger->Draw();
+
+	if (draw_path)
+	{
+		if (not m_path.empty())
+		{
+			for (int i = 0; i < m_path.size(); i++)
+			{
+				PathNode* from = m_path[i]->GetFromNode();
+				PathNode* to = m_path[i]->GetToNode();
+				Util::DrawLine({ from->x, from->y }, { to->x, to->y }, {255,0,0,255});
+			}
+		}
+	}
 	
 	UIMA::Render(LOW);
 	UIMA::Render(MEDIUM);
@@ -175,6 +195,8 @@ void GameState::Exit()
 	delete m_debugger;
 
 	ENMA::Clean();
+
+	GOMA::Clean();
 	m_level->Clean();
 	delete m_level;
 

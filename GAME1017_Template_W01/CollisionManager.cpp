@@ -174,30 +174,41 @@ void CollisionManager::CheckMapCollision(Entity* entity)
 {
 	for (Tile* tile : *GameObjectManager::GetCollidableTiles())
 	{
-		SDL_FRect* tileRect = tile->GetDstP();
-		SDL_FRect* entityRect = entity->GetBody();
-		if (tile->IsObstacle() and COMA::AABBCheck(*entityRect, *tileRect))
+		if (tile->IsObstacle())
 		{
-			if (entityRect->y + entityRect->h - (float)entity->GetMoveEngine()->GetVelY() <= tileRect->y)
-			{ // Colliding top side of platform.
-				entity->GetMoveEngine()->StopY();
-				entity->SetY(tileRect->y - entityRect->h);
-			}
-			else if (entityRect->y - (float)entity->GetMoveEngine()->GetVelY() >= tileRect->y + tileRect->h)
-			{ // Colliding bottom side of platform.
-				entity->GetMoveEngine()->StopY();
-				entity->SetY(tileRect->y + tileRect->h);
-			}
-			else if (entityRect->x + entityRect->w - (float)entity->GetMoveEngine()->GetVelX() <= tileRect->x)
-			{ // Collision from left.
-				entity->GetMoveEngine()->StopX();
-				entity->SetX(tileRect->x - entityRect->w);
-			}
-			else if (entityRect->x - (float)entity->GetMoveEngine()->GetVelX() >= tileRect->x + tileRect->w)
-			{
-				entity->GetMoveEngine()->StopX();
-				entity->SetX(tileRect->x + tileRect->w);
-			}
+			CheckPhysicalCollision(tile->GetDstP(), entity);
+		}
+	}
+	for (Obstacle* obst : *GameObjectManager::GetObstacles())
+	{
+		CheckPhysicalCollision(obst->GetDstP(), entity);
+	}
+}
+
+void CollisionManager::CheckPhysicalCollision(SDL_FRect* obstRect, Entity* entity)
+{
+	SDL_FRect* entityRect = entity->GetBody();
+	if (COMA::AABBCheck(*entityRect, *obstRect))
+	{
+		if (entityRect->y + entityRect->h - (float)entity->GetMoveEngine()->GetVelY() <= obstRect->y)
+		{ // Colliding top side of platform.
+			entity->GetMoveEngine()->StopY();
+			entity->SetY(obstRect->y - entityRect->h);
+		}
+		else if (entityRect->y - (float)entity->GetMoveEngine()->GetVelY() >= obstRect->y + obstRect->h)
+		{ // Colliding bottom side of platform.
+			entity->GetMoveEngine()->StopY();
+			entity->SetY(obstRect->y + obstRect->h);
+		}
+		else if (entityRect->x + entityRect->w - (float)entity->GetMoveEngine()->GetVelX() <= obstRect->x)
+		{ // Collision from left.
+			entity->GetMoveEngine()->StopX();
+			entity->SetX(obstRect->x - entityRect->w);
+		}
+		else if (entityRect->x - (float)entity->GetMoveEngine()->GetVelX() >= obstRect->x + obstRect->w)
+		{
+			entity->GetMoveEngine()->StopX();
+			entity->SetX(obstRect->x + obstRect->w);
 		}
 	}
 }

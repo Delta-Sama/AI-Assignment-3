@@ -1,5 +1,6 @@
 #include "AIState.h"
 
+#include "CollisionManager.h"
 #include "EnemyManager.h"
 #include "MathManager.h"
 #include "SoundManager.h"
@@ -13,7 +14,7 @@ BehaviorState::~BehaviorState() = default;
 
 AIState::AIState(Enemy* player) : m_entity(player)
 {
-	//ChangeState(new RunState(m_entity));
+	ChangeState(new IdleState(m_entity));
 }
 
 AIState::~AIState() = default;
@@ -38,6 +39,22 @@ void AIState::ChangeState(BehaviorState* newState)
 	m_state->Enter();
 }
 
+void AIState::ChangeState(Status status)
+{
+	switch (status)
+	{
+	case IDLE:
+		ChangeState(new IdleState(m_entity));
+		break;
+	case PATROL:
+		ChangeState(new PatrolState(m_entity));
+		break;
+	case DIE:
+		ChangeState(new DieState(m_entity));
+		break;
+	}
+}
+
 // States:
 
 // IDLE:
@@ -54,11 +71,12 @@ void IdleState::Enter()
 	m_entity->GetPathManager()->CleanNodes();
 	m_entity->SetGoal(nullptr);
 	m_entity->GetMoveEngine()->Stop();
+	m_entity->SetStatus(IDLE);
 }
 
 void IdleState::Update()
 {
-	
+	m_entity->GetAnimator()->SetNextAnimation("idle");
 }
 
 void IdleState::Exit()
@@ -82,7 +100,7 @@ PatrolState::~PatrolState() = default;
 
 void PatrolState::Enter()
 {
-
+	m_entity->SetStatus(PATROL);
 }
 
 void PatrolState::Update()
@@ -90,13 +108,14 @@ void PatrolState::Update()
 	// Failed to reach case:
 	if (m_entity->GetPathManager()->goalCounter++ > 60 * 2.5)
 	{
-		m_entity->CleanLocalPath();
+		m_entity->GetPathManager()->CleanNodes();
 		m_entity->GetPathManager()->prevNode[PREVNODESSIZE - 1] = m_entity->GetGoal(); // Avoid unsuccessful point
+		m_entity->SetGoal(nullptr);
 		std::cout << "Failed to reach the goal\n";
 	}
 
 	// Deciding on the next goal:
-	if (m_entity->GoalIsReached() or m_entity->GetGoal() == nullptr) // Find a goal to seek:
+	if (m_entity->GoalIsReached() or m_entity->GetGoal() == nullptr) // Find a new goal to seek:
 	{
 		m_entity->GetPathManager()->goalCounter = 0;
 		m_entity->SetReachedGoal(false) ;
@@ -121,7 +140,7 @@ void PatrolState::Update()
 				}
 			}
 
-			if (not recorded and dist < minDist)
+			if (not recorded and dist < minDist and COMA::LOSCheck(&temp, &m_entity->GetCenter()))
 			{
 				minDist = dist;
 				goToNode = patrolNode;
@@ -142,7 +161,7 @@ void PatrolState::Update()
 			m_entity->SetGoal(goToNode);
 		}
 	}
-	else if (m_entity->GetGoal()) // We have a goal to seek:
+	else if (m_entity->GetGoal()) // We already have a goal to seek:
 	{
 		if (m_entity->GetPathManager()->prevCheck++ >= MAXCHECK)
 		{
@@ -173,6 +192,34 @@ void PatrolState::Exit()
 	
 }
 
+// MOVING TO LOS:
+
+MoveToLOSState::MoveToLOSState(Enemy* enemy) : BehaviorState(enemy)
+{
+}
+
+MoveToLOSState::~MoveToLOSState() = default;
+
+void MoveToLOSState::Enter()
+{
+	
+}
+
+void MoveToLOSState::Update()
+{
+	
+}
+
+void MoveToLOSState::Test()
+{
+	
+}
+
+void MoveToLOSState::Exit()
+{
+	
+}
+
 // DYING:
 
 DieState::DieState(Enemy* enemy) : BehaviorState(enemy)
@@ -184,20 +231,24 @@ DieState::~DieState() = default;
 
 void DieState::Enter()
 {
+	SOMA::PlaySound("dead", 0, 5);
+	m_entity->GetAnimator()->PlayFullAnimation("die");
 	
+	m_entity->GetHealthBar()->SetEnabled(false);
+	
+	m_entity->SetStatus(DIE);
 }
 
 void DieState::Update()
 {
-	/*if (m_entity->m_dying++ < 4 * 8)
+	if (m_entity->GetAnimator()->AnimationIsPlaying("die"))
 	{
 		m_entity->GetMoveEngine()->Stop();
-		m_entity->GetAnimator()->SetNextAnimation("die");
 	}
 	else
 	{
-		m_entity->clean();
-	}*/
+		m_entity->Clean();
+	}
 }
 
 void DieState::Test()

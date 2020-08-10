@@ -44,8 +44,6 @@ protected:
 
 	int m_projectileTime;
 	int m_meleeTime;
-	
-	int m_dying = 0;
 
 	int m_damaged;
 };

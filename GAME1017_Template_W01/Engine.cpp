@@ -46,7 +46,8 @@ bool Engine::Init(const char* title, int xpos, int ypos, int width, int height, 
 	TEMA::RegisterTexture("Img/HealthBar.png", "healthBar");
 	TEMA::RegisterTexture("Img/HealthBarScale.png", "healthBarScale");
 	TEMA::RegisterTexture("Img/Slime.png", "slime");
-
+	TEMA::RegisterTexture("Img/Barrel.png", "barrel");
+	
 	TEMA::RegisterTexture("Img/ExitB.png", "exit_b");
 	
 	FOMA::RegisterFont("Img/TITLEFONT.otf", "Title", 50);

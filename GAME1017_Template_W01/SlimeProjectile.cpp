@@ -10,6 +10,8 @@ const float SLIMESPEED = 7.0;
 const float w = 27.0;
 const float h = 45.0;
 
+const float BOUNDARY = 16.0;
+
 SlimeProjectile::SlimeProjectile(SDL_FPoint start, SDL_FPoint direction, Side side)
 	: Projectile({ 0,0,18,30 }, {start.x - w / 2, start.y - h / 2,w,h},
 		TEMA::GetTexture("slime"),SLIMESPEED, direction, side, SLIMEDAMAGE)
@@ -20,6 +22,7 @@ SlimeProjectile::SlimeProjectile(SDL_FPoint start, SDL_FPoint direction, Side si
 	this->m_animFreqCounter = 0;
 	this->m_animXMove = 18;
 
+	this->m_body = {0,0,BOUNDARY,BOUNDARY };
 }
 
 SlimeProjectile::~SlimeProjectile()
@@ -36,6 +39,8 @@ void SlimeProjectile::Update()
 			this->m_dst.x += this->m_direction.x * m_speed;
 			this->m_dst.y += this->m_direction.y * m_speed;
 
+			SetBodyPosition();
+			
 			if (this->m_animFreqCounter++ >= this->m_animFrequency)
 			{
 				this->m_animFreqCounter = 0;
@@ -44,6 +49,7 @@ void SlimeProjectile::Update()
 					this->m_animCurFrame = 0;
 				this->m_src.x = this->m_animCurFrame * this->m_animXMove;
 			}
+			
 			this->CheckCollision();
 
 			if (m_status == DYING)
