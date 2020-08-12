@@ -22,7 +22,7 @@ public:
 	virtual void MakeDecision() = 0;
 
 	void EnemyUpdate();
-	void Seek(SDL_FPoint& goal);
+	bool Seek(SDL_FPoint& goal);
 	
 	Status GetStatus() { return m_status; }
 	bool GetActive() { return m_active; }

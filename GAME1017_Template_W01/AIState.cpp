@@ -3,7 +3,6 @@
 #include "CollisionManager.h"
 #include "EnemyManager.h"
 #include "MathManager.h"
-#include "PathManager.h"
 #include "SoundManager.h"
 #include "Util.h"
 
@@ -202,7 +201,7 @@ void PatrolState::Exit()
 
 // MOVING TO LOS:
 
-MoveToLOSState::MoveToLOSState(Enemy* enemy) : BehaviorState(enemy), update_frame(0)
+MoveToLOSState::MoveToLOSState(Enemy* enemy) : BehaviorState(enemy), m_update_frame(0)
 {
 }
 
@@ -215,38 +214,77 @@ void MoveToLOSState::Enter()
 
 void MoveToLOSState::Update()
 {
-	// Find nearest LOS node:
-	PathNode* LOS_node = nullptr;
-	long min_dist = 99999;
-
-	for (PathNode* node : *PAMA::GetNodes())
+	if (m_update_frame++ > m_max_update_frame)
 	{
-		if (node->GetPlayerLOS())
+		m_update_frame = 0;
+		
+		// Find nearest LOS node:
+		PathNode* LOS_node = nullptr;
+		long min_dist = 99999;
+
+		for (PathNode* node : *PAMA::GetNodes())
 		{
-			SDL_FPoint temp_pos = { node->x, node->y };
-			long dist = (long int)MAMA::SquareDistance(&ENMA::GetPlayer()->GetCenter(), &temp_pos);
-			
-			if (dist < min_dist)
+			if (node->GetPlayerLOS())
 			{
+				SDL_FPoint temp_pos = { node->x, node->y };
+				long dist = (long int)MAMA::SquareDistance(&ENMA::GetPlayer()->GetCenter(), &temp_pos);
+			
+				if (dist < min_dist)
+				{
 				
-				min_dist = dist;
-				LOS_node = node;
+					min_dist = dist;
+					LOS_node = node;
+				}
+			}
+		}
+		// Draw path:
+		if (LOS_node and m_entity->GetShortestLOSNode())
+		{
+			//Util::QueueCircle({ m_entity->GetShortestLOSNode()->x, m_entity->GetShortestLOSNode()->y }, 15, {255,0,0,255});
+			//Util::QueueCircle({ LOS_node->x, LOS_node->y }, 10);
+
+			if (!m_path.empty())
+			{
+				m_path.clear();
+			}
+			m_path = PAMA::GetShortestPath(m_entity->GetShortestLOSNode(), LOS_node, true);
+			m_start = m_path.back()->GetFromNode();
+		}
+	}
+	else
+	{
+		if (not m_path.empty())
+		{
+			Util::QueueCircle({ m_path.back()->GetToNode()->x, m_path.back()->GetToNode()->y }, 10,{1,0,0,1});
+
+			if (m_start)
+			{
+				SDL_FPoint f_point = { m_start->x, m_start->y };
+				if (m_entity->Seek(f_point))
+				{
+					m_start = nullptr;
+				}
+			}
+			else
+			{
+				SDL_FPoint f_point = { m_path.back()->GetToNode()->x, m_path.back()->GetToNode()->y };
+				if (COMA::LOSCheck(&f_point, &m_entity->GetCenter()))
+				{
+					if (m_entity->Seek(f_point))
+					{
+						m_path.pop_back();
+					}
+				}
 			}
 		}
 	}
-	// Draw path:
-	if (LOS_node and m_entity->GetShortestLOSNode())
+
+	// Draw the path
+	for (int i = 0; i < m_path.size(); i++)
 	{
-		Util::QueueCircle({ m_entity->GetShortestLOSNode()->x, m_entity->GetShortestLOSNode()->y }, 15, {255,0,0,255});
-		Util::QueueCircle({ LOS_node->x, LOS_node->y }, 10);
-		std::vector<PathConnection*> path = PAMA::GetShortestPath(m_entity->GetShortestLOSNode(), LOS_node);
-		//std::cout << "Path size: " << path.size() << "\n";
-		for (int i = 0; i < path.size(); i++)
-		{
-			PathNode* from = path[i]->GetFromNode();
-			PathNode* to = path[i]->GetToNode();
-			Util::QueueLine({ from->x, from->y }, { to->x, to->y }, { 255,0,0,255 });
-		}
+		PathNode* from = m_path[i]->GetFromNode();
+		PathNode* to = m_path[i]->GetToNode();
+		Util::QueueLine({ from->x, from->y }, { to->x, to->y }, { 255,0,0,255 });
 	}
 }
 

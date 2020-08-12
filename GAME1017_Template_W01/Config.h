@@ -10,4 +10,6 @@ const float SWITHNODEDISTANCE = 24;
 const float STANDARTDRAG = 0.88;
 const float MAXENTITYVELOCITY = 3.0;
 
+const float MINSEEKDISTANCE = 30;
+
 #endif

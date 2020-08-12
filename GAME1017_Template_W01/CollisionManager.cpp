@@ -5,6 +5,7 @@
 #include "MathManager.h"
 #include "StateManager.h"
 #include "Tile.h"
+#include "Util.h"
 
 bool CollisionManager::AABBCheck(const SDL_FRect& object1, const SDL_FRect& object2)
 {
@@ -168,6 +169,62 @@ bool CollisionManager::LOSCheck(SDL_FPoint* from, SDL_FPoint* to)
 		}
 	}
 	
+	return true;
+}
+
+void COMA::DrawLines(SDL_FPoint* from, SDL_FPoint* to, int width)
+{
+	Vec2 init_line = { to->x - from->x, to->y - from->y };
+	float perpX, perpY;
+	if (init_line.x != 0)
+	{
+		perpY = 1;
+		perpX = -(init_line.y * perpY) / init_line.x;
+	}
+	else if (init_line.y != 0)
+	{
+		perpX = 1;
+		perpY = -(init_line.x * perpX) / init_line.y;
+	}
+	float len = sqrt(pow(perpX, 2) + pow(perpY, 2));
+	Vec2 perp = { perpX / len, perpY / len };
+
+	SDL_FPoint right_line_from = { from->x + perp.x * width, from->y + perp.y * width };
+	SDL_FPoint right_line_to = { to->x + perp.x * width, to->y + perp.y * width };
+	
+	SDL_FPoint left_line_from = { from->x - perp.x * width, from->y - perp.y * width };
+	SDL_FPoint left_line_to = { to->x - perp.x * width, to->y - perp.y * width };
+	
+	Util::QueueLine(right_line_from, right_line_to,{0,0,1,1});
+	Util::QueueLine(left_line_from, left_line_to, { 1,0,0,1 });
+}
+
+bool CollisionManager::TunnelLOSCheck(SDL_FPoint* from, SDL_FPoint* to, int width)
+{
+	
+	
+	for (Tile* tile : *GameObjectManager::GetCollidableTiles())
+	{
+		const SDL_FRect* box = tile->GetDstP();
+
+
+		
+		if (LineRectCheck(*from, *to, box))
+		{
+			return false;
+		}
+	}
+
+	for (Obstacle* obstacle : *GameObjectManager::GetObstacles())
+	{
+		const SDL_FRect* box = obstacle->GetDstP();
+
+		if (LineRectCheck(*from, *to, box))
+		{
+			return false;
+		}
+	}
+
 	return true;
 }
 

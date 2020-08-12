@@ -52,7 +52,7 @@ void PathManager::Update()
 	}
 }
 
-std::vector<PathConnection*> PathManager::GetShortestPath(PathNode* start, PathNode* goal)
+std::vector<PathConnection*> PathManager::GetShortestPath(PathNode* start, PathNode* goal, bool reverse)
 {
 	std::vector<PathConnection*> s_path;
 	std::vector<NodeRecord*> s_open;
@@ -135,7 +135,7 @@ std::vector<PathConnection*> PathManager::GetShortestPath(PathNode* start, PathN
 			currentRecord = currentRecord->m_fromRecord;
 		}
 		
-		std::reverse(s_path.begin(), s_path.end());
+		if (not reverse) std::reverse(s_path.begin(), s_path.end());
 	}
 	// Clean up lists. Uncomment the cout below to see how many records we have to clean up.
 	// std::cout << "Cleaning up..." << "open size: " << s_open.size() << " | closed size: " << s_closed.size() << std::endl;

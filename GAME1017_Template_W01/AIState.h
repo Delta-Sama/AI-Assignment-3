@@ -2,6 +2,9 @@
 #ifndef _AISTATE_H_
 #define _AISTATE_H_
 
+#include <vector>
+#include "PathManager.h"
+
 class Enemy;
 enum Status;
 
@@ -84,9 +87,11 @@ public:
 	virtual void Exit() override;
 
 private:
-	int update_frame;
-	const int max_update_frame = 10;
-
+	int m_update_frame;
+	const int m_max_update_frame = 30;
+	std::vector<PathConnection*> m_path;
+	PathNode* m_start;
+	
 };
 
 class MoveBehindCoverState : public BehaviorState
@@ -102,7 +107,7 @@ public:
 
 private:
 	int update_frame;
-	const int max_update_frame = 10;
+	const int max_update_frame = 30;
 
 };
 

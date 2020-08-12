@@ -79,7 +79,7 @@ void Enemy::Clean()
 	this->m_healthBar->SetActive(false);
 }
 
-void Enemy::Seek(SDL_FPoint& goal)
+bool Enemy::Seek(SDL_FPoint& goal)
 {
 	float angle = MAMA::AngleBetweenPoints((goal.y - this->GetCenter().y), (goal.x - this->GetCenter().x));
 	angle = MAMA::Rad2Deg(angle) + 90;
@@ -99,6 +99,12 @@ void Enemy::Seek(SDL_FPoint& goal)
 		m_moveEngine->SetAccelX(dx * SPEED);
 		m_moveEngine->SetAccelY(dy * SPEED);
 	}
+
+	if (MAMA::SquareDistance(&GetCenter(),&goal) < pow(MINSEEKDISTANCE,2))
+	{
+		return true;
+	}
+	return false;
 }
 
 void Enemy::CleanLocalPath()
