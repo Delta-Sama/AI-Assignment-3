@@ -60,7 +60,7 @@ void Enemy::EnemyUpdate()
 	for (PathNode* node : *PAMA::GetNodes())
 	{
 		SDL_FPoint temp_pos = { node->x, node->y };
-		if (COMA::LOSCheck(&temp_pos,&GetCenter()))
+		if (COMA::TunnelLOSCheck(&temp_pos,&GetCenter(),TUNNELENTITYWIDTH))
 		{
 			long dist = (long)MAMA::SquareDistance(&GetCenter(), &temp_pos);
 			
@@ -82,13 +82,9 @@ void Enemy::Clean()
 bool Enemy::Seek(SDL_FPoint& goal)
 {
 	float angle = MAMA::AngleBetweenPoints((goal.y - this->GetCenter().y), (goal.x - this->GetCenter().x));
-	angle = MAMA::Rad2Deg(angle) + 90;
+	double dif = SetSmoothAngle(angle);
 
-	double dif = MAMA::Angle180(angle - (float)this->GetAngle());
-
-	this->SetAngle(this->GetAngle() + std::max(std::min(dif, 5.0), -5.0));
-
-	if (dif < 50.0)
+	if (dif < MINMOVEANGLEDISTANCE)
 	{
 		float dx = goal.x - this->GetCenter().x;
 		float dy = goal.y - this->GetCenter().y;
@@ -105,6 +101,31 @@ bool Enemy::Seek(SDL_FPoint& goal)
 		return true;
 	}
 	return false;
+}
+
+void Enemy::FollowThePath(std::vector<PathConnection*>& path)
+{
+	if (not path.empty())
+	{
+		SDL_FPoint from_point = { path.back()->GetFromNode()->x, path.back()->GetFromNode()->y };
+		SDL_FPoint to_point = { path.back()->GetToNode()->x, path.back()->GetToNode()->y };
+
+		// If can go directly to the "ToNode"
+		if (COMA::TunnelLOSCheck(&to_point, &GetCenter(), TUNNELENTITYWIDTH))
+		{
+			//Util::QueueCircle({ to_point.x, to_point.y }, 10, { 1,0,0,1 });
+			if (Seek(to_point))
+			{
+				path.pop_back(); // Pop if reached
+			}
+		}
+		else // Else go to the "FromNode"
+		{
+			//Util::QueueCircle({ from_point.x, from_point.y }, 10, { 1,0,0,1 });
+			Seek(from_point);
+		}
+
+	}
 }
 
 void Enemy::CleanLocalPath()

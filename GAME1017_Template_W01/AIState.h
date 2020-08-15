@@ -16,7 +16,7 @@ public:
 
 	virtual void Enter() = 0;
 	virtual void Update() = 0;
-	virtual void Test() = 0;
+	virtual void Transition() = 0;
 	virtual void Exit() = 0;
 
 protected:
@@ -34,95 +34,14 @@ public:
 
 	void ChangeState(BehaviorState* newState);
 	void ChangeState(Status status);
+	BehaviorState* GetNewState(Status status);
+
+	void AddState(Status status);
+	void PopState();
 	
 private:
-	BehaviorState* m_state;
+	std::vector<BehaviorState*> m_states;
 	Enemy* m_entity;
-
-};
-
-//States:
-
-class IdleState : public BehaviorState
-{
-public:
-	IdleState(Enemy* enemy);
-	~IdleState();
-
-	virtual void Enter() override;
-	virtual void Update() override;
-	virtual void Test() override;
-	virtual void Exit() override;
-
-private:
-
-
-};
-
-class PatrolState : public BehaviorState
-{
-public:
-	PatrolState(Enemy* enemy);
-	~PatrolState();
-
-	virtual void Enter() override;
-	virtual void Update() override;
-	virtual void Test() override;
-	virtual void Exit() override;
-
-private:
-
-
-};
-
-class MoveToLOSState : public BehaviorState
-{
-public:
-	MoveToLOSState(Enemy* enemy);
-	~MoveToLOSState();
-
-	virtual void Enter() override;
-	virtual void Update() override;
-	virtual void Test() override;
-	virtual void Exit() override;
-
-private:
-	int m_update_frame;
-	const int m_max_update_frame = 30;
-	std::vector<PathConnection*> m_path;
-	PathNode* m_start;
-	
-};
-
-class MoveBehindCoverState : public BehaviorState
-{
-public:
-	MoveBehindCoverState(Enemy* enemy);
-	~MoveBehindCoverState();
-
-	virtual void Enter() override;
-	virtual void Update() override;
-	virtual void Test() override;
-	virtual void Exit() override;
-
-private:
-	int update_frame;
-	const int max_update_frame = 30;
-
-};
-
-class DieState : public BehaviorState
-{
-public:
-	DieState(Enemy* enemy);
-	~DieState();
-
-	virtual void Enter() override;
-	virtual void Update() override;
-	virtual void Test() override;
-	virtual void Exit() override;
-
-private:
 
 };
 

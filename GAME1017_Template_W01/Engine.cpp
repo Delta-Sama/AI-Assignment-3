@@ -37,6 +37,7 @@ bool Engine::Init(const char* title, int xpos, int ypos, int width, int height, 
 		else return false; // Window init fail.
 	}
 	else return false; // SDL init fail.
+	m_frames = 0;
 	m_fps = (Uint32)round((1 / (double)FPS) * 1000); // Sets FPS in milliseconds and rounds.
 
 	TEMA::RegisterTexture("Img/PlayButton.png", "playButton");
@@ -46,13 +47,13 @@ bool Engine::Init(const char* title, int xpos, int ypos, int width, int height, 
 	TEMA::RegisterTexture("Img/HealthBar.png", "healthBar");
 	TEMA::RegisterTexture("Img/HealthBarScale.png", "healthBarScale");
 	TEMA::RegisterTexture("Img/Slime.png", "slime");
+	TEMA::RegisterTexture("Img/RedSlime.png", "redslime");
 	TEMA::RegisterTexture("Img/Barrel.png", "barrel");
 	
 	TEMA::RegisterTexture("Img/ExitB.png", "exit_b");
 	
 	FOMA::RegisterFont("Img/TITLEFONT.otf", "Title", 50);
 	FOMA::RegisterFont("Img/TITLEFONT.otf", "SmallTitle", 35);
-	
 	
 	SOMA::Load("Audio/projectile.wav", "projectile", SOUND_SFX);
 	SOMA::SetSoundVolume(40,1);
@@ -96,6 +97,7 @@ void Engine::HandleEvents()
 
 void Engine::Update()
 {
+	m_frames++;
 	STMA::Update();
 }
 

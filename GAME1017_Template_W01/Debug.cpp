@@ -19,6 +19,13 @@ void DebugMode::Draw()
 		SDL_FPoint playerCenter = player->GetCenter();
 
 		Vec4 color = { 0, 1, 0, 1 };
+
+		Util::QueueCircle(player->GetCenter(), MELEEDIST, { 1,1,1,1 });
+		Util::QueueLine(player->GetCenter(),
+			{ player->GetCenter().x + (float)cos(MAMA::Deg2Rad((player->GetAngle() - 90 + MELEEANGLE))) * 60,
+			player->GetCenter().y + (float)sin(MAMA::Deg2Rad((player->GetAngle() - 90 + MELEEANGLE))) * 60 }, { 1,1,1,1 });
+		Util::QueueLine(player->GetCenter(), { player->GetCenter().x + (float)cos(MAMA::Deg2Rad((player->GetAngle() - 90 - MELEEANGLE))) * 60,
+			player->GetCenter().y + (float)sin(MAMA::Deg2Rad((player->GetAngle() - 90 - MELEEANGLE))) * 60 }, { 1,1,1,1 });
 		
 		for (Enemy* enemy : *ENMA::GetEnemies())
 		{

@@ -16,6 +16,11 @@ SlimeProjectile::SlimeProjectile(SDL_FPoint start, SDL_FPoint direction, Side si
 	: Projectile({ 0,0,18,30 }, {start.x - w / 2, start.y - h / 2,w,h},
 		TEMA::GetTexture("slime"),SLIMESPEED, direction, side, SLIMEDAMAGE)
 {
+	if (side == ENEMYSIDE)
+	{
+		SetTexture(TEMA::GetTexture("redslime"));
+	}
+	
 	this->m_animFrequency = 8;
 	this->m_animMaxFrames = 3;
 	this->m_animCurFrame = 0;

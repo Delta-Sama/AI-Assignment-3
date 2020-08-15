@@ -13,6 +13,8 @@ public:
 
 	virtual void Update() override;
 	virtual void MakeDecision() override;
+	virtual void Melee() override;
+	virtual void ShootProjectile(float dirX, float dirY) override;
 	
 private:
 	

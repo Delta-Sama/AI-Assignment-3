@@ -15,17 +15,14 @@ public: // Methods
 
 	virtual void Update() override;
 	virtual void Clean() override;
-
+	virtual void Melee() override;
+	virtual void ShootProjectile(float dirX, float dirY) override;
+	
 	void KeyboardInput();
 	void GamepadInput();
 
-	void Melee();
-	void ShootProjectile(float dirX, float dirY);
-
 	int m_movement[2] = { 0,0 };
 private:
-	int m_meleeAnimFrames;
-	std::string m_curMeleeAnim;
 	
 };
 

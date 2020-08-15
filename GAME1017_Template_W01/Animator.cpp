@@ -1,5 +1,7 @@
 #include "Animator.h"
 
+#include "Engine.h"
+
 Animator::Animator(Entity* animEntity)
 {
 	this->m_entity = animEntity;
@@ -34,7 +36,7 @@ void Animator::PlayFullAnimation(const std::string& type)
 			return;
 		}
 	}
-
+	
 	m_animRecords.push_back(new AnimRecord(m_animationsMap[type]));
 }
 
@@ -60,9 +62,9 @@ void Animator::PlayAnimation()
 			}
 		}
 		//std::cout << SDL_GetTicks() - lastFrameTime << " vs " << anim->getFramesFrequency() << "\n";
-		if (SDL_GetTicks() - m_lastFrameTime >= anim->GetFramesFrequency())
+		if (Engine::Instance().GetFrames() - m_lastFrameTime >= anim->GetFramesFrequency())
 		{
-			m_lastFrameTime = SDL_GetTicks();
+			m_lastFrameTime = Engine::Instance().GetFrames();
 			if (m_entity == nullptr)
 				std::cout << "No entity!!!!!!!!!\n";
 			m_entity->SetSrcCords(anim->GetStartX() + anim->GetMoveX() * m_animFrame, anim->GetStartY() + anim->GetMoveY() * m_faceSide);
@@ -98,9 +100,9 @@ void Animator::Update()
 	for (auto animRec = m_animRecords.begin(); animRec != m_animRecords.end();)
 	{
 		bool moved = false;
-		if (SDL_GetTicks() - (*animRec)->curTick >= (*animRec)->animation->GetFramesFrequency())
+		if (Engine::Instance().GetFrames() - (*animRec)->curTick >= (*animRec)->animation->GetFramesFrequency())
 		{
-			(*animRec)->curTick = SDL_GetTicks();
+			(*animRec)->curTick = Engine::Instance().GetFrames();
 			if (++(*animRec)->curFrame >= (*animRec)->animation->GetMaxFrames())
 			{
 				delete* animRec;
@@ -157,5 +159,5 @@ Animation::Animation(Uint32 maxFrames, Uint32 priority, Uint32 moveX, Uint32 mov
 	this->m_moveX = moveX;
 	this->m_moveY = moveY;
 	this->m_priority = priority;
-	this->m_framesFrequency = framesFrequency * 10;
+	this->m_framesFrequency = framesFrequency;
 }

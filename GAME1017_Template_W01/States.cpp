@@ -118,20 +118,20 @@ void GameState::Update()
 	{
 		for (Enemy* enemy : *ENMA::GetEnemies())
 		{
-			if (enemy->GetStatus() == GOTOLOS)
+			if (enemy->GetStatus() == MOVETOLOS)
 				enemy->GetAIState()->ChangeState(IDLE);
 			else
-				enemy->GetAIState()->ChangeState(GOTOLOS);
+				enemy->GetAIState()->ChangeState(MOVETOLOS);
 		}
 	}
 	if (EVMA::KeyPressed(SDL_SCANCODE_L))
 	{
 		for (Enemy* enemy : *ENMA::GetEnemies())
 		{
-			if (enemy->GetStatus() == GOTOCOVER)
+			if (enemy->GetStatus() == MOVETOCOVER)
 				enemy->GetAIState()->ChangeState(IDLE);
 			else
-				enemy->GetAIState()->ChangeState(GOTOCOVER);
+				enemy->GetAIState()->ChangeState(MOVETOCOVER);
 		}
 	}
 	

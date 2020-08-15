@@ -20,6 +20,8 @@ private: // Private properties.
 	Uint32 m_start, m_end, m_delta, m_fps; // Fixed timestep variables.
 	SDL_Window* m_pWindow; // This represents the SDL window.
 	SDL_Renderer* m_pRenderer; // This represents the buffer to draw to.
+
+	Uint64 m_frames;
 	// Example-specific properties.
 
 private: // Private methods.
@@ -37,6 +39,8 @@ public: // Public methods.
 	SDL_Renderer* GetRenderer();
 	SDL_Window* GetWindow() { return m_pWindow; }
 	bool& Running();
+
+	Uint64 GetFrames() { return m_frames; }
 
 	bool& isNull();
 	void setNull();

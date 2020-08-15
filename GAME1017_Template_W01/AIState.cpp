@@ -1,10 +1,21 @@
 #include "AIState.h"
 
+// States headers:
+
+#include "IdleState.h"
+#include "PatrolState.h"
+#include "MoveToLOSState.h"
+#include "MoveToPlayerState.h"
+#include "MoveBehindCoverState.h"
+#include "WaitBehindCoverState.h"
+#include "CloseAttackState.h"
+#include "DieState.h"
+
 #include "CollisionManager.h"
 #include "EnemyManager.h"
-#include "MathManager.h"
+#include "RangeAttackState.h"
 #include "SoundManager.h"
-#include "Util.h"
+
 
 BehaviorState::BehaviorState(Enemy* player) : m_entity(player)
 {
@@ -22,380 +33,83 @@ AIState::~AIState() = default;
 
 void AIState::Update()
 {
-	if (m_state)
+	if (not m_states.empty())
 	{
-		m_state->Update();
-		m_state->Test();
+		m_states.back()->Update();
+		m_states.back()->Transition();
 	}
 }
 
 void AIState::ChangeState(BehaviorState* newState)
 {
-	if (m_state)
+	if (not m_states.empty())
 	{
-		m_state->Exit();
-		delete m_state;
+		m_states.back()->Exit();
+		delete m_states.back();
+		m_states.pop_back();
 	}
-	m_state = newState;
-	m_state->Enter();
+	m_states.push_back(newState);
+	m_states.back()->Enter();
 }
 
 void AIState::ChangeState(Status status)
 {
+	ChangeState(GetNewState(status));
+}
+
+BehaviorState* AIState::GetNewState(Status status)
+{
+	BehaviorState* temp_state = nullptr;
 	switch (status)
 	{
 	case IDLE:
-		ChangeState(new IdleState(m_entity));
+		temp_state = new IdleState(m_entity);
 		break;
 	case PATROL:
-		ChangeState(new PatrolState(m_entity));
+		temp_state = new PatrolState(m_entity);
 		break;
 	case DIE:
-		ChangeState(new DieState(m_entity));
+		temp_state = new DieState(m_entity);
 		break;
-	case GOTOLOS:
-		ChangeState(new MoveToLOSState(m_entity));
+	case MOVETOLOS:
+		temp_state = new MoveToLOSState(m_entity);
 		break;
-	case GOTOCOVER:
-		ChangeState(new MoveBehindCoverState(m_entity));
+	case MOVETOCOVER:
+		temp_state = new MoveBehindCoverState(m_entity);
+		break;
+	case MOVETOPLAYER:
+		temp_state = new MoveToPlayerState(m_entity);
+		break;
+	case WAITBEHINDCOVER:
+		temp_state = new WaitBehindCoverState(m_entity);
+		break;
+	case MELEE:
+		temp_state = new CloseAttackState(m_entity);
+		break;
+	case RANGE:
+		temp_state = new RangeAttackState(m_entity);
 		break;
 	}
+	return temp_state;
 }
 
-// States:
-
-// IDLE:
-
-IdleState::IdleState(Enemy* enemy) : BehaviorState(enemy)
+void AIState::AddState(Status status)
 {
+	BehaviorState* temp_state = GetNewState(status);
 
-}
-
-IdleState::~IdleState() = default;
-
-void IdleState::Enter()
-{
-	m_entity->GetPathManager()->CleanNodes();
-	m_entity->SetGoal(nullptr);
-	m_entity->GetMoveEngine()->Stop();
-	m_entity->SetStatus(IDLE);
-}
-
-void IdleState::Update()
-{
-	m_entity->GetAnimator()->SetNextAnimation("idle");
-}
-
-void IdleState::Exit()
-{
-	
-}
-
-void IdleState::Test()
-{
-	
-}
-
-// PATROLLING:
-
-PatrolState::PatrolState(Enemy* enemy) : BehaviorState(enemy)
-{
-	
-}
-
-PatrolState::~PatrolState() = default;
-
-void PatrolState::Enter()
-{
-	m_entity->SetStatus(PATROL);
-}
-
-void PatrolState::Update()
-{
-	// Failed to reach case:
-	if (m_entity->GetPathManager()->goalCounter++ > 60 * 2.5)
+	if (temp_state)
 	{
-		m_entity->GetPathManager()->CleanNodes();
-		m_entity->GetPathManager()->prevNode[PREVNODESSIZE - 1] = m_entity->GetGoal(); // Avoid unsuccessful point
-		m_entity->SetGoal(nullptr);
-		std::cout << "Failed to reach the goal\n";
-	}
-
-	// Deciding on the next goal:
-	if (m_entity->GoalIsReached() or m_entity->GetGoal() == nullptr) // Find a new goal to seek:
-	{
-		m_entity->GetPathManager()->goalCounter = 0;
-		m_entity->SetReachedGoal(false) ;
-		
-		float minDist = 999999;
-		PathNode* goToNode = nullptr;
-
-		// Seak for the node to seek:
-		for (PathNode* patrolNode : *ENMA::GetScene()->GetLevel()->GetPatrolPath())
-		{
-			SDL_FPoint temp = { patrolNode->x, patrolNode->y };
-			
-			float dist = MAMA::SquareDistance(&temp, &m_entity->GetCenter());
-			
-			bool recorded = false;
-			for (int i = 0; i < PREVNODESSIZE; i++)
-			{
-				if (patrolNode == m_entity->GetPathManager()->prevNode[i])
-				{
-					recorded = true;
-					break;
-				}
-			}
-
-			if (not recorded and dist < minDist and COMA::LOSCheck(&temp, &m_entity->GetCenter()))
-			{
-				minDist = dist;
-				goToNode = patrolNode;
-			}
-		}
-
-		// Set the node as the goal:
-		if (goToNode)
-		{
-			for (int i = 1; i < PREVNODESSIZE; i++)
-			{
-				m_entity->GetPathManager()->prevNode[i - 1] = m_entity->GetPathManager()->prevNode[i];
-			}
-
-			m_entity->GetPathManager()->prevNode[PREVNODESSIZE - 1] = goToNode;
-			m_entity->GetPathManager()->prevCheck = MAXCHECK;
-
-			m_entity->SetGoal(goToNode);
-		}
-	}
-	else if (m_entity->GetGoal()) // We already have a goal to seek:
-	{
-		if (m_entity->GetPathManager()->prevCheck++ >= MAXCHECK)
-		{
-			m_entity->GetPathManager()->prevCheck = 0;
-
-			SDL_FPoint goalPoint = { m_entity->GetGoal()->x, m_entity->GetGoal()->y };
-			
-			m_entity->Seek(goalPoint);
-
-			float dist = MAMA::SquareDistance(&goalPoint, &m_entity->GetCenter());
-
-			if (dist < pow(SWITHNODEDISTANCE,2))
-			{
-				m_entity->SetGoal(nullptr);
-				m_entity->SetReachedGoal(true);
-			}
-		}
+		m_states.push_back(temp_state);
+		m_states.back()->Enter();
 	}
 }
 
-void PatrolState::Test()
+void AIState::PopState()
 {
-
-}
-
-void PatrolState::Exit()
-{
-	
-}
-
-// MOVING TO LOS:
-
-MoveToLOSState::MoveToLOSState(Enemy* enemy) : BehaviorState(enemy), m_update_frame(0)
-{
-}
-
-MoveToLOSState::~MoveToLOSState() = default;
-
-void MoveToLOSState::Enter()
-{
-	
-}
-
-void MoveToLOSState::Update()
-{
-	if (m_update_frame++ > m_max_update_frame)
+	if (m_states.size() > 1)
 	{
-		m_update_frame = 0;
-		
-		// Find nearest LOS node:
-		PathNode* LOS_node = nullptr;
-		long min_dist = 99999;
-
-		for (PathNode* node : *PAMA::GetNodes())
-		{
-			if (node->GetPlayerLOS())
-			{
-				SDL_FPoint temp_pos = { node->x, node->y };
-				long dist = (long int)MAMA::SquareDistance(&ENMA::GetPlayer()->GetCenter(), &temp_pos);
-			
-				if (dist < min_dist)
-				{
-				
-					min_dist = dist;
-					LOS_node = node;
-				}
-			}
-		}
-		// Draw path:
-		if (LOS_node and m_entity->GetShortestLOSNode())
-		{
-			//Util::QueueCircle({ m_entity->GetShortestLOSNode()->x, m_entity->GetShortestLOSNode()->y }, 15, {255,0,0,255});
-			//Util::QueueCircle({ LOS_node->x, LOS_node->y }, 10);
-
-			if (!m_path.empty())
-			{
-				m_path.clear();
-			}
-			m_path = PAMA::GetShortestPath(m_entity->GetShortestLOSNode(), LOS_node, true);
-			m_start = m_path.back()->GetFromNode();
-		}
-	}
-	else
-	{
-		if (not m_path.empty())
-		{
-			Util::QueueCircle({ m_path.back()->GetToNode()->x, m_path.back()->GetToNode()->y }, 10,{1,0,0,1});
-
-			if (m_start)
-			{
-				SDL_FPoint f_point = { m_start->x, m_start->y };
-				if (m_entity->Seek(f_point))
-				{
-					m_start = nullptr;
-				}
-			}
-			else
-			{
-				SDL_FPoint f_point = { m_path.back()->GetToNode()->x, m_path.back()->GetToNode()->y };
-				if (COMA::LOSCheck(&f_point, &m_entity->GetCenter()))
-				{
-					if (m_entity->Seek(f_point))
-					{
-						m_path.pop_back();
-					}
-				}
-			}
-		}
-	}
-
-	// Draw the path
-	for (int i = 0; i < m_path.size(); i++)
-	{
-		PathNode* from = m_path[i]->GetFromNode();
-		PathNode* to = m_path[i]->GetToNode();
-		Util::QueueLine({ from->x, from->y }, { to->x, to->y }, { 255,0,0,255 });
+		m_states.back()->Exit();
+		delete m_states.back();
+		m_states.pop_back();
 	}
 }
-
-void MoveToLOSState::Test()
-{
-	
-}
-
-void MoveToLOSState::Exit()
-{
-	
-}
-
-// MOVE BEHIND COVER:
-
-MoveBehindCoverState::MoveBehindCoverState(Enemy* enemy) : BehaviorState(enemy)
-{
-}
-
-MoveBehindCoverState::~MoveBehindCoverState() = default;
-
-void MoveBehindCoverState::Enter()
-{
-	
-}
-
-void MoveBehindCoverState::Update()
-{
-	// Find nearest LOS node:
-	PathNode* LOS_node = nullptr;
-	long min_dist = 99999;
-
-	for (PathNode* node : *PAMA::GetNodes())
-	{
-		if (not node->GetPlayerLOS())
-		{
-			SDL_FPoint temp_pos = { node->x, node->y };
-			long dist = (long int)MAMA::SquareDistance(&m_entity->GetCenter(), &temp_pos);
-
-			if (dist < min_dist)
-			{
-
-				min_dist = dist;
-				LOS_node = node;
-			}
-		}
-	}
-	// Draw path:
-	if (LOS_node and m_entity->GetShortestLOSNode())
-	{
-		Util::QueueCircle({ m_entity->GetShortestLOSNode()->x, m_entity->GetShortestLOSNode()->y }, 15, { 255,0,0,255 });
-		Util::QueueCircle({ LOS_node->x, LOS_node->y }, 10);
-		std::vector<PathConnection*> path = PAMA::GetShortestPath(m_entity->GetShortestLOSNode(), LOS_node);
-		//std::cout << "Path size: " << path.size() << "\n";
-		for (int i = 0; i < path.size(); i++)
-		{
-			PathNode* from = path[i]->GetFromNode();
-			PathNode* to = path[i]->GetToNode();
-			Util::QueueLine({ from->x, from->y }, { to->x, to->y }, { 255,0,0,255 });
-		}
-	}
-}
-
-void MoveBehindCoverState::Test()
-{
-	
-}
-
-void MoveBehindCoverState::Exit()
-{
-	
-}
-
-// DYING:
-
-DieState::DieState(Enemy* enemy) : BehaviorState(enemy)
-{
-	
-}
-
-DieState::~DieState() = default;
-
-void DieState::Enter()
-{
-	SOMA::PlaySound("dead", 0, 5);
-	m_entity->GetAnimator()->PlayFullAnimation("die");
-	
-	m_entity->GetHealthBar()->SetEnabled(false);
-	
-	m_entity->SetStatus(DIE);
-}
-
-void DieState::Update()
-{
-	if (m_entity->GetAnimator()->AnimationIsPlaying("die"))
-	{
-		m_entity->GetMoveEngine()->Stop();
-	}
-	else
-	{
-		m_entity->Clean();
-	}
-}
-
-void DieState::Test()
-{
-	
-}
-
-void DieState::Exit()
-{
-	
-}
-

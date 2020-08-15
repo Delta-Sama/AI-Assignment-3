@@ -2,6 +2,7 @@
 #ifndef _SPRITE_H_
 #define _SPRITE_H_
 
+#include "MathManager.h"
 #include "SDL.h"
 
 class Sprite // Inline class.
@@ -19,7 +20,7 @@ public: // Inherited and public.
 	
 	SDL_FPoint GetCenter();
 	
-	void SetAngle(double a) { m_angle = a; }
+	void SetAngle(double a) { m_angle = MAMA::Angle180(a); }
 	void SetSrcCords(int x, int y);
 	void SetDstSize(int w, int h);
 	void SetTexture(SDL_Texture* text) { m_pText = text; }

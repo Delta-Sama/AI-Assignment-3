@@ -13,13 +13,13 @@
 #include <algorithm>
 #include <iostream>
 
-const float PROJCOOLDOWN = 0.4;
+#include "Util.h"
+
+const int PROJCOOLDOWN = FPS * 0.4;
 const float PROJDAMAGE = 10.0;
 
-const float MELEECOOLDOWN = 0.6;
-const float MELEEDIST = 60.0;
+const float MELEECOOLDOWN = FPS * 0.6;
 const float MELEEDAMAGE = 15.0;
-const float MELEEANGLE = 50.0;
 
 Player::Player()
 	:Entity({0,0,34,34}, {100,100,60,60}, TEMA::GetTexture("player"), PLAYERMAXHEALTH)
@@ -33,10 +33,10 @@ Player::Player()
 	this->AddAnimator(new Animator(this));
 	
 	this->GetAnimator()->AddAnimation("idle", 3, 1, 34, 0, 0, 0,16);
-	this->GetAnimator()->AddAnimation("run", 8, 2, 34, 0,0,34);
-	this->GetAnimator()->AddAnimation("die", 4, 3, 34, 0, 0, 68);
-	this->GetAnimator()->AddAnimation("melee", 6, 3, 34, 0, 0, 102,4);
-	this->GetAnimator()->AddAnimation("run_melee", 6, 3, 34, 0, 0, 136, 4);
+	this->GetAnimator()->AddAnimation("run", 8, 2, 34, 0,0,34,6);
+	this->GetAnimator()->AddAnimation("die", 4, 3, 34, 0, 0, 68,6);
+	this->GetAnimator()->AddAnimation("melee", 6, 3, 34, 0, 0, 102,3);
+	this->GetAnimator()->AddAnimation("run_melee", 6, 3, 34, 0, 0, 136, 3);
 }
 
 Player::~Player()
@@ -53,20 +53,13 @@ void Player::Update()
 		this->KeyboardInput();
 	else
 		this->GamepadInput();
-
-	Animation* meleeAnim = this->GetAnimator()->GetAnimation("melee");
-	if (m_meleeAnimFrames < meleeAnim->GetFramesFrequency()/10 * (meleeAnim->GetMaxFrames() - 1))
-	{
-		m_meleeAnimFrames++;
-		this->GetAnimator()->SetNextAnimation(m_curMeleeAnim);
-	}
 	
 	if (m_movement[0] == 0 and m_movement[1] == 0)
 		this->GetAnimator()->SetNextAnimation("idle");
 	else
 		this->GetAnimator()->SetNextAnimation("run");
 	
-	this->GetAnimator()->PlayAnimation();
+	this->GetAnimator()->Update();
 	
 	MovementUpdate();
 	
@@ -86,8 +79,14 @@ void Player::KeyboardInput()
 	float hyp = sqrt(dx * dx + dy * dy);
 	float dirX = dx / hyp;
 	float dirY = dy / hyp;
-	
-	if (EVMA::KeyHeld(SDL_SCANCODE_A))
+
+	float angle = MAMA::AngleBetweenPoints(dy, dx);
+	SetSmoothAngle(angle);
+
+	float moveX = cos(MAMA::Deg2Rad(GetAngle() - 90));
+	float moveY = sin(MAMA::Deg2Rad(GetAngle() - 90));
+
+	/*if (EVMA::KeyHeld(SDL_SCANCODE_A))
 	{
 		this->GetMoveEngine()->SetAccelX(-1.0f);
 		m_movement[0] = -1;
@@ -96,15 +95,17 @@ void Player::KeyboardInput()
 	{
 		this->GetMoveEngine()->SetAccelX(1.0f);
 		m_movement[0] = 1;
-	}
+	}*/
 	if (EVMA::KeyHeld(SDL_SCANCODE_W))
 	{
-		this->GetMoveEngine()->SetAccelY(-1.0f);
+		this->GetMoveEngine()->SetAccelX(moveX);
+		this->GetMoveEngine()->SetAccelY(moveY);
 		m_movement[1] = 1;
 	}
 	else if (EVMA::KeyHeld(SDL_SCANCODE_S))
 	{
-		this->GetMoveEngine()->SetAccelY(1.0f);
+		this->GetMoveEngine()->SetAccelX(-moveX);
+		this->GetMoveEngine()->SetAccelY(-moveY);
 		m_movement[1] = -1;
 	}
 	
@@ -114,11 +115,8 @@ void Player::KeyboardInput()
 	}
 	if (EVMA::MousePressed(3))
 	{
-		this->ShootProjectile(dirX, dirY);
+		this->ShootProjectile(moveX, moveY);
 	}
-
-	float angle = MAMA::AngleBetweenPoints(dy, dx);
-	this->SetAngle(MAMA::Rad2Deg(angle) + 90);
 }
 
 void Player::GamepadInput()
@@ -169,26 +167,29 @@ void Player::GamepadInput()
 
 void Player::Melee()
 {
-	if ((m_meleeTime + MELEECOOLDOWN * 1000) < SDL_GetTicks())
+	if ((m_meleeTime + MELEECOOLDOWN) < Engine::Instance().GetFrames())
 	{
-		m_meleeAnimFrames = 0;
-
-		SOMA::PlaySound("melee", 0, 3);
-		m_meleeTime = SDL_GetTicks();
+		std::cout << "Melee\n";
 
 		if (m_movement[0] == 0 and m_movement[1] == 0)
-			m_curMeleeAnim = "melee";
+			this->GetAnimator()->PlayFullAnimation("melee");
 		else
-			m_curMeleeAnim = "run_melee";
+			this->GetAnimator()->PlayFullAnimation("run_melee");
+		
+		SOMA::PlaySound("melee", 0, 3);
+		
+		m_meleeTime = Engine::Instance().GetFrames();
 		
 		bool hit = false;
 		for (Enemy* enemy : *ENMA::GetEnemies())
 		{
-			if (COMA::SquareRectDistance(m_body, *enemy->GetBody()) < pow(MELEEDIST, 2))
+			if (MAMA::SquareDistance(&GetCenter(), &enemy->GetCenter()) < pow(MELEEDIST, 2))
 			{
+				
 				float dy = enemy->GetBody()->y - m_body.y;
 				float dx = enemy->GetBody()->x - m_body.x;
-				if (abs(MAMA::Rad2Deg(MAMA::AngleBetweenPoints(dy, dx)) + 90 - m_angle) < MELEEANGLE)
+				
+				if (abs(MAMA::Angle180(MAMA::Rad2Deg(MAMA::AngleBetweenPoints(dy, dx)) + 90 - m_angle)) < MELEEANGLE)
 				{
 					enemy->TakeDamage(MELEEDAMAGE);
 					hit = true;
@@ -204,10 +205,10 @@ void Player::Melee()
 
 void Player::ShootProjectile(float dirX, float dirY)
 {
-	if ((m_projectileTime + PROJCOOLDOWN * 1000) < SDL_GetTicks())
+	if ((m_projectileTime + PROJCOOLDOWN) < Engine::Instance().GetFrames())
 	{
 		SOMA::PlaySound("projectile", 0, 1);
-		m_projectileTime = SDL_GetTicks();
+		m_projectileTime = Engine::Instance().GetFrames();
 
 		float dist = 25.0;
 		SDL_FPoint projPos = { this->GetCenter().x + dirX * dist,this->GetCenter().y + dirY * dist };

@@ -17,6 +17,9 @@ public:
 	virtual void Update() = 0;
 	virtual void Clean() = 0;
 
+	virtual void Melee() = 0;
+	virtual void ShootProjectile(float dirX, float dirY) = 0;
+
 	void MovementUpdate();
 	Animator* GetAnimator() { return animator; }
 	EntityMoveEngine* GetMoveEngine() { return m_moveEngine; }
@@ -24,12 +27,18 @@ public:
 
 	void SetX(float y);
 	void SetY(float y);
+	bool IsMoving() { return m_moveEngine->GetVelX() != 0 or m_moveEngine->GetVelY() != 0; }
+
+	double SetSmoothAngle(float angle);
 
 	SDL_FRect* GetBody() { return &m_body; }
 
 	float GetHealth() { return m_health; }
 	float GetMaxHealth() { return m_maxHealth; }
 
+	Uint64 GetMeleeTime() { return m_meleeTime; }
+	Uint64 GetRangeTime() { return m_projectileTime; }
+	
 	void TakeDamage(float damage);
 
 protected:
@@ -42,8 +51,8 @@ protected:
 	SDL_FRect m_body;
 	void SetBodyPosition();
 
-	int m_projectileTime;
-	int m_meleeTime;
+	Uint64 m_projectileTime;
+	Uint64 m_meleeTime;
 
 	int m_damaged;
 };

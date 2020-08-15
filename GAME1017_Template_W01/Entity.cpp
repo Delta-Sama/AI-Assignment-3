@@ -3,8 +3,10 @@
 
 #include <algorithm>
 
+#include "MathManager.h"
+
 Entity::Entity(SDL_Rect s, SDL_FRect d, SDL_Texture* t, float maxHealth) : GameObject(s, d, t), m_maxHealth(maxHealth)
-, m_health(maxHealth), m_projectileTime(0)
+                                                                           , m_health(maxHealth), m_projectileTime(0)
 {
 	m_moveEngine = new EntityMoveEngine(this);
 }
@@ -29,6 +31,17 @@ void Entity::SetBodyPosition()
 
 void Entity::SetX(float x) { m_dst.x = x - (m_dst.w - m_body.w) / 2; }
 void Entity::SetY(float y) { m_dst.y = y - (m_dst.h - m_body.h) / 2; }
+
+double Entity::SetSmoothAngle(float angle)
+{
+	angle = MAMA::Rad2Deg(angle) + 90;
+
+	double dif = MAMA::Angle180(angle - (float)this->GetAngle());
+
+	this->SetAngle(this->GetAngle() + std::max(std::min(dif, 5.0), -5.0));
+	
+	return dif;
+}
 
 void Entity::MovementUpdate()
 {

@@ -110,14 +110,41 @@
     <ClCompile Include="GameController.cpp">
       <Filter>Engine\Source</Filter>
     </ClCompile>
-    <ClCompile Include="AIState.cpp">
-      <Filter>Entities\Source</Filter>
-    </ClCompile>
     <ClCompile Include="EntityMoveEngine.cpp">
       <Filter>Entities\Source</Filter>
     </ClCompile>
     <ClCompile Include="Obstacle.cpp">
       <Filter>Objects\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="AIState.cpp">
+      <Filter>AI\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="IdleState.cpp">
+      <Filter>AI\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="PatrolState.cpp">
+      <Filter>AI\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveToLOSState.cpp">
+      <Filter>AI\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveBehindCoverState.cpp">
+      <Filter>AI\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="WaitBehindCoverState.cpp">
+      <Filter>AI\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveToPlayerState.cpp">
+      <Filter>AI\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="DieState.cpp">
+      <Filter>AI\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="CloseAttackState.cpp">
+      <Filter>AI\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="RangeAttackState.cpp">
+      <Filter>AI\Source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -244,14 +271,41 @@
     <ClInclude Include="GameController.h">
       <Filter>Engine\Header</Filter>
     </ClInclude>
-    <ClInclude Include="AIState.h">
-      <Filter>Entities\Header</Filter>
-    </ClInclude>
     <ClInclude Include="EntityMoveEngine.h">
       <Filter>Entities\Header</Filter>
     </ClInclude>
     <ClInclude Include="Obstacle.h">
       <Filter>Objects\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="AIState.h">
+      <Filter>AI\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="IdleState.h">
+      <Filter>AI\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="PatrolState.h">
+      <Filter>AI\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveToLOSState.h">
+      <Filter>AI\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveBehindCoverState.h">
+      <Filter>AI\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="WaitBehindCoverState.h">
+      <Filter>AI\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveToPlayerState.h">
+      <Filter>AI\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="DieState.h">
+      <Filter>AI\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="CloseAttackState.h">
+      <Filter>AI\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="RangeAttackState.h">
+      <Filter>AI\Header</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -337,6 +391,15 @@
     </Filter>
     <Filter Include="Levels\Source">
       <UniqueIdentifier>{ac53245e-8b3e-46b5-a0c8-3823c612d29e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AI">
+      <UniqueIdentifier>{d50f0658-6fe7-4c24-a748-405b73aa8e9f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AI\Header">
+      <UniqueIdentifier>{38dac334-96ee-4348-8e10-3ad3b3045e2d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AI\Source">
+      <UniqueIdentifier>{caac9d5f-cd3f-4905-af52-a92d58bb8a82}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

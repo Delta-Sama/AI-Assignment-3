@@ -3,13 +3,16 @@
 #define _ENEMY_H_
 
 #include "AIState.h"
+#include "Engine.h"
 #include "Entity.h"
 #include "HealthBar.h"
 #include "States.h"
 
-enum Status { IDLE, PATROL, GOTOLOS, GOTOCOVER, ATTACK, FLEE, DIE };
+enum Status { IDLE, PATROL, MOVETOLOS, MOVETOCOVER, WAITBEHINDCOVER, MOVETOPLAYER, MELEE, RANGE, FLEE, DIE };
 
 const float SPEED = 1;
+
+const float ENEMYMELEECOOLDOWN = FPS * 0.6;
 
 class Enemy : public Entity
 {
@@ -23,7 +26,8 @@ public:
 
 	void EnemyUpdate();
 	bool Seek(SDL_FPoint& goal);
-	
+	void FollowThePath(std::vector<PathConnection*>& path);
+
 	Status GetStatus() { return m_status; }
 	bool GetActive() { return m_active; }
 	bool GetPlayerLOS() { return m_playerLOS; }
