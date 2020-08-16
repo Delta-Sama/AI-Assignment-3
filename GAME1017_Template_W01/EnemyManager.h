@@ -6,8 +6,6 @@
 
 #include <vector>
 
-enum EnemyType { REDSNIPER };
-
 class EnemyManager
 {
 public:

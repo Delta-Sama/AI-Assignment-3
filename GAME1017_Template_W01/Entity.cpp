@@ -32,6 +32,11 @@ void Entity::SetBodyPosition()
 void Entity::SetX(float x) { m_dst.x = x - (m_dst.w - m_body.w) / 2; }
 void Entity::SetY(float y) { m_dst.y = y - (m_dst.h - m_body.h) / 2; }
 
+bool Entity::IsMoving()
+{
+	return m_moveEngine->IsMoving();
+}
+
 double Entity::SetSmoothAngle(float angle)
 {
 	angle = MAMA::Rad2Deg(angle) + 90;
@@ -46,6 +51,7 @@ double Entity::SetSmoothAngle(float angle)
 void Entity::MovementUpdate()
 {
 	m_moveEngine->Update();
+	if (m_hitted > 0) m_hitted--;
 }
 
 void Entity::AddAnimator(Animator* animator)
@@ -65,4 +71,6 @@ void Entity::TakeDamage(float damage)
 	
 	if (damagedAnim)
 		m_damaged = 2 * damagedAnim->GetMaxFrames() * damagedAnim->GetFramesFrequency()/10;
+
+	m_hitted = HIT_FRAMES;
 }

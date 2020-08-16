@@ -4,6 +4,8 @@
 #include <SDL.h>
 #include <vector>
 
+#include "Vector2.h"
+
 class PathConnection;
 
 class PathNode : public SDL_FPoint
@@ -54,4 +56,12 @@ struct NodeRecord
 	double m_totalCost;
 	
 };
+
+struct AvoidData
+{
+	AvoidData(SDL_FPoint* rec, Vec2 range = {0,9999}) : m_avoid(rec), m_range(range) {}
+	SDL_FPoint* m_avoid;
+	Vec2 m_range;
+};
+
 #endif

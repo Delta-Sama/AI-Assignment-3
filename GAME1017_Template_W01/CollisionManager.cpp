@@ -1,8 +1,10 @@
 #include "CollisionManager.h"
 #include "DebugManager.h"
+#include "EnemyManager.h"
 #include "Engine.h"
 #include "GameObjectManager.h"
 #include "MathManager.h"
+#include "PathManager.h"
 #include "StateManager.h"
 #include "Tile.h"
 #include "Util.h"
@@ -15,9 +17,9 @@ bool CollisionManager::AABBCheck(const SDL_FRect& object1, const SDL_FRect& obje
 		object1.y + object1.h > object2.y);
 }
 
-bool CollisionManager::CircleCircleCheck(const SDL_FPoint object1, const SDL_FPoint object2, const double r1, const double r2)
+bool CollisionManager::CircleCircleCheck(SDL_FPoint object1, SDL_FPoint object2, const double r1, const double r2)
 {
-	return (MAMA::Distance((double)object1.x, (double)object2.x, (double)object1.y, (double)object2.y) < (r1 + r2));
+	return (MAMA::Distance(object1, object2) < (r1 + r2));
 }
 
 bool CollisionManager::CircleAABBCheck(const SDL_FPoint object1, const double r, const SDL_FRect& object2)
@@ -36,12 +38,12 @@ bool CollisionManager::CircleAABBCheck(const SDL_FPoint object1, const double r,
 	return CircleCircleCheck({ (float)x1, (float)y1 }, { (float)object1.x, (float)object1.y }, r);
 }
 
-bool CollisionManager::LinePointCheck(const SDL_FPoint object1_start, const SDL_FPoint object1_end, const SDL_FPoint object2)
+bool CollisionManager::LinePointCheck(SDL_FPoint object1_start, SDL_FPoint object1_end, SDL_FPoint object2)
 {
-	double distToStart = MAMA::Distance((double)object1_start.x, (double)object2.x, (double)object1_start.y, (double)object2.y);
-	double distToEnd = MAMA::Distance((double)object1_end.x, (double)object2.x, (double)object1_end.y, (double)object2.y);
+	double distToStart = MAMA::Distance(object1_start, object2);
+	double distToEnd = MAMA::Distance(object1_end, object2);
 
-	double lineLength = MAMA::Distance((double)object1_start.x, (double)object1_end.x, (double)object1_start.y, (double)object1_end.y);
+	double lineLength = MAMA::Distance(object1_start, object1_end);
 
 	double buffer = 0.2; // Extra distance since line thickness is one pixel.
 
@@ -94,6 +96,58 @@ GameObject* CollisionManager::FindFirstObjectOnTheRay(SDL_FPoint Pos, SDL_FPoint
 		}
 	}
 	return nullptr;
+}
+
+PathNode* CollisionManager::GetClosestToPointNode(SDL_FPoint point, bool has_LOS, bool tunnel, Vec2 range)
+{
+	PathNode* LOS_node = nullptr;
+	long min_dist = 99999;
+
+	for (PathNode* node : *PAMA::GetNodes())
+	{
+		SDL_FPoint temp_pos = { node->x, node->y };
+
+		long dist = (long int)MAMA::SquareDistance(&point, &temp_pos);
+
+		bool in_range = (dist >= pow(range.x,2) and dist <= pow(range.y, 2));
+		
+		if (in_range and dist < min_dist)
+		{
+			bool player_LOS = not tunnel and node->GetPlayerLOS() == has_LOS;
+			bool tunnel_LOS = tunnel and COMA::TunnelLOSCheck(&ENMA::GetPlayer()->GetCenter(), &temp_pos, TUNNEL_ENTITY_WIDTH);
+
+			if (player_LOS or tunnel_LOS)
+			{
+				min_dist = dist;
+				LOS_node = node;
+			}
+		}
+	}
+
+	return LOS_node;
+}
+
+PathNode* CollisionManager::GetClosestTunnelNode(SDL_FPoint point)
+{
+	PathNode* LOS_node = nullptr;
+	long min_dist = 99999;
+
+	for (PathNode* node : *PAMA::GetNodes())
+	{
+		SDL_FPoint temp_pos = { node->x, node->y };
+		if (COMA::TunnelLOSCheck(&temp_pos, &point, TUNNEL_ENTITY_WIDTH))
+		{
+			long dist = (long)MAMA::SquareDistance(&point, &temp_pos);
+
+			if (dist < min_dist)
+			{
+				min_dist = dist;
+				LOS_node = node;
+			}
+		}
+	}
+
+	return LOS_node;
 }
 
 bool CollisionManager::LineLineCheck(SDL_FPoint line1_start, SDL_FPoint line1_end, SDL_FPoint line2_start, SDL_FPoint line2_end)

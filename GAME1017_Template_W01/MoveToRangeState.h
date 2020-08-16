@@ -1,22 +1,24 @@
 #pragma once
-#ifndef _MOVEBEHINDCOVERSTATE_H_
-#define _MOVEBEHINDCOVERSTATE_H_
+#ifndef _MOVETORANGESTATE_H_
+#define _MOVETORANGESTATE_H_
 #include "AIState.h"
 
-class MoveBehindCoverState : public BehaviorState
+class MoveToRangeState : public BehaviorState
 {
 public:
-	MoveBehindCoverState(Enemy* enemy);
-	~MoveBehindCoverState();
+	MoveToRangeState(Enemy* enemy);
+	~MoveToRangeState();
 
 	virtual void Enter() override;
 	virtual void Update() override;
 	virtual void Transition() override;
 	virtual void Exit() override;
 
+	void ClearPath();
+
 private:
 	int m_update_frame;
-	const int m_max_update_frame = 30;
+	const int m_max_update_frame = 20;
 	std::vector<PathConnection*> m_path;
 	
 };

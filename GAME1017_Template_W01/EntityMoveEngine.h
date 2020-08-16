@@ -22,6 +22,9 @@ public:
 
 	float GetVelX();
 	float GetVelY();
+
+	bool IsMoving() { return m_moving; }
+	void SetMove(bool mode) { m_moving = mode; }
 	
 private:
 	Vec2 m_velocity;
@@ -31,6 +34,8 @@ private:
 	float m_drag, m_speed;
 
 	Entity* m_entity;
+
+	bool m_moving;
 	
 };
 

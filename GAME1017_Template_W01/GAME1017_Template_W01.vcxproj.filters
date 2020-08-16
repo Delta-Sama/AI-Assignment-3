@@ -146,6 +146,15 @@
     <ClCompile Include="RangeAttackState.cpp">
       <Filter>AI\Source</Filter>
     </ClCompile>
+    <ClCompile Include="MoveToRangeState.cpp">
+      <Filter>AI\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="FleeState.cpp">
+      <Filter>AI\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="BrownCutter.cpp">
+      <Filter>Entities\Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CollisionManager.h">
@@ -306,6 +315,15 @@
     </ClInclude>
     <ClInclude Include="RangeAttackState.h">
       <Filter>AI\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveToRangeState.h">
+      <Filter>AI\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="FleeState.h">
+      <Filter>AI\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="BrownCutter.h">
+      <Filter>Entities\Header</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -9,7 +9,7 @@ struct LocalPathManager
 {
 	LocalPathManager()
 	{
-		for (int i = 0; i < PREVNODESSIZE; i++)
+		for (int i = 0; i < PREV_NODES_SIZE; i++)
 		{
 			prevNode[i] = nullptr;
 		}
@@ -18,12 +18,12 @@ struct LocalPathManager
 	}
 	void CleanNodes()
 	{
-		for (int i = 0; i < PREVNODESSIZE; i++)
+		for (int i = 0; i < PREV_NODES_SIZE; i++)
 		{
 			prevNode[i] = nullptr;
 		}
 	}
-	PathNode* prevNode[PREVNODESSIZE];
+	PathNode* prevNode[PREV_NODES_SIZE];
 	int prevCheck;
 	int goalCounter;
 };

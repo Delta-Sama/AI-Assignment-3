@@ -61,6 +61,13 @@ void MoveBehindCoverState::Transition()
 		m_entity->GetAIState()->ChangeState(WAITBEHINDCOVER);
 		return;
 	}
+	m_entity->IncrementCoveringTime();
+	if (m_entity->GetCoveringTime() > MAX_COVER_TIME)
+	{
+		m_entity->SetCoveringTime(0);
+		m_entity->GetAIState()->ChangeState(MOVETOLOS);
+		return;
+	}
 }
 
 void MoveBehindCoverState::Exit()

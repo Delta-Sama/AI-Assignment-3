@@ -21,7 +21,7 @@ void PatrolState::Update()
 	if (m_entity->GetPathManager()->goalCounter++ > 60 * 2.5)
 	{
 		m_entity->GetPathManager()->CleanNodes();
-		m_entity->GetPathManager()->prevNode[PREVNODESSIZE - 1] = m_entity->GetGoal(); // Avoid unsuccessful point
+		m_entity->GetPathManager()->prevNode[PREV_NODES_SIZE - 1] = m_entity->GetGoal(); // Avoid unsuccessful point
 		m_entity->SetGoal(nullptr);
 		std::cout << "Failed to reach the goal\n";
 	}
@@ -43,7 +43,7 @@ void PatrolState::Update()
 			float dist = MAMA::SquareDistance(&temp, &m_entity->GetCenter());
 
 			bool recorded = false;
-			for (int i = 0; i < PREVNODESSIZE; i++)
+			for (int i = 0; i < PREV_NODES_SIZE; i++)
 			{
 				if (patrolNode == m_entity->GetPathManager()->prevNode[i])
 				{
@@ -52,7 +52,7 @@ void PatrolState::Update()
 				}
 			}
 
-			if (not recorded and dist < minDist and COMA::TunnelLOSCheck(&temp, &m_entity->GetCenter(), TUNNELENTITYWIDTH))
+			if (not recorded and dist < minDist and COMA::TunnelLOSCheck(&temp, &m_entity->GetCenter(), TUNNEL_ENTITY_WIDTH))
 			{
 				minDist = dist;
 				goToNode = patrolNode;
@@ -62,20 +62,20 @@ void PatrolState::Update()
 		// Set the node as the goal:
 		if (goToNode)
 		{
-			for (int i = 1; i < PREVNODESSIZE; i++)
+			for (int i = 1; i < PREV_NODES_SIZE; i++)
 			{
 				m_entity->GetPathManager()->prevNode[i - 1] = m_entity->GetPathManager()->prevNode[i];
 			}
 
-			m_entity->GetPathManager()->prevNode[PREVNODESSIZE - 1] = goToNode;
-			m_entity->GetPathManager()->prevCheck = MAXCHECK;
+			m_entity->GetPathManager()->prevNode[PREV_NODES_SIZE - 1] = goToNode;
+			m_entity->GetPathManager()->prevCheck = MAX_CHECK;
 
 			m_entity->SetGoal(goToNode);
 		}
 	}
 	else if (m_entity->GetGoal()) // We already have a goal to seek:
 	{
-		if (m_entity->GetPathManager()->prevCheck++ >= MAXCHECK)
+		if (m_entity->GetPathManager()->prevCheck++ >= MAX_CHECK)
 		{
 			m_entity->GetPathManager()->prevCheck = 0;
 
@@ -85,7 +85,7 @@ void PatrolState::Update()
 
 			float dist = MAMA::SquareDistance(&goalPoint, &m_entity->GetCenter());
 
-			if (dist < pow(SWITHNODEDISTANCE, 2))
+			if (dist < pow(SWITCH_NODE_DISTANCE, 2))
 			{
 				m_entity->SetGoal(nullptr);
 				m_entity->SetReachedGoal(true);
@@ -96,7 +96,16 @@ void PatrolState::Update()
 
 void PatrolState::Transition()
 {
-
+	if (m_entity->GetPlayerDetectRad() and not m_entity->GetPlayerLOS())
+	{
+		m_entity->GetAIState()->ChangeState(MOVETOLOS);
+		return;
+	}
+	if (m_entity->GetPlayerLOS())
+	{
+		m_entity->GetAIState()->ChangeState(MOVETORANGE);
+		return;
+	}
 }
 
 void PatrolState::Exit()

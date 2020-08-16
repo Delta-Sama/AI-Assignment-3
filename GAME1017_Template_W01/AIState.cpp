@@ -1,19 +1,20 @@
 #include "AIState.h"
 
 // States headers:
-
 #include "IdleState.h"
 #include "PatrolState.h"
 #include "MoveToLOSState.h"
 #include "MoveToPlayerState.h"
 #include "MoveBehindCoverState.h"
 #include "WaitBehindCoverState.h"
+#include "FleeState.h"
+#include "MoveToRangeState.h"
+#include "RangeAttackState.h"
 #include "CloseAttackState.h"
 #include "DieState.h"
 
 #include "CollisionManager.h"
 #include "EnemyManager.h"
-#include "RangeAttackState.h"
 #include "SoundManager.h"
 
 
@@ -68,6 +69,9 @@ BehaviorState* AIState::GetNewState(Status status)
 	case PATROL:
 		temp_state = new PatrolState(m_entity);
 		break;
+	case FLEE:
+		temp_state = new FleeState(m_entity);
+		break;
 	case DIE:
 		temp_state = new DieState(m_entity);
 		break;
@@ -80,20 +84,23 @@ BehaviorState* AIState::GetNewState(Status status)
 	case MOVETOPLAYER:
 		temp_state = new MoveToPlayerState(m_entity);
 		break;
+	case MOVETORANGE:
+		temp_state = new MoveToRangeState(m_entity);
+		break;
 	case WAITBEHINDCOVER:
 		temp_state = new WaitBehindCoverState(m_entity);
 		break;
-	case MELEE:
+	case MELEEATTACK:
 		temp_state = new CloseAttackState(m_entity);
 		break;
-	case RANGE:
+	case RANGEATTACK:
 		temp_state = new RangeAttackState(m_entity);
 		break;
 	}
 	return temp_state;
 }
 
-void AIState::AddState(Status status)
+void AIState::PushState(Status status)
 {
 	BehaviorState* temp_state = GetNewState(status);
 

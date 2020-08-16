@@ -114,7 +114,7 @@ void GameState::Update()
 				enemy->GetAIState()->ChangeState(IDLE);
 		}
 	}
-	if (EVMA::KeyPressed(SDL_SCANCODE_K))
+	if (EVMA::KeyPressed(SDL_SCANCODE_L))
 	{
 		for (Enemy* enemy : *ENMA::GetEnemies())
 		{
@@ -124,7 +124,7 @@ void GameState::Update()
 				enemy->GetAIState()->ChangeState(MOVETOLOS);
 		}
 	}
-	if (EVMA::KeyPressed(SDL_SCANCODE_L))
+	if (EVMA::KeyPressed(SDL_SCANCODE_C))
 	{
 		for (Enemy* enemy : *ENMA::GetEnemies())
 		{
@@ -132,6 +132,26 @@ void GameState::Update()
 				enemy->GetAIState()->ChangeState(IDLE);
 			else
 				enemy->GetAIState()->ChangeState(MOVETOCOVER);
+		}
+	}
+	if (EVMA::KeyPressed(SDL_SCANCODE_R))
+	{
+		for (Enemy* enemy : *ENMA::GetEnemies())
+		{
+			if (enemy->GetStatus() == MOVETORANGE)
+				enemy->GetAIState()->ChangeState(IDLE);
+			else
+				enemy->GetAIState()->ChangeState(MOVETORANGE);
+		}
+	}
+	if (EVMA::KeyPressed(SDL_SCANCODE_F))
+	{
+		for (Enemy* enemy : *ENMA::GetEnemies())
+		{
+			if (enemy->GetStatus() == FLEE)
+				enemy->GetAIState()->ChangeState(IDLE);
+			else
+				enemy->GetAIState()->ChangeState(FLEE);
 		}
 	}
 	

@@ -8,7 +8,24 @@
 #include "HealthBar.h"
 #include "States.h"
 
-enum Status { IDLE, PATROL, MOVETOLOS, MOVETOCOVER, WAITBEHINDCOVER, MOVETOPLAYER, MELEE, RANGE, FLEE, DIE };
+enum Status {
+	IDLE,
+	PATROL,
+	MOVETOLOS,
+	MOVETORANGE,
+	MOVETOCOVER,
+	WAITBEHINDCOVER,
+	MOVETOPLAYER,
+	MELEEATTACK,
+	RANGEATTACK,
+	FLEE,
+	DIE
+};
+
+enum EnemyType {
+	MELEETYPE,
+	RANGETYPE
+};
 
 const float SPEED = 1;
 
@@ -17,7 +34,7 @@ const float ENEMYMELEECOOLDOWN = FPS * 0.6;
 class Enemy : public Entity
 {
 public:
-	Enemy(SDL_Texture* t, Vec2 pos, float maxHealth);
+	Enemy(SDL_Texture* t, Vec2 pos, float maxHealth, EnemyType enemyType);
 	~Enemy();
 	
 	virtual void Update() = 0;
@@ -26,6 +43,7 @@ public:
 
 	void EnemyUpdate();
 	bool Seek(SDL_FPoint& goal);
+	void Flee();
 	void FollowThePath(std::vector<PathConnection*>& path);
 
 	Status GetStatus() { return m_status; }
@@ -46,10 +64,19 @@ public:
 	void CleanLocalPath();
 	
 	void SetStatus(Status stat) { m_status = stat; }
+	EnemyType GetEnemyType() { return m_enemyType; }
+	
+	void SetHideTime(Uint32 time) { m_hideTime = time; }
+	Uint32 GetHideTime() { return m_hideTime; }
 
-	int movement[2] = { 0,0 };
+	void SetCoveringTime(Uint32 time) { m_coveringTime = time; }
+	void IncrementCoveringTime() { m_coveringTime++; }
+	Uint32 GetCoveringTime() { return m_coveringTime; }
 	
 protected:
+	int m_fleeCounter = 0;
+	std::vector<PathConnection*> m_fleePath;
+	
 	bool m_playerLOS;
 	bool m_playerDetectRad;
 	
@@ -60,12 +87,15 @@ protected:
 	Status m_status;
 
 	HealthBar* m_healthBar;
-
 	AIState* m_AIState;
-
 	PathNode* m_shortestNode;
 	
 	bool m_active;
+
+	EnemyType m_enemyType;
+
+	Uint32 m_hideTime;
+	Uint32 m_coveringTime;
 };
 
 #endif

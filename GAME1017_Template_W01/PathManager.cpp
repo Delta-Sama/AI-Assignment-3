@@ -5,6 +5,7 @@
 
 #include "CollisionManager.h"
 #include "EnemyManager.h"
+#include "Util.h"
 
 #define MAXCONNECTIONDISTANCE 200.0
 
@@ -20,7 +21,7 @@ PathNode* PathManager::CreateNode(float x, float y)
 	for (PathNode* node : s_nodes)
 	{
 		SDL_FPoint temp = { node->x,node->y };
-		float dist = MAMA::Distance(backTemp.x, temp.x, backTemp.y, temp.y);
+		float dist = MAMA::Distance(backTemp, temp);
 		
 		if (node != s_nodes.back() and COMA::LOSCheck(&backTemp,&temp)
 			and dist < MAXCONNECTIONDISTANCE)
@@ -79,8 +80,7 @@ std::vector<PathConnection*> PathManager::GetShortestPath(PathNode* start, PathN
 		std::vector<PathConnection*> connections = currentRecord->m_node->GetConnections();
 		
 		for (unsigned i = 0; i < connections.size(); i++)
-		{
-			// std::cout << "Doing connection " << i << std::endl;
+		{	
 			PathNode* endNode = connections[i]->GetToNode();
 			NodeRecord* endNodeRecord;
 			double endNodeCost = currentRecord->m_costSoFar + connections[i]->GetCost();
@@ -91,7 +91,7 @@ std::vector<PathConnection*> PathManager::GetShortestPath(PathNode* start, PathN
 				if (endNodeRecord->m_costSoFar <= endNodeCost)
 					continue;
 				s_closed.erase(std::remove(s_closed.begin(), s_closed.end(), endNodeRecord), s_closed.end());
-				// Node gets pushed into open list below... lines 56/57.
+				// Node gets pushed into open list below
 			}
 			else if (ContainsNode(s_open, endNode))
 			{
@@ -190,9 +190,9 @@ NodeRecord* PathManager::GetNodeRecord(std::vector<NodeRecord*>& list, PathNode*
 	return nullptr;
 }
 
-double PathManager::HEuclid(const PathNode* start, const PathNode* goal)
+double PathManager::HEuclid(PathNode* start, PathNode* goal)
 {
-	return MAMA::Distance(start->x, goal->x, start->y, goal->y);
+	return MAMA::Distance(*start,*goal);
 }
 
 double PathManager::HManhat(const PathNode* start, const PathNode* goal)

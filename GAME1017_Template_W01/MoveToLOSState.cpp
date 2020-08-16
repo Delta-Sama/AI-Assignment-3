@@ -69,7 +69,11 @@ void MoveToLOSState::Transition()
 {
 	if (m_path.empty() and m_entity->GetPlayerDetectRad())
 	{
-		m_entity->GetAIState()->ChangeState(MOVETOPLAYER);
+		if (m_entity->GetEnemyType() == MELEETYPE)
+			m_entity->GetAIState()->ChangeState(MOVETOPLAYER);
+		else if (m_entity->GetEnemyType() == RANGETYPE)
+			m_entity->GetAIState()->ChangeState(MOVETORANGE);
+		
 		return;
 	}
 }

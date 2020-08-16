@@ -24,7 +24,6 @@ const float MELEEDAMAGE = 15.0;
 Player::Player()
 	:Entity({0,0,34,34}, {100,100,60,60}, TEMA::GetTexture("player"), PLAYERMAXHEALTH)
 {
-	
 	m_body = {0,0,35,35};
 	this->SetBodyPosition();
 
@@ -46,24 +45,23 @@ Player::~Player()
 
 void Player::Update()
 {
-	m_movement[0] = 0;
-	m_movement[1] = 0;
+	m_moveEngine->SetMove(false);
 	
 	if (SDL_NumJoysticks() < 1)
 		this->KeyboardInput();
 	else
 		this->GamepadInput();
 	
-	if (m_movement[0] == 0 and m_movement[1] == 0)
-		this->GetAnimator()->SetNextAnimation("idle");
-	else
-		this->GetAnimator()->SetNextAnimation("run");
-	
 	this->GetAnimator()->Update();
 	
 	MovementUpdate();
 	
 	this->SetBodyPosition();
+
+	if (not IsMoving())
+		this->GetAnimator()->SetNextAnimation("idle");
+	else
+		this->GetAnimator()->SetNextAnimation("run");
 }
 
 void Player::Clean()
@@ -100,13 +98,13 @@ void Player::KeyboardInput()
 	{
 		this->GetMoveEngine()->SetAccelX(moveX);
 		this->GetMoveEngine()->SetAccelY(moveY);
-		m_movement[1] = 1;
+		m_moveEngine->SetMove(true);
 	}
 	else if (EVMA::KeyHeld(SDL_SCANCODE_S))
 	{
 		this->GetMoveEngine()->SetAccelX(-moveX);
 		this->GetMoveEngine()->SetAccelY(-moveY);
-		m_movement[1] = -1;
+		m_moveEngine->SetMove(true);
 	}
 	
 	if (EVMA::MousePressed(1))
@@ -133,22 +131,22 @@ void Player::GamepadInput()
 		if (EVMA::GetGameController(0)->LEFT_STICK_X < -deadZone)
 		{
 			this->GetMoveEngine()->SetAccelX(-1.0f);
-			m_movement[0] = -1;
+			m_moveEngine->SetMove(true);
 		}
 		else if (EVMA::GetGameController(0)->LEFT_STICK_X > deadZone)
 		{
 			this->GetMoveEngine()->SetAccelX(1.0f);
-			m_movement[0] = 1;
+			m_moveEngine->SetMove(true);
 		}
 		if (EVMA::GetGameController(0)->LEFT_STICK_Y > deadZone)
 		{
 			this->GetMoveEngine()->SetAccelY(-1.0f);
-			m_movement[1] = 1;
+			m_moveEngine->SetMove(true);
 		}
 		else if (EVMA::GetGameController(0)->LEFT_STICK_Y < -deadZone)
 		{
 			this->GetMoveEngine()->SetAccelY(1.0f);
-			m_movement[1] = -1;
+			m_moveEngine->SetMove(true);
 		}
 
 		if (EVMA::GetGameController(0)->DPAD_DOWN)
@@ -171,7 +169,7 @@ void Player::Melee()
 	{
 		std::cout << "Melee\n";
 
-		if (m_movement[0] == 0 and m_movement[1] == 0)
+		if (this->IsMoving())
 			this->GetAnimator()->PlayFullAnimation("melee");
 		else
 			this->GetAnimator()->PlayFullAnimation("run_melee");
@@ -183,13 +181,13 @@ void Player::Melee()
 		bool hit = false;
 		for (Enemy* enemy : *ENMA::GetEnemies())
 		{
-			if (MAMA::SquareDistance(&GetCenter(), &enemy->GetCenter()) < pow(MELEEDIST, 2))
+			if (MAMA::SquareDistance(&GetCenter(), &enemy->GetCenter()) < pow(MELEE_DIST, 2))
 			{
 				
 				float dy = enemy->GetBody()->y - m_body.y;
 				float dx = enemy->GetBody()->x - m_body.x;
 				
-				if (abs(MAMA::Angle180(MAMA::Rad2Deg(MAMA::AngleBetweenPoints(dy, dx)) + 90 - m_angle)) < MELEEANGLE)
+				if (abs(MAMA::Angle180(MAMA::Rad2Deg(MAMA::AngleBetweenPoints(dy, dx)) + 90 - m_angle)) < MELEE_ANGLE)
 				{
 					enemy->TakeDamage(MELEEDAMAGE);
 					hit = true;

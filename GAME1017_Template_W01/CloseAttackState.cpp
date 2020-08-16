@@ -11,14 +11,14 @@ CloseAttackState::~CloseAttackState() = default;
 
 void CloseAttackState::Enter()
 {
-	m_lifetime = WAITAFTERATTACK;
+	m_lifetime = WAIT_AFTER_ATTACK;
 }
 
 void CloseAttackState::Update()
 {
-	if (m_lifetime-- == WAITAFTERATTACK)
+	if (m_lifetime-- == WAIT_AFTER_ATTACK)
 	{
-		if ((m_entity->GetMeleeTime() + ENEMYMELEETIME) >= Engine::Instance().GetFrames())
+		if ((m_entity->GetMeleeTime() + ENEMY_MELEE_TIME) >= Engine::Instance().GetFrames())
 		{
 			m_lifetime = 0;
 			return;

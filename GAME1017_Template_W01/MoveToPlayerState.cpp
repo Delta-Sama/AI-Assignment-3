@@ -19,9 +19,9 @@ void MoveToPlayerState::Update()
 {
 	SDL_FPoint player_center = ENMA::GetPlayer()->GetCenter();
 
-	bool haveTunnelLOS = COMA::TunnelLOSCheck(&m_entity->GetCenter(), &player_center, TUNNELENTITYWIDTH);
+	bool haveTunnelLOS = COMA::TunnelLOSCheck(&m_entity->GetCenter(), &player_center, TUNNEL_ENTITY_WIDTH);
 	bool playerIsNear = m_entity->GetPlayerDetectRad();
-	bool inMeleeDistance = MAMA::SquareDistance(&player_center, &m_entity->GetCenter()) < pow(MELEEDIST, 2);
+	bool inMeleeDistance = MAMA::SquareDistance(&player_center, &m_entity->GetCenter()) < pow(MELEE_DIST, 2);
 
 	if (haveTunnelLOS and playerIsNear)
 	{
@@ -31,14 +31,14 @@ void MoveToPlayerState::Update()
 		}
 		else
 		{
-			m_entity->GetAIState()->AddState(MELEE);
+			m_entity->GetAIState()->PushState(MELEEATTACK);
 		}
 	}
 }
 
 void MoveToPlayerState::Transition()
 {
-	bool haveTunnelLOS = COMA::TunnelLOSCheck(&m_entity->GetCenter(), &ENMA::GetPlayer()->GetCenter(), TUNNELENTITYWIDTH);
+	bool haveTunnelLOS = COMA::TunnelLOSCheck(&m_entity->GetCenter(), &ENMA::GetPlayer()->GetCenter(), TUNNEL_ENTITY_WIDTH);
 	bool playerIsNear = m_entity->GetPlayerDetectRad();
 
 	if (not haveTunnelLOS or not playerIsNear)

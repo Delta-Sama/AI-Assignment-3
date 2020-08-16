@@ -20,12 +20,12 @@ void DebugMode::Draw()
 
 		Vec4 color = { 0, 1, 0, 1 };
 
-		Util::QueueCircle(player->GetCenter(), MELEEDIST, { 1,1,1,1 });
+		Util::QueueCircle(player->GetCenter(), MELEE_DIST, { 1,1,1,1 });
 		Util::QueueLine(player->GetCenter(),
-			{ player->GetCenter().x + (float)cos(MAMA::Deg2Rad((player->GetAngle() - 90 + MELEEANGLE))) * 60,
-			player->GetCenter().y + (float)sin(MAMA::Deg2Rad((player->GetAngle() - 90 + MELEEANGLE))) * 60 }, { 1,1,1,1 });
-		Util::QueueLine(player->GetCenter(), { player->GetCenter().x + (float)cos(MAMA::Deg2Rad((player->GetAngle() - 90 - MELEEANGLE))) * 60,
-			player->GetCenter().y + (float)sin(MAMA::Deg2Rad((player->GetAngle() - 90 - MELEEANGLE))) * 60 }, { 1,1,1,1 });
+			{ player->GetCenter().x + (float)cos(MAMA::Deg2Rad((player->GetAngle() - 90 + MELEE_ANGLE))) * 60,
+			player->GetCenter().y + (float)sin(MAMA::Deg2Rad((player->GetAngle() - 90 + MELEE_ANGLE))) * 60 }, { 1,1,1,1 });
+		Util::QueueLine(player->GetCenter(), { player->GetCenter().x + (float)cos(MAMA::Deg2Rad((player->GetAngle() - 90 - MELEE_ANGLE))) * 60,
+			player->GetCenter().y + (float)sin(MAMA::Deg2Rad((player->GetAngle() - 90 - MELEE_ANGLE))) * 60 }, { 1,1,1,1 });
 		
 		for (Enemy* enemy : *ENMA::GetEnemies())
 		{
@@ -70,7 +70,7 @@ void DebugMode::Draw()
 			Vec4 circColor = { 1,1,0,1 };
 			if (enemy->GetPlayerDetectRad())
 				circColor = { 1,0,0,1 };
-			Util::DrawCircle(enemy->GetCenter(), DETECTRADIUS, circColor);
+			Util::DrawCircle(enemy->GetCenter(), DETECT_RADIUS, circColor);
 		}
 
 		for (Projectile* proj : *PRMA::GetProjectiles())

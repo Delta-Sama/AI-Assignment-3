@@ -60,7 +60,7 @@ void EnemyManager::AddEnemy(EnemyType type, Vec2 pos, int angle)
 
 	switch (type)
 	{
-	case REDSNIPER:
+	case RANGETYPE:
 		enemy = new RedSniper(pos);
 		break;
 	default:

@@ -1,4 +1,5 @@
-#include "RedSniper.h"
+#include "BrownCutter.h"
+
 #include "CollisionManager.h"
 #include "EnemyManager.h"
 #include "MathManager.h"
@@ -7,31 +8,28 @@
 #include "SoundManager.h"
 #include "TextureManager.h"
 
-RedSniper::RedSniper(Vec2 pos) : Enemy(TEMA::GetTexture("enemy"), pos, SNIPERMAXHEALTH, RANGETYPE)
+BrownCutter::BrownCutter(Vec2 pos) : Enemy(TEMA::GetTexture("enemy"), pos, CUTTERMAXHEALTH, MELEETYPE)
 {
 	this->AddAnimator(new Animator(this));
 
 	this->GetAnimator()->AddAnimation("idle", 3, 1, 34, 0, 0, 0, 16);
 	this->GetAnimator()->AddAnimation("run", 8, 2, 34, 0, 0, 34);
 	this->GetAnimator()->AddAnimation("die", 4, 5, 34, 0, 0, 68);
-	this->GetAnimator()->AddAnimation("damaged", 3, 3, 34, 0, 0, 102,4);
+	this->GetAnimator()->AddAnimation("damaged", 3, 3, 34, 0, 0, 102, 4);
 	this->GetAnimator()->AddAnimation("melee", 6, 4, 34, 0, 0, 136, 4);
 	this->GetAnimator()->AddAnimation("melee_run", 6, 4, 34, 0, 0, 170, 4);
-	
+
 	this->m_AIState->ChangeState(PATROL);
 }
 
-RedSniper::~RedSniper()
-{
-	
-}
+BrownCutter::~BrownCutter() = default;
 
-void RedSniper::MakeDecision()
+void BrownCutter::MakeDecision()
 {
 	m_AIState->Update();
 }
 
-void RedSniper::Melee()
+void BrownCutter::Melee()
 {
 	if ((GetMeleeTime() + ENEMY_MELEE_TIME) < Engine::Instance().GetFrames())
 	{
@@ -63,7 +61,7 @@ void RedSniper::Melee()
 	}
 }
 
-void RedSniper::ShootProjectile(float dirX, float dirY)
+void BrownCutter::ShootProjectile(float dirX, float dirY)
 {
 	if ((m_projectileTime + ENEMY_PROJ_TIME) < Engine::Instance().GetFrames())
 	{
@@ -77,9 +75,9 @@ void RedSniper::ShootProjectile(float dirX, float dirY)
 	}
 }
 
-void RedSniper::Update()
+void BrownCutter::Update()
 {
 	MakeDecision();
-	
+
 	EnemyUpdate();
 }

@@ -1,8 +1,8 @@
 #include "MathManager.h"
 
-double MathManager::Distance(const double& x1, const double& x2, const double& y1, const double& y2)
+double MathManager::Distance(SDL_FPoint& from, SDL_FPoint& to)
 {
-	return sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
+	return sqrt(pow(to.x - from.x,2) + pow(to.y - from.y, 2));
 }
 
 double MathManager::SquareDistance(SDL_FPoint* from, SDL_FPoint* to)

@@ -36,7 +36,7 @@ public:
 	void ChangeState(Status status);
 	BehaviorState* GetNewState(Status status);
 
-	void AddState(Status status);
+	void PushState(Status status);
 	void PopState();
 	
 private:

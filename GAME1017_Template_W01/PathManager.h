@@ -16,7 +16,7 @@ public:
 	static NodeRecord* GetSmallestNode(std::vector<NodeRecord*>* node_records);
 	static bool ContainsNode(std::vector<NodeRecord*>& list, PathNode* n);
 	static NodeRecord* GetNodeRecord(std::vector<NodeRecord*>& list, PathNode* n);
-	static double HEuclid(const PathNode* start, const PathNode* goal);
+	static double HEuclid(PathNode* start, PathNode* goal);
 	static double HManhat(const PathNode* start, const PathNode* goal);
 
 	static double GetTotalPathCost(std::vector<PathConnection*>* s_path);

@@ -21,7 +21,6 @@ public: // Methods
 	void KeyboardInput();
 	void GamepadInput();
 
-	int m_movement[2] = { 0,0 };
 private:
 	
 };

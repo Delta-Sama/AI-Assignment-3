@@ -9,14 +9,16 @@ RangeAttackState::~RangeAttackState() = default;
 
 void RangeAttackState::Enter()
 {
-	m_lifetime = WAITAFTERATTACK;
+	m_lifetime = WAIT_AFTER_ATTACK;
 }
 
 void RangeAttackState::Update()
 {
-	if (m_lifetime-- == WAITAFTERATTACK)
+	float angle = MAMA::AngleBetweenPoints((ENMA::GetPlayer()->GetCenter().y - m_entity->GetCenter().y), (ENMA::GetPlayer()->GetCenter().x - m_entity->GetCenter().x));
+	double dif = m_entity->SetSmoothAngle(angle);
+	if (m_lifetime-- == WAIT_AFTER_ATTACK)
 	{
-		if ((m_entity->GetRangeTime() + ENEMYRANGETIME) >= Engine::Instance().GetFrames())
+		if ((m_entity->GetRangeTime() + ENEMY_RANGE_TIME) >= Engine::Instance().GetFrames())
 		{
 			m_lifetime = 0;
 			return;
@@ -26,8 +28,6 @@ void RangeAttackState::Update()
 		float moveY = sin(MAMA::Deg2Rad(m_entity->GetAngle() - 90));
 		m_entity->ShootProjectile(moveX, moveY);
 	}
-	float angle = MAMA::AngleBetweenPoints((ENMA::GetPlayer()->GetCenter().y - m_entity->GetCenter().y), (ENMA::GetPlayer()->GetCenter().x - m_entity->GetCenter().x));
-	double dif = m_entity->SetSmoothAngle(angle);
 }
 
 void RangeAttackState::Transition()

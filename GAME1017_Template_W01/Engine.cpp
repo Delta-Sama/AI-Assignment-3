@@ -66,7 +66,7 @@ bool Engine::Init(const char* title, int xpos, int ypos, int width, int height, 
 	SOMA::Load("Audio/dead.wav", "dead", SOUND_SFX);
 	SOMA::SetSoundVolume(20, 5);
 	
-	SOMA::Load("Audio/sans.mp3", "background", SOUND_MUSIC);
+	SOMA::Load("Audio/papyrus.mp3", "background", SOUND_MUSIC);
 	SOMA::SetMusicVolume(11);//18);
 	SOMA::PlayMusic("background");
 	

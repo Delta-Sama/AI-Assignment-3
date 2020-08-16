@@ -9,7 +9,7 @@
 class MathManager
 {
 public:
-	static double Distance(const double& x1, const double& x2, const double& y1, const double& y2);
+	static double Distance(SDL_FPoint& from, SDL_FPoint& to);
 	static double SquareDistance(SDL_FPoint* from, SDL_FPoint* to);
 	static double AngleBetweenPoints(const double dy, const double dx);
 	static void SetDeltas(const double angle, double& dx, double& dy, double fx = 1.0, double fy = 1.0);

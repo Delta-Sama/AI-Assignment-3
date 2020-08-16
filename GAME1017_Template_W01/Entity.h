@@ -27,7 +27,7 @@ public:
 
 	void SetX(float y);
 	void SetY(float y);
-	bool IsMoving() { return m_moveEngine->GetVelX() != 0 or m_moveEngine->GetVelY() != 0; }
+	bool IsMoving();
 
 	double SetSmoothAngle(float angle);
 
@@ -40,6 +40,8 @@ public:
 	Uint64 GetRangeTime() { return m_projectileTime; }
 	
 	void TakeDamage(float damage);
+
+	bool Hitted() { return m_hitted > 0; }
 
 protected:
 	Animator* animator;
@@ -55,6 +57,7 @@ protected:
 	Uint64 m_meleeTime;
 
 	int m_damaged;
+	int m_hitted;
 };
 
 #include "Animator.h"

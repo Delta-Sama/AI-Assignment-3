@@ -4,7 +4,7 @@
 #include <algorithm>
 
 
-EntityMoveEngine::EntityMoveEngine(Entity* entity) : m_entity(entity), m_drag(STANDARTDRAG), m_maxVelocity(MAXENTITYVELOCITY)
+EntityMoveEngine::EntityMoveEngine(Entity* entity) : m_entity(entity), m_drag(STANDART_DRAG), m_maxVelocity(MAX_ENTITY_VELOCITY)
 {
 	m_accel.x = m_accel.y = m_velocity.x = m_velocity.y = 0.0;
 }
@@ -26,6 +26,11 @@ void EntityMoveEngine::Update()
 	m_entity->GetDstP()->y += (int)m_velocity.y;
 
 	m_accel.x = m_accel.y = 0.0;
+
+	if (abs(m_velocity.x) < 0.01)
+		m_velocity.x = 0;
+	if (abs(m_velocity.y) < 0.01)
+		m_velocity.y = 0;
 
 	// Check X boundary
 	if (m_entity->GetDstP()->x < 0)
