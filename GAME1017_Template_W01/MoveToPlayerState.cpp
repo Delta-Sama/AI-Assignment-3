@@ -46,6 +46,12 @@ void MoveToPlayerState::Transition()
 		m_entity->GetAIState()->ChangeState(MOVETOLOS);
 		return;
 	}
+
+	if (m_entity->GetHealth() < m_entity->GetMaxHealth() * 0.25)
+	{
+		m_entity->GetAIState()->ChangeState(FLEE);
+		return;
+	}
 }
 
 void MoveToPlayerState::Exit()

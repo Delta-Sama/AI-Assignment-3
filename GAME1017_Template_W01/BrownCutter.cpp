@@ -8,7 +8,7 @@
 #include "SoundManager.h"
 #include "TextureManager.h"
 
-BrownCutter::BrownCutter(Vec2 pos) : Enemy(TEMA::GetTexture("enemy"), pos, CUTTERMAXHEALTH, MELEETYPE)
+BrownCutter::BrownCutter(Vec2 pos) : Enemy(TEMA::GetTexture("melee_enemy"), pos, CUTTERMAXHEALTH, MELEETYPE)
 {
 	this->AddAnimator(new Animator(this));
 

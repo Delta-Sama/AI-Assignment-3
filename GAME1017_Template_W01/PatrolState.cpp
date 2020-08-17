@@ -103,7 +103,11 @@ void PatrolState::Transition()
 	}
 	if (m_entity->GetPlayerLOS())
 	{
-		m_entity->GetAIState()->ChangeState(MOVETORANGE);
+		if (m_entity->GetEnemyType() == MELEETYPE)
+			m_entity->GetAIState()->ChangeState(MOVETOLOS);
+		else if (m_entity->GetEnemyType() == RANGETYPE)
+			m_entity->GetAIState()->ChangeState(MOVETORANGE);
+		
 		return;
 	}
 }

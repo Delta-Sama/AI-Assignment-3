@@ -146,6 +146,7 @@
     <ClCompile Include="MoveToLOSState.cpp" />
     <ClCompile Include="MoveToPlayerState.cpp" />
     <ClCompile Include="MoveToRangeState.cpp" />
+    <ClCompile Include="ObjectHealthbar.cpp" />
     <ClCompile Include="Obstacle.cpp" />
     <ClCompile Include="Pathing.cpp" />
     <ClCompile Include="PathManager.cpp" />
@@ -204,6 +205,7 @@
     <ClInclude Include="MoveToLOSState.h" />
     <ClInclude Include="MoveToPlayerState.h" />
     <ClInclude Include="MoveToRangeState.h" />
+    <ClInclude Include="ObjectHealthbar.h" />
     <ClInclude Include="Obstacle.h" />
     <ClInclude Include="Pathing.h" />
     <ClInclude Include="PathManager.h" />

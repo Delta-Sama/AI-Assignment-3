@@ -1,5 +1,6 @@
 #include "EnemyManager.h"
 
+#include "BrownCutter.h"
 #include "CollisionManager.h"
 #include "RedSniper.h"
 
@@ -62,6 +63,9 @@ void EnemyManager::AddEnemy(EnemyType type, Vec2 pos, int angle)
 	{
 	case RANGETYPE:
 		enemy = new RedSniper(pos);
+		break;
+	case MELEETYPE:
+		enemy = new BrownCutter(pos);
 		break;
 	default:
 		return;

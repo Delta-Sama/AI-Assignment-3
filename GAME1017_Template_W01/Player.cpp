@@ -167,9 +167,7 @@ void Player::Melee()
 {
 	if ((m_meleeTime + MELEECOOLDOWN) < Engine::Instance().GetFrames())
 	{
-		std::cout << "Melee\n";
-
-		if (this->IsMoving())
+		if (not this->IsMoving())
 			this->GetAnimator()->PlayFullAnimation("melee");
 		else
 			this->GetAnimator()->PlayFullAnimation("run_melee");

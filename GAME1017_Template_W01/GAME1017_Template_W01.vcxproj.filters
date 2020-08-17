@@ -155,6 +155,9 @@
     <ClCompile Include="BrownCutter.cpp">
       <Filter>Entities\Source</Filter>
     </ClCompile>
+    <ClCompile Include="ObjectHealthbar.cpp">
+      <Filter>UI\Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CollisionManager.h">
@@ -324,6 +327,9 @@
     </ClInclude>
     <ClInclude Include="BrownCutter.h">
       <Filter>Entities\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectHealthbar.h">
+      <Filter>UI\Header</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

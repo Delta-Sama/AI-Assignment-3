@@ -155,7 +155,6 @@ void Enemy::Flee()
 		
 		if (LOS_node and GetShortestLOSNode())
 		{
-			std::cout << "New path flee\n";
 			//Util::QueueCircle(*LOS_node,10,{0,1,0,1});
 			m_fleePath = PAMA::GetShortestPath(GetShortestLOSNode(), LOS_node, true);
 		}
