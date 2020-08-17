@@ -36,7 +36,7 @@ void BrownCutter::Melee()
 	if ((GetMeleeTime() + ENEMY_MELEE_TIME) < Engine::Instance().GetFrames())
 	{
 		SOMA::PlaySound("melee", 0, 3);
-		m_meleeTime = Engine::Instance().GetFrames();
+		m_attackTime = Engine::Instance().GetFrames();
 
 		if (IsMoving())
 			GetAnimator()->PlayFullAnimation("melee_run");
@@ -80,10 +80,10 @@ void BrownCutter::Melee()
 
 void BrownCutter::ShootProjectile(float dirX, float dirY)
 {
-	if ((m_projectileTime + ENEMY_PROJ_TIME) < Engine::Instance().GetFrames())
+	if ((m_attackTime + ENEMY_PROJ_TIME) < Engine::Instance().GetFrames())
 	{
 		SOMA::PlaySound("projectile", 0, 7);
-		m_projectileTime = Engine::Instance().GetFrames();
+		m_attackTime = Engine::Instance().GetFrames();
 
 		float dist = 25.0;
 		SDL_FPoint projPos = { this->GetCenter().x + dirX * dist,this->GetCenter().y + dirY * dist };

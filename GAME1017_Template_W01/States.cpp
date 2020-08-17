@@ -131,6 +131,12 @@ void GameState::Update()
 	if (m_player->GetHealth() <= 0)
 	{
 		STMA::ChangeState(new EndState);
+		return;
+	}
+	if (ENMA::GetEnemies()->empty())
+	{
+		STMA::ChangeState(new WinState);
+		return;
 	}
 }
 
@@ -197,7 +203,6 @@ void EndState::Enter()
 {
 	m_restartButton = new RestartButton( { 278,250,424,120 });
 	m_exitButton = new ExitButton({ 278,420,424,120 });
-	m_finish = false;
 
 }
 
@@ -225,4 +230,45 @@ void EndState::Exit()
 	delete m_exitButton;
 	delete m_restartButton;
 }
+
+// Win state:
+
+WinState::WinState()
+{
+}
+
+void WinState::Enter()
+{
+	m_restartButton = new RestartButton({ 278,250,424,120 });
+	m_exitButton = new ExitButton({ 278,420,424,120 });
+	m_winLabel = new Sprite({ 0,0,800,250 }, { (WIDTH - 600) / 2, 40, 600, 200 }, TEMA::GetTexture("win_label"));
+}
+
+void WinState::Update()
+{
+	if (m_restartButton->Update() == 1)
+		return;
+	if (m_exitButton->Update() == 1)
+		return;
+}
+
+void WinState::Render()
+{
+	SDL_SetRenderDrawColor(Engine::Instance().GetRenderer(), 160, 0, 255, 255);
+	SDL_RenderClear(Engine::Instance().GetRenderer());
+
+	m_restartButton->Render();
+	m_exitButton->Render();
+	m_winLabel->Render();
+
+	State::Render();
+}
+
+void WinState::Exit()
+{
+	delete m_exitButton;
+	delete m_restartButton;
+	delete m_winLabel;
+}
+
 //End EndState

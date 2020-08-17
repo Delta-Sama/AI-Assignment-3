@@ -19,7 +19,7 @@ SlimeProjectile::SlimeProjectile(SDL_FPoint start, SDL_FPoint direction, Side si
 	if (side == ENEMYSIDE)
 	{
 		SetTexture(TEMA::GetTexture("redslime"));
-		this->m_damage = 5;
+		this->m_damage = 8;
 	}
 	
 	this->m_animFrequency = 8;

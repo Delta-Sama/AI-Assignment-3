@@ -36,8 +36,8 @@ public:
 	float GetHealth() { return m_health; }
 	float GetMaxHealth() { return m_maxHealth; }
 
-	Uint64 GetMeleeTime() { return m_meleeTime; }
-	Uint64 GetRangeTime() { return m_projectileTime; }
+	Uint64 GetMeleeTime() { return m_attackTime; }
+	Uint64 GetRangeTime() { return m_attackTime; }
 	
 	void TakeDamage(float damage);
 
@@ -54,8 +54,7 @@ protected:
 	SDL_FRect m_body;
 	void SetBodyPosition();
 
-	Uint64 m_projectileTime;
-	Uint64 m_meleeTime;
+	Uint64 m_attackTime;
 
 	int m_damaged;
 	int m_hitted;

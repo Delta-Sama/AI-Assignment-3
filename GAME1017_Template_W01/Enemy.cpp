@@ -185,7 +185,7 @@ void Enemy::FollowThePath(std::vector<PathConnection*>& path)
 		// If can go directly to the "ToNode"
 		if (COMA::TunnelLOSCheck(&to_point, &GetCenter(), TUNNEL_ENTITY_WIDTH))
 		{
-			Util::QueueCircle({ to_point.x, to_point.y }, 10, { 1,0,0,1 });
+			//Util::QueueCircle({ to_point.x, to_point.y }, 10, { 1,0,0,1 });
 			if (Seek(to_point))
 			{
 				path.pop_back(); // Pop if reached

@@ -76,8 +76,22 @@ public:
 private:
 	RestartButton* m_restartButton;
 	ExitButton* m_exitButton;
-	bool m_finish = false;
 	
+};
+
+class WinState : public State
+{
+public:
+	WinState();
+	void Update();
+	void Render();
+	void Enter();
+	void Exit();
+private:
+	RestartButton* m_restartButton;
+	ExitButton* m_exitButton;
+	Sprite* m_winLabel;
+
 };
 
 #endif

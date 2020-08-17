@@ -169,7 +169,7 @@ void Player::GamepadInput()
 
 void Player::Melee()
 {
-	if ((m_meleeTime + MELEECOOLDOWN) < Engine::Instance().GetFrames())
+	if ((m_attackTime + MELEECOOLDOWN) < Engine::Instance().GetFrames())
 	{
 		if (not this->IsMoving())
 			this->GetAnimator()->PlayFullAnimation("melee");
@@ -178,7 +178,7 @@ void Player::Melee()
 		
 		SOMA::PlaySound("melee", 0, 3);
 		
-		m_meleeTime = Engine::Instance().GetFrames();
+		m_attackTime = Engine::Instance().GetFrames();
 		
 		bool hit = false;
 		for (Enemy* enemy : *ENMA::GetEnemies())
@@ -221,10 +221,10 @@ void Player::Melee()
 
 void Player::ShootProjectile(float dirX, float dirY)
 {
-	if ((m_projectileTime + PROJCOOLDOWN) < Engine::Instance().GetFrames())
+	if ((m_attackTime + PROJCOOLDOWN) < Engine::Instance().GetFrames())
 	{
 		SOMA::PlaySound("projectile", 0, 1);
-		m_projectileTime = Engine::Instance().GetFrames();
+		m_attackTime = Engine::Instance().GetFrames();
 
 		float dist = 25.0;
 		SDL_FPoint projPos = { this->GetCenter().x + dirX * dist,this->GetCenter().y + dirY * dist };

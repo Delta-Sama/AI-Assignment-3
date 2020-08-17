@@ -6,7 +6,7 @@
 #include "MathManager.h"
 
 Entity::Entity(SDL_Rect s, SDL_FRect d, SDL_Texture* t, float maxHealth) : GameObject(s, d, t), m_maxHealth(maxHealth)
-                                                                           , m_health(maxHealth), m_projectileTime(0)
+                                                                           , m_health(maxHealth), m_attackTime(0)
 {
 	m_moveEngine = new EntityMoveEngine(this);
 }
