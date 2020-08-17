@@ -42,6 +42,7 @@ public:
 	void TakeDamage(float damage);
 
 	bool Hitted() { return m_hitted > 0; }
+	bool GetActive() { return m_active; }
 
 protected:
 	Animator* animator;
@@ -58,6 +59,8 @@ protected:
 
 	int m_damaged;
 	int m_hitted;
+
+	bool m_active;
 };
 
 #include "Animator.h"

@@ -56,6 +56,11 @@ void MoveBehindCoverState::Update()
 
 void MoveBehindCoverState::Transition()
 {
+	if (m_entity->GetHealth() < m_entity->GetMaxHealth() * 0.25)
+	{
+		m_entity->GetAIState()->ChangeState(FLEE);
+		return;
+	}
 	if (m_path.empty())
 	{
 		m_entity->GetAIState()->ChangeState(WAITBEHINDCOVER);

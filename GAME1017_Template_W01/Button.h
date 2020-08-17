@@ -27,7 +27,7 @@ class PlayButton : public Button
 private:
 	void Execute();
 public:
-	PlayButton(SDL_Rect src, SDL_FRect dst);
+	PlayButton(SDL_FRect dst);
 };
 
 class RestartButton : public Button
@@ -35,7 +35,7 @@ class RestartButton : public Button
 private:
 	void Execute();
 public:
-	RestartButton(SDL_Rect src, SDL_FRect dst, SDL_Texture* t);
+	RestartButton(SDL_FRect dst);
 };
 
 class ExitButton : public Button
@@ -43,7 +43,7 @@ class ExitButton : public Button
 private:
 	void Execute();
 public:
-	ExitButton(SDL_Rect src, SDL_FRect dst, SDL_Texture* t);
+	ExitButton(SDL_FRect dst);
 };
 
 #endif

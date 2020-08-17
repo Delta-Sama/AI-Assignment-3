@@ -3,6 +3,8 @@
 
 #include <iostream>
 
+#include "PathManager.h"
+
 std::vector<GameObject*> GOMA::GameObjects;
 std::vector<Tile*> GOMA::CollidableTiles;
 std::vector<Obstacle*> GOMA::Obstacles;
@@ -24,8 +26,10 @@ void GameObjectManager::CleanEmptyElements()
 	{
 		if (not (*obst)->IsActive())
 		{
+			(*obst)->Clean();
 			DeleteFromVectors(*obst);
 			obst = Obstacles.erase(obst);
+			PAMA::RecalculateConnections();
 		}
 		else
 		{

@@ -50,7 +50,10 @@ double Entity::SetSmoothAngle(float angle)
 
 void Entity::MovementUpdate()
 {
-	m_moveEngine->Update();
+	if (m_active)
+	{
+		m_moveEngine->Update();
+	}
 	if (m_hitted > 0) m_hitted--;
 }
 

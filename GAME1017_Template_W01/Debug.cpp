@@ -64,8 +64,8 @@ void DebugMode::Draw()
 		{
 			if (enemy->GetGoal())
 			{
-				SDL_FPoint to = { enemy->GetGoal()->x, enemy->GetGoal()->y };
-				Util::DrawLine(enemy->GetCenter(), to, { 1,1,0,1 });
+				//SDL_FPoint to = { enemy->GetGoal()->x, enemy->GetGoal()->y };
+				//Util::DrawLine(enemy->GetCenter(), to, { 1,1,0,1 });
 			}
 			Vec4 circColor = { 1,1,0,1 };
 			if (enemy->GetPlayerDetectRad())

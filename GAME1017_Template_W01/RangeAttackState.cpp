@@ -14,8 +14,6 @@ void RangeAttackState::Enter()
 
 void RangeAttackState::Update()
 {
-	float angle = MAMA::AngleBetweenPoints((ENMA::GetPlayer()->GetCenter().y - m_entity->GetCenter().y), (ENMA::GetPlayer()->GetCenter().x - m_entity->GetCenter().x));
-	double dif = m_entity->SetSmoothAngle(angle);
 	if (m_lifetime-- == WAIT_AFTER_ATTACK)
 	{
 		if ((m_entity->GetRangeTime() + ENEMY_RANGE_TIME) >= Engine::Instance().GetFrames())

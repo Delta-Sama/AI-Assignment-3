@@ -23,7 +23,7 @@ PathNode* PathManager::CreateNode(float x, float y)
 		SDL_FPoint temp = { node->x,node->y };
 		float dist = MAMA::Distance(backTemp, temp);
 		
-		if (node != s_nodes.back() and COMA::LOSCheck(&backTemp,&temp)
+		if (node != s_nodes.back() and COMA::TunnelLOSCheck(&backTemp, &temp, TUNNEL_ENTITY_WIDTH)
 			and dist < MAXCONNECTIONDISTANCE)
 		{
 			back->AddConnection(new PathConnection(back, node, dist));
@@ -32,6 +32,46 @@ PathNode* PathManager::CreateNode(float x, float y)
 	}
 
 	return back;
+}
+
+bool Connected(PathNode* start, PathNode* end)
+{
+	for (PathConnection* con : start->GetConnections())
+	{
+		if (con->GetToNode() == end)
+		{
+			return true;
+		}
+	}
+	for (PathConnection* con : end->GetConnections())
+	{
+		if (con->GetToNode() == start)
+		{
+			return true;
+		}
+	}
+}
+
+void PathManager::RecalculateConnections()
+{
+
+	for (PathNode* start : s_nodes)
+	{
+		SDL_FPoint backTemp = { start->x, start->y };
+
+		for (PathNode* node : s_nodes)
+		{
+			SDL_FPoint temp = { node->x,node->y };
+			float dist = MAMA::Distance(backTemp, temp);
+
+			if (node != start and COMA::TunnelLOSCheck(&backTemp, &temp,TUNNEL_ENTITY_WIDTH)
+				and dist < MAXCONNECTIONDISTANCE and not Connected(start, node))
+			{
+				start->AddConnection(new PathConnection(start, node, dist));
+				node->AddConnection(new PathConnection(node, start, dist));
+			}
+		}
+	}
 }
 
 void PathManager::Clear()

@@ -13,7 +13,7 @@ class UIManager
 public:
 	static void Update();
 	static void Render(Priority priority);
-
+	static void Clean();
 	static void AddObject(UIObject* obj);
 	
 private:

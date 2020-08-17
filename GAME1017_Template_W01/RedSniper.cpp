@@ -28,6 +28,7 @@ RedSniper::~RedSniper()
 
 void RedSniper::MakeDecision()
 {
+	this->m_moveEngine->SetMove(false);
 	m_AIState->Update();
 }
 

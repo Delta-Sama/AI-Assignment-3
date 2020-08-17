@@ -22,6 +22,11 @@ void WaitBehindCoverState::Update()
 
 void WaitBehindCoverState::Transition()
 {
+	if (m_entity->GetHealth() < m_entity->GetMaxHealth() * 0.25)
+	{
+		m_entity->GetAIState()->ChangeState(FLEE);
+		return;
+	}
 	if (--m_frames == 0)
 	{
 		m_entity->SetCoveringTime(0);

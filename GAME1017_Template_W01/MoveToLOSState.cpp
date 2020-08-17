@@ -11,7 +11,6 @@ MoveToLOSState::~MoveToLOSState() = default;
 
 void MoveToLOSState::Enter()
 {
-	m_entity->SetStatus(MOVETOLOS);
 	m_update_frame = m_max_update_frame;
 }
 

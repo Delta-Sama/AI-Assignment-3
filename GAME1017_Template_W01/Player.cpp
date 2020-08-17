@@ -13,6 +13,8 @@
 #include <algorithm>
 #include <iostream>
 
+
+#include "GameObjectManager.h"
 #include "Util.h"
 
 const int PROJCOOLDOWN = FPS * 0.4;
@@ -36,6 +38,8 @@ Player::Player()
 	this->GetAnimator()->AddAnimation("die", 4, 3, 34, 0, 0, 68,6);
 	this->GetAnimator()->AddAnimation("melee", 6, 3, 34, 0, 0, 102,3);
 	this->GetAnimator()->AddAnimation("run_melee", 6, 3, 34, 0, 0, 136, 3);
+
+	this->m_active = true;
 }
 
 Player::~Player()
@@ -192,6 +196,22 @@ void Player::Melee()
 				}
 			}
 		}
+		for (Obstacle* obst : *GameObjectManager::GetObstacles())
+		{
+			if (MAMA::SquareDistance(&GetCenter(), &obst->GetCenter()) < pow(MELEE_DIST, 2))
+			{
+
+				float dy = obst->GetDstP()->y - m_body.y;
+				float dx = obst->GetDstP()->x - m_body.x;
+
+				if (abs(MAMA::Angle180(MAMA::Rad2Deg(MAMA::AngleBetweenPoints(dy, dx)) + 90 - m_angle)) < MELEE_ANGLE)
+				{
+					obst->TakeDamage(MELEEDAMAGE);
+					hit = true;
+				}
+			}
+		}
+		
 		if (hit)
 		{
 			SOMA::PlaySound("sharpDamage", 0, 4);

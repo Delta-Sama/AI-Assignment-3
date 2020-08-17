@@ -42,6 +42,16 @@ void ProjectileManager::Render()
 	}
 }
 
+void ProjectileManager::Clean()
+{
+	for (Projectile* proj : s_projectiles)
+	{
+		proj->Clean();
+		delete proj;
+	}
+	s_projectiles.clear();
+}
+
 void ProjectileManager::AddProjectile(Projectile* proj)
 {
 	s_projectiles.push_back(proj);

@@ -11,6 +11,7 @@ public:
 	static void Update();
 	
 	static PathNode* CreateNode(float x, float y);
+	static void RecalculateConnections();
 	static std::vector<PathConnection*> GetShortestPath(PathNode* start, PathNode* goal, bool reverse = false);
 	
 	static NodeRecord* GetSmallestNode(std::vector<NodeRecord*>* node_records);

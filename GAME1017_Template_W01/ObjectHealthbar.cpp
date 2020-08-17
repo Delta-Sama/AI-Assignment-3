@@ -1,18 +1,15 @@
 #include "ObjectHealthbar.h"
-
-#include <iostream>
-
-
-
 #include "Engine.h"
 #include "TextureManager.h"
 #include "UIManager.h"
+
+#include <iostream>
 
 const float w = 50.0;
 const float h = 7.0;
 
 ObjectHealthBar::ObjectHealthBar(Obstacle* obstacle)
-: UIObject({ 0,0,200,35 }, { 0,0,w,h }, TEMA::GetTexture("healthBar"), HIGH)
+: UIObject({ 0,0,200,35 }, { 0,0,w,h }, TEMA::GetTexture("healthBar"), HIGH,"object_health_bar")
 {
 	m_obstacle = obstacle;
 	m_scale = new Sprite({ 0,0,200,35 }, { 0,0,w,h }, TEMA::GetTexture("healthBarScale"));

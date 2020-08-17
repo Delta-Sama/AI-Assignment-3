@@ -28,7 +28,6 @@ void GameHUD::Update()
 void GameHUD::Clean()
 {
 	m_healthBar->Clean();
-	delete m_healthBar;
 	delete m_enemiesLeft;
 	delete m_enemiesKilled;
 }

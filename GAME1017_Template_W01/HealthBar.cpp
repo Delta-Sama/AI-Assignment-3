@@ -7,7 +7,7 @@ const float w = 50.0;
 const float h = 7.0;
 
 HealthBar::HealthBar(Entity* entity)
-: UIObject({0,0,200,35},{0,0,w,h},TEMA::GetTexture("healthBar"), HIGH)
+: UIObject({0,0,200,35},{0,0,w,h},TEMA::GetTexture("healthBar"), HIGH,"health_bar")
 {
 	m_entity = entity;
 	m_scale = new Sprite({0,0,200,35},{0,0,w,h},TEMA::GetTexture("healthBarScale"));

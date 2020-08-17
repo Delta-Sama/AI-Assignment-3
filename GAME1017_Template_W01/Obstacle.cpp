@@ -3,6 +3,8 @@
 #include <iostream>
 
 
+
+#include "SoundManager.h"
 #include "TextureManager.h"
 
 Obstacle::Obstacle(SDL_Rect s, SDL_FRect d, SDL_Texture* t, ObstacleType type) : GameObject(s, d, t), m_type(type)
@@ -23,7 +25,6 @@ void Obstacle::Update()
 
 void Obstacle::Clean()
 {
-	delete m_healthBar;
 }
 
 void Obstacle::TakeDamage(int dmg)
@@ -38,7 +39,10 @@ void Obstacle::TakeDamage(int dmg)
 		else
 		{
 			if (animator.status == EXIST)
+			{
+				SOMA::PlaySound("obst_dest", 0, 6);
 				animator.Destruct();
+			}
 		}
 	}
 }
@@ -88,7 +92,9 @@ void Barrel::Update()
 		if (animator.dyingEffect == animator.maxDyingEffect)
 		{
 			m_active = false;
+			m_healthBar->SetActive(false);
 			animator.status = DESTRUCTED;
+			
 		}
 	}
 	

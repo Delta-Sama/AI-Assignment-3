@@ -25,6 +25,9 @@ Enemy::Enemy(SDL_Texture* t, Vec2 pos, float maxHealth, EnemyType enemyType)
 	this->m_fleeCounter = 0;
 	this->m_coveringTime = 0;
 	this->m_hideTime = 0;
+	this->m_damaged = 0;
+
+	this->m_collideable = true;
 }
 
 Enemy::~Enemy()
@@ -34,7 +37,7 @@ Enemy::~Enemy()
 }
 
 void Enemy::EnemyUpdate()
-{
+{	
 	SDL_FPoint PlayerCenter = ENMA::GetScene()->GetPlayer()->GetCenter();
 	SDL_FPoint this_center = GetCenter();
 	this->m_playerLOS = COMA::LOSCheck(&PlayerCenter, &this->GetCenter());
@@ -159,6 +162,7 @@ void Enemy::Flee()
 			m_fleePath = PAMA::GetShortestPath(GetShortestLOSNode(), LOS_node, true);
 		}
 	}
+	
 	if (not m_fleePath.empty())
 	{
 		FollowThePath(m_fleePath);
@@ -181,7 +185,7 @@ void Enemy::FollowThePath(std::vector<PathConnection*>& path)
 		// If can go directly to the "ToNode"
 		if (COMA::TunnelLOSCheck(&to_point, &GetCenter(), TUNNEL_ENTITY_WIDTH))
 		{
-			//Util::QueueCircle({ to_point.x, to_point.y }, 10, { 1,0,0,1 });
+			Util::QueueCircle({ to_point.x, to_point.y }, 10, { 1,0,0,1 });
 			if (Seek(to_point))
 			{
 				path.pop_back(); // Pop if reached

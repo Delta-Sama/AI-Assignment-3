@@ -5,6 +5,7 @@
 #include "RedSniper.h"
 
 std::vector<Enemy*> ENMA::EnemiesVec;
+std::vector<Enemy*> ENMA::LateEnemiesVec;
 GameState* ENMA::m_scene;
 int ENMA::m_diedEnemies = 0;
 Player* ENMA::m_player = nullptr;
@@ -15,7 +16,10 @@ void EnemyManager::Update()
 	{
 		if (!(*enemy)->GetActive())
 		{
-			m_diedEnemies++;
+			if ((*enemy)->GetStatus() != LEAVING)
+			{
+				m_diedEnemies++;
+			}
 			delete *enemy;
 			enemy = EnemiesVec.erase(enemy);
 		}
@@ -25,6 +29,12 @@ void EnemyManager::Update()
 			enemy++;
 		}
 	}
+
+	for (Enemy* enemy : LateEnemiesVec)
+	{
+		EnemiesVec.push_back(enemy);
+	}
+	LateEnemiesVec.clear();
 }
 
 void EnemyManager::Render()
@@ -39,7 +49,10 @@ void EnemyManager::CheckCollision()
 {
 	for (Enemy* enemy : EnemiesVec)
 	{
-		COMA::CheckMapCollision(enemy);
+		if (enemy->GetCollidable())
+		{
+			COMA::CheckMapCollision(enemy);
+		}
 	}
 }
 
@@ -53,6 +66,28 @@ void EnemyManager::Clean()
 
 	EnemiesVec.clear();
 	EnemiesVec.shrink_to_fit();
+}
+
+void EnemyManager::LateAddEnemy(EnemyType type, Vec2 pos, int angle)
+{
+	Enemy* enemy;
+
+	switch (type)
+	{
+	case RANGETYPE:
+		enemy = new RedSniper(pos);
+		break;
+	case MELEETYPE:
+		enemy = new BrownCutter(pos);
+		break;
+	default:
+		return;
+	}
+
+	if (angle != 0)
+		enemy->SetAngle(angle);
+
+	LateEnemiesVec.push_back(enemy);
 }
 
 void EnemyManager::AddEnemy(EnemyType type, Vec2 pos, int angle)

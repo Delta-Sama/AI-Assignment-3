@@ -14,6 +14,7 @@ public:
 	static void CheckCollision();
 	static void Clean();
 	
+	static void LateAddEnemy(EnemyType type, Vec2 pos, int angle);
 	static void AddEnemy(EnemyType type, Vec2 pos, int angle = 0);
 	
 	static std::vector<Enemy*>* GetEnemies() { return &EnemiesVec; }
@@ -26,6 +27,7 @@ public:
 	
 private:
 	static std::vector<Enemy*> EnemiesVec;
+	static std::vector<Enemy*> LateEnemiesVec;
 	static GameState* m_scene;
 	static int m_diedEnemies;
 	static Player* m_player;

@@ -23,16 +23,16 @@ const float RANGE_DISTANCE = 250.0;
 const float MIN_SEEK_DISTANCE = 10;
 const float MIN_MOVE_ANGLE_DISTANCE = 50.0;
 const float WAIT_BEHIND_COVER_TIME = FPS * 3;
-const float TUNNEL_ENTITY_WIDTH = 10;
+const float TUNNEL_ENTITY_WIDTH = 18;
 const float AVOID_DISTANCE = MELEE_DIST * 2;
 const float HIDE_COOLDOWN = FPS * 10;
 const float MAX_COVER_TIME = FPS * 6;
 
 // ENTITY:
 const float MAX_ENTITY_VELOCITY = 3.0;
-const float ENEMY_MELEE_TIME = FPS * 0.4;
+const float ENEMY_MELEE_TIME = FPS * 1.4;
 const float ENEMY_PROJ_TIME = FPS * 0.6;
-const float ENEMY_MELEE_DAMAGE = 10;
+const float ENEMY_MELEE_DAMAGE = 5;
 const float WAIT_AFTER_ATTACK = FPS * 0.5;
 const float ENEMY_RANGE_TIME = FPS * 0.6;
 const float HIT_FRAMES = 5;

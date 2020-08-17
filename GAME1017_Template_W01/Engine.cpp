@@ -10,6 +10,10 @@
 
 #include <iostream>
 
+
+#include "EnemyManager.h"
+#include "UIManager.h"
+
 using namespace std;
 
 Engine::Engine() :m_running(false), m_pBNull(false) { cout << "Engine class constructed!" << endl; }
@@ -40,7 +44,11 @@ bool Engine::Init(const char* title, int xpos, int ypos, int width, int height, 
 	m_frames = 0;
 	m_fps = (Uint32)round((1 / (double)FPS) * 1000); // Sets FPS in milliseconds and rounds.
 
-	TEMA::RegisterTexture("Img/PlayButton.png", "playButton");
+	TEMA::RegisterTexture("Img/PlayB.png", "play_button");
+	TEMA::RegisterTexture("Img/ResumeB.png", "resume_button");
+	TEMA::RegisterTexture("Img/RestartB.png", "restart_button");
+	TEMA::RegisterTexture("Img/ExitB.png", "exit_button");
+	
 	TEMA::RegisterTexture("Img/Player.png", "player");
 	TEMA::RegisterTexture("Img/Enemy.png", "enemy");
 	TEMA::RegisterTexture("Img/CloseEnemy.png", "melee_enemy");
@@ -66,6 +74,8 @@ bool Engine::Init(const char* title, int xpos, int ypos, int width, int height, 
 	SOMA::SetSoundVolume(40, 4);
 	SOMA::Load("Audio/dead.wav", "dead", SOUND_SFX);
 	SOMA::SetSoundVolume(20, 5);
+	SOMA::Load("Audio/obstacleBreak.mp3", "obst_dest", SOUND_SFX);
+	SOMA::SetSoundVolume(10, 6);
 	
 	SOMA::Load("Audio/papyrus.mp3", "background", SOUND_MUSIC);
 	SOMA::SetMusicVolume(11);//18);
@@ -122,6 +132,8 @@ void Engine::Clean()
 	SOMA::Quit();
 	STMA::Quit();
 	TEMA::Quit();
+	UIMA::Clean();
+	ENMA::Clean();
 	IMG_Quit();
 	SDL_Quit();
 }

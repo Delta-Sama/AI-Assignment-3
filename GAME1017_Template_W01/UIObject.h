@@ -11,10 +11,11 @@ enum Priority { LOW, MEDIUM, HIGH };
 class UIObject :public Sprite
 {
 public:
-	UIObject(SDL_Rect s, SDL_FRect d, SDL_Texture* t, Priority priority) : Sprite(s, d, t), m_priority(priority)
+	UIObject(SDL_Rect s, SDL_FRect d, SDL_Texture* t, Priority priority, std::string name) : Sprite(s, d, t), m_priority(priority)
 	{
 		m_enabled = true;
 		m_active = true;
+		m_name = name;
 	}
 	
 	virtual void Update() = 0;
@@ -28,10 +29,12 @@ public:
 	SDL_Texture* GetTexture() { return m_pText; }
 	Priority GetPriority() { return m_priority; }
 
+	std::string GetName() { return m_name; }
+
 protected:
 	bool m_enabled,
 		m_active;
-	std::string UIType;
+	std::string m_name;
 
 	Priority m_priority;
 };

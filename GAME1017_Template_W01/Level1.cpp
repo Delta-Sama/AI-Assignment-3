@@ -107,12 +107,9 @@ void Level1::Load()
 	
 	ENMA::SetScene(m_scene);
 	
-	//ENMA::AddEnemy(REDSNIPER, { 10,3 }, (rand() % 12) * 30);
-	ENMA::AddEnemy(MELEETYPE, { 16,7 }, (rand() % 12) * 30);
+	ENMA::AddEnemy(MELEETYPE, { 10,3 }, (rand() % 12) * 30);
 	ENMA::AddEnemy(RANGETYPE, { 4,10 }, (rand() % 12) * 30);
-	/*ENMA::AddEnemy(REDSNIPER, { 8,7 }, (rand() % 12) * 30);
-	ENMA::AddEnemy(REDSNIPER, { 2,5 }, (rand() % 12) * 30);
-	ENMA::AddEnemy(REDSNIPER, { 9,5 }, (rand() % 12) * 30);*/
+	ENMA::AddEnemy(RANGETYPE, { 8,7 }, (rand() % 12) * 30);
 }
 
 void Level1::Render()

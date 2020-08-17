@@ -43,7 +43,7 @@ void TitleState::Enter()
 	m_labels.push_back(new Label("Title",200,50, "Maxim Dobrivskiy",{0,0,255,255}));
 	m_labels.push_back(new Label("Title", 300, 100, "101290100", { 100,100,255,255 }));
 
-	m_playButton = new PlayButton({0,0,512,200},{278,250,424,120});
+	m_playButton = new PlayButton({278,250,424,120});
 }
 
 void TitleState::Update()
@@ -91,10 +91,10 @@ void GameState::Enter()
 	m_player = new Player();
 
 	m_gameHUD = new GameHUD(m_player);
-	
+
 	m_level = new Level1(this);
 	m_level->Load();
-
+	
 	ENMA::SetPlayer(m_player);
 }
 
@@ -104,54 +104,15 @@ void GameState::Update()
 	{
 		m_debugger->SetMode(!m_debugger->GetMode());
 	}
-	if (EVMA::KeyPressed(SDL_SCANCODE_P))
-	{
-		for (Enemy* enemy : *ENMA::GetEnemies())
-		{
-			if (enemy->GetStatus() == IDLE)
-				enemy->GetAIState()->ChangeState(PATROL);
-			else if (enemy->GetStatus() == PATROL)
-				enemy->GetAIState()->ChangeState(IDLE);
-		}
-	}
+
 	if (EVMA::KeyPressed(SDL_SCANCODE_L))
 	{
 		for (Enemy* enemy : *ENMA::GetEnemies())
 		{
-			if (enemy->GetStatus() == MOVETOLOS)
+			if (enemy->GetStatus() == LEAVING)
 				enemy->GetAIState()->ChangeState(IDLE);
 			else
-				enemy->GetAIState()->ChangeState(MOVETOLOS);
-		}
-	}
-	if (EVMA::KeyPressed(SDL_SCANCODE_C))
-	{
-		for (Enemy* enemy : *ENMA::GetEnemies())
-		{
-			if (enemy->GetStatus() == MOVETOCOVER)
-				enemy->GetAIState()->ChangeState(IDLE);
-			else
-				enemy->GetAIState()->ChangeState(MOVETOCOVER);
-		}
-	}
-	if (EVMA::KeyPressed(SDL_SCANCODE_R))
-	{
-		for (Enemy* enemy : *ENMA::GetEnemies())
-		{
-			if (enemy->GetStatus() == MOVETORANGE)
-				enemy->GetAIState()->ChangeState(IDLE);
-			else
-				enemy->GetAIState()->ChangeState(MOVETORANGE);
-		}
-	}
-	if (EVMA::KeyPressed(SDL_SCANCODE_F))
-	{
-		for (Enemy* enemy : *ENMA::GetEnemies())
-		{
-			if (enemy->GetStatus() == FLEE)
-				enemy->GetAIState()->ChangeState(IDLE);
-			else
-				enemy->GetAIState()->ChangeState(FLEE);
+				enemy->GetAIState()->ChangeState(LEAVING);
 		}
 	}
 	
@@ -166,7 +127,7 @@ void GameState::Update()
 	GOMA::Update();
 	
 	CheckCollision();
-
+	
 	if (m_player->GetHealth() <= 0)
 	{
 		STMA::ChangeState(new EndState);
@@ -210,14 +171,16 @@ void GameState::Exit()
 	delete m_player;
 	delete m_debugger;
 
-	ENMA::Clean();
-
-	GOMA::Clean();
-	m_level->Clean();
-	delete m_level;
-
 	m_gameHUD->Clean();
 	delete m_gameHUD;
+	
+	ENMA::Clean();
+	GOMA::Clean();
+	UIMA::Clean();
+	PRMA::Clean();
+	
+	m_level->Clean();
+	delete m_level;
 
 	ENMA::SetPlayer(nullptr);
 }
@@ -232,24 +195,26 @@ EndState::EndState()
 
 void EndState::Enter()
 {
-	m_restartButton = new RestartButton({ 0,0,512,200 }, { 278,250,424,120 },TEMA::GetTexture("playButton"));
-	m_exitButton = new ExitButton({ 0,0,400,100 }, { 278,420,424,120 }, TEMA::GetTexture("exit_b"));
+	m_restartButton = new RestartButton( { 278,250,424,120 });
+	m_exitButton = new ExitButton({ 278,420,424,120 });
 	m_finish = false;
+
 }
 
 void EndState::Update()
 {
-	//if (m_restartButton->Update() == 1)
-		//return;
+	if (m_restartButton->Update() == 1)
+		return;
 	if (m_exitButton->Update() == 1)
 		return;
 }
 
 void EndState::Render()
 {
+	SDL_SetRenderDrawColor(Engine::Instance().GetRenderer(), 0, 128, 255, 255);
 	SDL_RenderClear(Engine::Instance().GetRenderer());
 
-	//m_restartButton->Render();
+	m_restartButton->Render();
 	m_exitButton->Render();
 	
 	State::Render();
@@ -257,7 +222,7 @@ void EndState::Render()
 
 void EndState::Exit()
 {
-	//delete m_exitButton;
-	//delete m_restartButton;
+	delete m_exitButton;
+	delete m_restartButton;
 }
 //End EndState

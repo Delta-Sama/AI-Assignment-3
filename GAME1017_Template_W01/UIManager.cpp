@@ -32,6 +32,16 @@ void UIManager::Render(Priority priority)
 	}
 }
 
+void UIManager::Clean()
+{
+	for (std::vector<UIObject*>::iterator obj = s_UIObjects.begin(); obj != s_UIObjects.end();)
+	{
+		delete (*obj);
+		obj = s_UIObjects.erase(obj);
+	}
+	s_UIObjects.clear();
+}
+
 void UIManager::AddObject(UIObject* obj)
 {
 	s_UIObjects.push_back(obj);

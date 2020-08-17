@@ -11,12 +11,12 @@
 #include "MoveToRangeState.h"
 #include "RangeAttackState.h"
 #include "CloseAttackState.h"
+#include "LeavingState.h"
 #include "DieState.h"
 
 #include "CollisionManager.h"
 #include "EnemyManager.h"
 #include "SoundManager.h"
-
 
 BehaviorState::BehaviorState(Enemy* player) : m_entity(player)
 {
@@ -27,7 +27,7 @@ BehaviorState::~BehaviorState() = default;
 
 AIState::AIState(Enemy* player) : m_entity(player)
 {
-	ChangeState(new IdleState(m_entity));
+	ChangeState(IDLE);
 }
 
 AIState::~AIState() = default;
@@ -96,7 +96,12 @@ BehaviorState* AIState::GetNewState(Status status)
 	case RANGEATTACK:
 		temp_state = new RangeAttackState(m_entity);
 		break;
+	case LEAVING:
+		temp_state = new LeavingState(m_entity);
+		break;
 	}
+	m_entity->SetStatus(status);
+	
 	return temp_state;
 }
 

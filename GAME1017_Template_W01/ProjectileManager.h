@@ -11,6 +11,7 @@ class ProjectileManager
 public:
 	static void Update();
 	static void Render();
+	static void Clean();
 	
 	static void AddProjectile(Projectile* proj);
 	static std::vector<Projectile*>* GetProjectiles() { return &s_projectiles; }

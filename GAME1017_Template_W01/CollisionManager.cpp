@@ -107,7 +107,7 @@ PathNode* CollisionManager::GetClosestToPointNode(SDL_FPoint point, bool has_LOS
 	{
 		SDL_FPoint temp_pos = { node->x, node->y };
 
-		long dist = (long int)MAMA::SquareDistance(&point, &temp_pos);
+		long dist = (long int)MAMA::SquareDistance(&ENMA::GetPlayer()->GetCenter(), &temp_pos);
 
 		bool in_range = (dist >= pow(range.x,2) and dist <= pow(range.y, 2));
 		

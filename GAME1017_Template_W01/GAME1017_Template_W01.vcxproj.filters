@@ -158,6 +158,9 @@
     <ClCompile Include="ObjectHealthbar.cpp">
       <Filter>UI\Source</Filter>
     </ClCompile>
+    <ClCompile Include="LeavingState.cpp">
+      <Filter>AI\Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CollisionManager.h">
@@ -330,6 +333,9 @@
     </ClInclude>
     <ClInclude Include="ObjectHealthbar.h">
       <Filter>UI\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="LeavingState.h">
+      <Filter>AI\Header</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

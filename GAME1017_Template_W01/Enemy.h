@@ -19,6 +19,7 @@ enum Status {
 	MELEEATTACK,
 	RANGEATTACK,
 	FLEE,
+	LEAVING,
 	DIE
 };
 
@@ -47,7 +48,7 @@ public:
 	void FollowThePath(std::vector<PathConnection*>& path);
 
 	Status GetStatus() { return m_status; }
-	bool GetActive() { return m_active; }
+
 	bool GetPlayerLOS() { return m_playerLOS; }
 	bool GetPlayerDetectRad() { return m_playerDetectRad; }
 	HealthBar* GetHealthBar() { return m_healthBar; }
@@ -72,10 +73,15 @@ public:
 	void SetCoveringTime(Uint32 time) { m_coveringTime = time; }
 	void IncrementCoveringTime() { m_coveringTime++; }
 	Uint32 GetCoveringTime() { return m_coveringTime; }
+
+	void SetCollidable(bool col) { m_collideable = col; }
+	bool GetCollidable() { return m_collideable; }
 	
 protected:
 	int m_fleeCounter = 0;
 	std::vector<PathConnection*> m_fleePath;
+
+	bool m_collideable;
 	
 	bool m_playerLOS;
 	bool m_playerDetectRad;
@@ -89,8 +95,6 @@ protected:
 	HealthBar* m_healthBar;
 	AIState* m_AIState;
 	PathNode* m_shortestNode;
-	
-	bool m_active;
 
 	EnemyType m_enemyType;
 

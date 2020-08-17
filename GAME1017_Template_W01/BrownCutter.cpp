@@ -2,6 +2,7 @@
 
 #include "CollisionManager.h"
 #include "EnemyManager.h"
+#include "GameObjectManager.h"
 #include "MathManager.h"
 #include "ProjectileManager.h"
 #include "SlimeProjectile.h"
@@ -26,6 +27,7 @@ BrownCutter::~BrownCutter() = default;
 
 void BrownCutter::MakeDecision()
 {
+	this->m_moveEngine->SetMove(false);
 	m_AIState->Update();
 }
 
@@ -37,9 +39,9 @@ void BrownCutter::Melee()
 		m_meleeTime = Engine::Instance().GetFrames();
 
 		if (IsMoving())
-			GetAnimator()->PlayFullAnimation("melee");
+			GetAnimator()->PlayFullAnimation("melee_run");
 		else
-			GetAnimator()->PlayFullAnimation("run_melee");
+			GetAnimator()->PlayFullAnimation("melee");
 
 		bool hit = false;
 		if (MAMA::SquareDistance(&GetCenter(), &ENMA::GetPlayer()->GetCenter()) < pow(MELEE_DIST, 2))
@@ -51,6 +53,21 @@ void BrownCutter::Melee()
 			{
 				ENMA::GetPlayer()->TakeDamage(ENEMY_MELEE_DAMAGE);
 				hit = true;
+			}
+		}
+		for (Obstacle* obst : *GameObjectManager::GetObstacles())
+		{
+			if (MAMA::SquareDistance(&GetCenter(), &obst->GetCenter()) < pow(MELEE_DIST, 2))
+			{
+
+				float dy = obst->GetDstP()->y - m_body.y;
+				float dx = obst->GetDstP()->x - m_body.x;
+
+				if (abs(MAMA::Angle180(MAMA::Rad2Deg(MAMA::AngleBetweenPoints(dy, dx)) + 90 - m_angle)) < MELEE_ANGLE)
+				{
+					obst->TakeDamage(ENEMY_MELEE_DAMAGE);
+					hit = true;
+				}
 			}
 		}
 

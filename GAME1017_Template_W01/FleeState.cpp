@@ -1,5 +1,7 @@
 #include "FleeState.h"
 
+#include "EnemyManager.h"
+
 FleeState::FleeState(Enemy* enemy) : BehaviorState(enemy)
 {}
 
@@ -17,7 +19,13 @@ void FleeState::Update()
 
 void FleeState::Transition()
 {
+	bool isFarAway = MAMA::SquareDistance(&ENMA::GetPlayer()->GetCenter(), &m_entity->GetCenter()) > pow(MELEE_DIST*4, 2);
 	
+	if (isFarAway)
+	{
+		m_entity->GetAIState()->ChangeState(LEAVING);
+		return;
+	}
 }
 
 void FleeState::Exit()

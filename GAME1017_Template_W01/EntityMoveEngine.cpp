@@ -12,7 +12,7 @@ EntityMoveEngine::EntityMoveEngine(Entity* entity) : m_entity(entity), m_drag(ST
 EntityMoveEngine::~EntityMoveEngine() = default;
 
 void EntityMoveEngine::Update()
-{
+{	
 	m_velocity.x += m_accel.x;
 	m_velocity.x *= m_drag;
 	m_velocity.x = std::min(std::max(m_velocity.x, -m_maxVelocity), (m_maxVelocity));
@@ -32,7 +32,7 @@ void EntityMoveEngine::Update()
 	if (abs(m_velocity.y) < 0.01)
 		m_velocity.y = 0;
 
-	// Check X boundary
+	/*// Check X boundary
 	if (m_entity->GetDstP()->x < 0)
 	{
 		m_entity->GetDstP()->x = 0;
@@ -49,7 +49,7 @@ void EntityMoveEngine::Update()
 	else if (m_entity->GetDstP()->y > HEIGHT - m_entity->GetDstP()->h)
 	{
 		m_entity->GetDstP()->y = HEIGHT - m_entity->GetDstP()->h;
-	}
+	}*/
 }
 
 void EntityMoveEngine::Stop()
